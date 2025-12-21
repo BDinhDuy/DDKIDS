@@ -1,26 +1,15 @@
 <script setup>
-import HelloWorld from './components/HelloWorld.vue'
-import CounterDemo from './components/CounterDemo.vue'
+  import Header from './components/header.vue'
+  import Footer from './components/footer.vue'
 </script>
 
 <template>
   <v-app>
+    <Header></Header>
     <v-main>
-      <v-container>
-        <div>
-          <a href="https://vite.dev" target="_blank">
-            <img src="/vite.svg" class="logo" alt="Vite logo" />
-          </a>
-          <a href="https://vuejs.org/" target="_blank">
-            <img src="./assets/vue.svg" class="logo vue" alt="Vue logo" />
-          </a>
-        </div>
-        <HelloWorld msg="Vite + Vue + Vuetify + Pinia" />
-        
-        <!-- Pinia Demo -->
-        <CounterDemo />
-      </v-container>
+      <h1>content</h1>
     </v-main>
+    <Footer></Footer>
   </v-app>
 </template>
 
