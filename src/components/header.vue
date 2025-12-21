@@ -5,7 +5,7 @@
         <v-row align="center" justify="center" no-gutters>
           <!-- Logo -->
           <v-col cols="auto" class="mr-6">
-            <div class="logo-text">
+            <div class="logo-text" @click="() => $router.push('/')">
               <span style="color: white; font-size: 28px; font-weight: bold;">DD</span>
               <span style="color: #ffa500; font-size: 28px; font-weight: bold;">KIDS</span>
             </div>
@@ -66,20 +66,87 @@
               <!-- Divider -->
               <v-divider vertical class="header-divider mx-2"></v-divider>
 
-              <!-- Cart -->
-              <v-btn icon @click="handleCart">
-                <v-badge
-                  v-if="cartCount > 0"
-                  :content="cartCount"
-                  color="red"
-                  overlap
-                  offset-x="10"
-                  offset-y="10"
-                >
-                  <v-icon>mdi-cart-outline</v-icon>
-                </v-badge>
-                <v-icon v-else>mdi-cart-outline</v-icon>
-              </v-btn>
+              <!-- Cart with Menu Popup -->
+              <v-menu
+                open-on-hover
+                offset-y
+                location="bottom end"
+                transition="slide-y-transition"
+              >
+                <template v-slot:activator="{ props }">
+                  <v-btn icon v-bind="props" @click="handleCart">
+                    <v-badge
+                      v-if="cartStore.cartCount > 0"
+                      :content="cartStore.cartCount"
+                      color="red"
+                      overlap
+                      offset-x="10"
+                      offset-y="10"
+                    >
+                      <v-icon>mdi-cart-outline</v-icon>
+                    </v-badge>
+                    <v-icon v-else>mdi-cart-outline</v-icon>
+                  </v-btn>
+                </template>
+
+                <v-card min-width="300" class="mt-2 py-4 px-4 text-center cart-popup">
+                  <div v-if="cartStore.cartCount === 0">
+                    <v-icon size="64" color="grey-lighten-1" class="mb-2">mdi-cart-off</v-icon>
+                    <p class="text-grey-darken-1 mb-4">Chưa có sản phẩm nào trong giỏ hàng</p>
+                    <v-btn
+                      color="#2d7a5e"
+                      variant="flat"
+                      block
+                      class="text-none"
+                      @click="() => $router.push('/')"
+                    >
+                      Tiếp tục mua sắm
+                    </v-btn>
+                  </div>
+                  <div v-else>
+                    <div class="cart-items-list mb-4">
+                      <div 
+                        v-for="item in cartStore.cartItems" 
+                        :key="item.id" 
+                        class="cart-item d-flex align-center py-2 clickable"
+                        @click="goToProductDetail(item.id)"
+                      >
+                        <v-img :src="item.image" width="50" height="50" cover class="rounded mr-3 flex-shrink-0"></v-img>
+                        <div class="text-left overflow-hidden">
+                          <p class="item-name text-truncate mb-0">{{ item.name }}</p>
+                          <div class="d-flex justify-space-between align-center">
+                            <span class="item-qty">{{ item.quantity }} x </span>
+                            <span class="item-price">{{ item.price.toLocaleString() }}đ</span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <v-divider class="mb-3"></v-divider>
+                    <div class="d-flex justify-space-between align-center mb-4">
+                      <span class="total-label">Tổng cộng:</span>
+                      <span class="total-price">{{ cartStore.totalAmount.toLocaleString() }}đ</span>
+                    </div>
+                    <v-btn
+                      color="#2d7a5e"
+                      variant="flat"
+                      block
+                      class="text-none mb-2"
+                      @click="handleCart"
+                    >
+                      Xem giỏ hàng
+                    </v-btn>
+                    <v-btn
+                      color="#ffa500"
+                      variant="flat"
+                      block
+                      class="text-none"
+                      @click="() => $router.push('/checkout')"
+                    >
+                      Thanh toán
+                    </v-btn>
+                  </div>
+                </v-card>
+              </v-menu>
             </div>
           </v-col>
         </v-row>
@@ -91,13 +158,16 @@
 <script setup>
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
+import { useCartStore } from '../stores/cart'
 
 const router = useRouter()
+const cartStore = useCartStore()
 
 // Reactive data
 const searchQuery = ref('')
 const selectedCategory = ref('Tất cả')
-const cartCount = ref(0)
+
+// Methods
 
 // Static data
 const categories = [
@@ -126,6 +196,11 @@ const handleRegister = () => {
 
 const handleCart = () => {
   router.push('/cart')
+}
+
+const goToProductDetail = (id) => {
+  console.log('Navigate to product detail:', id)
+  router.push(`/product/${id}`)
 }
 </script>
 
@@ -276,6 +351,62 @@ const handleCart = () => {
   border-color: rgba(255, 255, 255, 0.5) !important;
   border-width: 1px !important;
   opacity: 1 !important;
+}
+
+/* Cart Popup */
+.cart-popup {
+  border-radius: 8px !important;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.2) !important;
+}
+
+.cart-items-list {
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+.cart-item {
+  border-bottom: 1px solid #f0f0f0;
+  transition: background 0.2s ease;
+}
+
+.cart-item.clickable {
+  cursor: pointer;
+}
+
+.cart-item.clickable:hover {
+  background-color: #f9f9f9;
+}
+
+.cart-item:last-child {
+  border-bottom: none;
+}
+
+.item-name {
+  font-size: 13px;
+  font-weight: 500;
+  color: #333;
+}
+
+.item-qty {
+  font-size: 12px;
+  color: #666;
+}
+
+.item-price {
+  font-size: 13px;
+  font-weight: 600;
+  color: #2d7a5e;
+}
+
+.total-label {
+  font-size: 14px;
+  color: #666;
+}
+
+.total-price {
+  font-size: 16px;
+  font-weight: bold;
+  color: #d32f2f;
 }
 
 /* Hover effects */
