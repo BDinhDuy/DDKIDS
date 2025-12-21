@@ -167,8 +167,6 @@ const cartStore = useCartStore()
 const searchQuery = ref('')
 const selectedCategory = ref('Tất cả')
 
-// Methods
-
 // Static data
 const categories = [
   'Đồ chơi cho bé trai',

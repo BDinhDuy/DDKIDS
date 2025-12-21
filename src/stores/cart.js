@@ -2,7 +2,6 @@ import { defineStore } from 'pinia'
 
 export const useCartStore = defineStore('cart', {
   state: () => ({
-    // State: Danh sách sản phẩm trong giỏ
     cartItems: []
   }),
   actions: {
@@ -17,7 +16,13 @@ export const useCartStore = defineStore('cart', {
 
     removeFromCart(productId) {
       this.cartItems = this.cartItems.filter(item => item.id !== productId)
-    }
+    },
+    
   },
-
+  getters: {
+    cartCount: (state) => state.cartItems.length,
+    totalAmount: (state) => {
+      return state.cartItems.reduce((acc, item) => acc + (item.price * item.quantity), 0)
+    }
+  }
 })
