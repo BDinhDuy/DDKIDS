@@ -2,11 +2,8 @@
     
 </template>
 
-<script>
-export default {
-    name: 'Navbar',
-    // component logic
-}
+<script setup>
+// Navbar logic here
 </script>
 
 <style scoped>

@@ -2,11 +2,8 @@
     
 </template>
 
-<script>
-export default {
-    name: 'Footer',
-    // component logic
-}
+<script setup>
+// Footer logic here
 </script>
 
 <style scoped>

@@ -29,9 +29,7 @@
               <v-text-field
                 v-model="searchQuery"
                 placeholder="Tìm sản phẩm bạn mong muốn"
-                dense
-                solo
-                flat
+                variant="plain"
                 hide-details
                 class="search-input"
                 @keyup.enter="handleSearch"
@@ -54,16 +52,22 @@
           <v-col cols="auto">
             <div class="d-flex align-center">
               <!-- Login/Register -->
-              <v-btn text class="text-none mr-4" @click="handleLogin">
-                <v-icon left small>mdi-account-outline</v-icon>
-                <span style="font-size: 13px;">Đăng nhập / Đăng ký</span>
-              </v-btn>
+              <div class="d-flex align-center">
+                <v-icon small class="ml-12">mdi-account-outline</v-icon>
+                <v-btn text class="text-none px-1" @click="handleLogin" min-width="0">
+                  <span class="auth-text">Đăng nhập</span>
+                </v-btn>
+                <span class="auth-separator">/</span>
+                <v-btn text class="text-none px-1" @click="handleRegister" min-width="0">
+                  <span class="auth-text">Đăng ký</span>
+                </v-btn>
+              </div>
 
               <!-- Divider -->
-              <v-divider vertical class="mx-2" style="height: 20px;"></v-divider>
+              <v-divider vertical class="header-divider mx-2"></v-divider>
 
               <!-- Cart -->
-              <v-btn icon @click="handleCart" class="ml-2">
+              <v-btn icon @click="handleCart">
                 <v-badge
                   v-if="cartCount > 0"
                   :content="cartCount"
@@ -108,18 +112,19 @@ const categories = [
 // Methods
 const handleSearch = () => {
   if (searchQuery.value.trim()) {
-    console.log('Searching for:', searchQuery.value)
     router.push({ name: 'search', query: { q: searchQuery.value } })
   }
 }
 
 const handleLogin = () => {
-  console.log('Navigate to login')
   router.push('/login')
 }
 
+const handleRegister = () => {
+  router.push('/register')
+}
+
 const handleCart = () => {
-  console.log('Navigate to cart')
   router.push('/cart')
 }
 </script>
@@ -152,19 +157,21 @@ const handleCart = () => {
 
 /* Category Dropdown */
 .category-dropdown {
-  width: 220px; /* Tăng độ rộng để chứa được các câu dài */
-  flex-shrink: 0;
+  width: 160px;
+  min-width: 0 !important; /* Bắt buộc để vượt qua giới hạn của Vuetify */
+  flex: none; /* Đảm bảo nó không bị co giãn theo flexbox */
   border-right: 1px solid #eee;
 }
 
 .category-dropdown :deep(.v-input__control) {
+  min-width: 0 !important; /* Bắt cột con bên trong cũng phải nhỏ lại */
   min-height: 44px !important;
 }
 
 .category-dropdown :deep(.v-input__slot) {
   background: white !important;
   box-shadow: none !important;
-  padding: 0 12px 0 16px !important;
+  padding: 0 8px 0 10px !important; /* Giảm padding trái/phải để chiếm ít chỗ hơn */
   min-height: 44px !important;
 }
 
@@ -208,11 +215,16 @@ const handleCart = () => {
 .search-input :deep(input) {
   color: #333 !important;
   font-size: 14px !important;
+  font-weight: 500 !important; /* Chữ đậm hơn cho nội dung nhập */
+  caret-color: #ffa500 !important;
+  padding: 0 !important;
+  padding-left: 8px !important;
 }
 
 .search-input :deep(input::placeholder) {
-  color: #aaa !important;
+  color: #000 !important;
   font-size: 14px !important;
+  font-weight: 500 !important; /* Chữ đậm hơn cho placeholder */
 }
 
 /* Search Button */
@@ -236,6 +248,34 @@ const handleCart = () => {
 :deep(.search-input .v-input__prepend-inner) {
   margin: 0 !important;
   padding: 0 !important;
+}
+
+/* Authentication section (Login/Register) */
+.auth-text {
+  font-size: 13px;
+}
+
+.auth-separator {
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+/* Remove ONLY the focus ring border */
+.v-btn :deep(.v-btn__focus-ring) {
+  display: none !important;
+}
+
+.v-btn {
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+.header-divider {
+  height: 20px;
+  align-self: center;
+  border-color: rgba(255, 255, 255, 0.5) !important;
+  border-width: 1px !important;
+  opacity: 1 !important;
 }
 
 /* Hover effects */

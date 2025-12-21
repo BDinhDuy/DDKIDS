@@ -21,7 +21,7 @@
 }
 
 /* Remove default Vuetify padding */
-.main-content >>> .v-main__wrap {
+.main-content :deep(.v-main__wrap) {
   padding: 0 !important;
 }
 
