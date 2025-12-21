@@ -98,7 +98,7 @@
                       variant="flat"
                       block
                       class="text-none"
-                      @click="() => $router.push('/product')"
+                      @click="() => $router.push('/home')"
                     >
                       Tiếp tục mua sắm
                     </v-btn>

@@ -2,7 +2,22 @@ import { defineStore } from 'pinia'
 
 export const useCartStore = defineStore('cart', {
   state: () => ({
-    cartItems: []
+    cartItems: [
+      {
+        id: 1,
+        name: 'Đồ chơi lắp ráp Lego Robot DDKIDS 2024',
+        price: 250000,
+        quantity: 1,
+        image: 'https://picsum.photos/50'
+      },
+      {
+        id: 2,
+        name: 'Gấu bông Teddy cao cấp cho bé',
+        price: 180000,
+        quantity: 1,
+        image: 'https://picsum.photos/50'
+      }
+    ]
   }),
   actions: {
     addToCart(product) {
