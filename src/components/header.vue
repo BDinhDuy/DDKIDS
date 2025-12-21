@@ -23,8 +23,8 @@
                 flat
                 hide-details
                 class="category-dropdown"
-              ></v-select>
-
+                >
+            </v-select>
               <!-- Search Input -->
               <v-text-field
                 v-model="searchQuery"
@@ -152,6 +152,7 @@ const handleCart = () => {
 
 /* Category Dropdown */
 .category-dropdown {
+  width: 220px; /* Tăng độ rộng để chứa được các câu dài */
   flex-shrink: 0;
   border-right: 1px solid #eee;
 }
@@ -163,7 +164,7 @@ const handleCart = () => {
 .category-dropdown :deep(.v-input__slot) {
   background: white !important;
   box-shadow: none !important;
-  padding: 0 16px !important;
+  padding: 0 12px 0 16px !important;
   min-height: 44px !important;
 }
 
@@ -171,6 +172,21 @@ const handleCart = () => {
   color: #555 !important;
   font-size: 13px !important;
   font-weight: 500;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis; /* Nếu dài quá sẽ có dấu ... */
+}
+
+/* Style cho icon dropdown */
+.category-dropdown :deep(.v-field__append-inner) {
+  padding-top: 0 !important;
+  align-items: center !important;
+}
+
+.category-dropdown :deep(.v-field__append-inner .v-icon) {
+  font-size: 18px !important;
+  color: #999 !important;
+  opacity: 1 !important;
 }
 
 /* Search Input */
