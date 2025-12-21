@@ -5,7 +5,7 @@
         <v-row align="center" justify="center" no-gutters>
           <!-- Logo -->
           <v-col cols="auto" class="mr-6">
-            <div class="logo-text" @click="() => $router.push('/')">
+            <div class="logo-text" @click="() => $router.push('/home')">
               <span style="color: white; font-size: 28px; font-weight: bold;">DD</span>
               <span style="color: #ffa500; font-size: 28px; font-weight: bold;">KIDS</span>
             </div>
@@ -98,7 +98,7 @@
                       variant="flat"
                       block
                       class="text-none"
-                      @click="() => $router.push('/')"
+                      @click="() => $router.push('/product')"
                     >
                       Tiếp tục mua sắm
                     </v-btn>

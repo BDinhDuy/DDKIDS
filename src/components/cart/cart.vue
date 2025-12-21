@@ -84,7 +84,7 @@
             block
             class="text-none mt-2"
             color="grey-darken-1"
-            @click="$router.push('/')"
+            @click="$router.push('/product')"
           >
             Tiếp tục mua sắm
           </v-btn>
