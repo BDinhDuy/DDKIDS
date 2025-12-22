@@ -1,103 +1,100 @@
 <template>
-  <div>
-    <v-app-bar app color="#2d7a5e" dark elevation="0" height="auto">
-      <v-container>
-        <v-row align="center" justify="center" no-gutters>
-          <!-- Logo -->
-          <v-col cols="auto" class="mr-6">
-            <div class="logo-text" @click="() => $router.push('/home')">
-              <span style="color: white; font-size: 28px; font-weight: bold;">DD</span>
-              <span style="color: #ffa500; font-size: 28px; font-weight: bold;">KIDS</span>
+  <v-app-bar color="white" elevation="0" height="auto" class="header-bar">
+    <v-container class="py-3 header-container">
+      <v-row align="center" no-gutters>
+        <!-- Logo -->
+        <v-col cols="auto" class="d-flex align-center">
+          <div class="logo-wrapper" @click="() => $router.push('/')">
+            <div class="logo-icon">
+              <svg fill="none" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg" class="logo-svg">
+                <path d="M42.4379 44C42.4379 44 36.0744 33.9038 41.1692 24C46.8624 12.9336 42.2078 4 42.2078 4L7.01134 4C7.01134 4 11.6577 12.932 5.96912 23.9969C0.876273 33.9029 7.27094 44 7.27094 44L42.4379 44Z" fill="currentColor"></path>
+              </svg>
             </div>
-          </v-col>
+            <h2 class="logo-text">ToyStore</h2>
+          </div>
+        </v-col>
 
-          <!-- Search Section -->
-          <v-col cols="auto">
-            <div class="search-container">
-              <!-- Category Dropdown -->
-              <v-select
-                v-model="selectedCategory"
-                :items="categories"
-                dense
-                solo
-                flat
-                hide-details
-                class="category-dropdown"
+        <!-- Search Bar -->
+        <v-col class="px-4 d-none d-md-flex">
+          <div class="search-wrapper">
+            <v-icon class="search-icon">mdi-magnify</v-icon>
+            <input
+              v-model="searchQuery"
+              type="text"
+              placeholder="Tìm kiếm đồ chơi..."
+              class="search-input"
+              @keyup.enter="handleSearch"
+            />
+          </div>
+        </v-col>
+
+        <!-- Right Section -->
+        <v-col cols="auto">
+          <div class="d-flex align-center gap-2">
+            <!-- About Link -->
+            <v-btn variant="text" class="text-none d-none d-lg-flex" size="small">
+              Giới thiệu
+            </v-btn>
+
+            <!-- Register Button -->
+            <v-btn
+              variant="flat"
+              color="#f4f3f0"
+              class="text-none font-weight-bold"
+              size="small"
+              @click="handleRegister"
+            >
+              Đăng ký
+            </v-btn>
+
+            <!-- Login Button -->
+            <v-btn
+              variant="flat"
+              color="#ee9d2b"
+              class="text-none font-weight-bold"
+              size="small"
+              @click="handleLogin"
+            >
+              Đăng nhập
+            </v-btn>
+
+            <!-- Cart Button -->
+            <v-menu
+              open-on-hover
+              offset-y
+              location="bottom end"
+              transition="slide-y-transition"
+            >
+              <template v-slot:activator="{ props }">
+                <v-btn
+                  icon
+                  variant="flat"
+                  color="#f4f3f0"
+                  size="small"
+                  v-bind="props"
+                  @click="handleCart"
                 >
-            </v-select>
-              <!-- Search Input -->
-              <v-text-field
-                v-model="searchQuery"
-                placeholder="Tìm sản phẩm bạn mong muốn"
-                variant="plain"
-                hide-details
-                class="search-input"
-                @keyup.enter="handleSearch"
-              ></v-text-field>
-
-              <!-- Search Button -->
-              <v-btn
-                color="#ffa500"
-                elevation="0"
-                height="40"
-                class="search-btn"
-                @click="handleSearch"
-              >
-                <v-icon>mdi-magnify</v-icon>
-              </v-btn>
-            </div>
-          </v-col>
-
-          <!-- Right Section: Login & Cart -->
-          <v-col cols="auto">
-            <div class="d-flex align-center">
-              <!-- Login/Register -->
-              <div class="d-flex align-center">
-                <v-icon small class="ml-12">mdi-account-outline</v-icon>
-                <v-btn text class="text-none px-1" @click="handleLogin" min-width="0">
-                  <span class="auth-text">Đăng nhập</span>
+                  <v-badge
+                    v-if="cartStore.cartCount > 0"
+                    :content="cartStore.cartCount"
+                    color="red"
+                    overlap
+                  >
+                    <v-icon>mdi-cart-outline</v-icon>
+                  </v-badge>
+                  <v-icon v-else>mdi-cart-outline</v-icon>
                 </v-btn>
-                <span class="auth-separator">/</span>
-                <v-btn text class="text-none px-1" @click="handleRegister" min-width="0">
-                  <span class="auth-text">Đăng ký</span>
-                </v-btn>
-              </div>
+              </template>
 
-              <!-- Divider -->
-              <v-divider vertical class="header-divider mx-2"></v-divider>
-
-              <!-- Cart with Menu Popup -->
-              <v-menu
-                open-on-hover
-                offset-y
-                location="bottom end"
-                transition="slide-y-transition"
-              >
-                <template v-slot:activator="{ props }">
-                  <v-btn icon v-bind="props" @click="handleCart">
-                    <v-badge
-                      v-if="cartStore.cartCount > 0"
-                      :content="cartStore.cartCount"
-                      color="red"
-                      overlap
-                      offset-x="10"
-                      offset-y="10"
-                    >
-                      <v-icon>mdi-cart-outline</v-icon>
-                    </v-badge>
-                    <v-icon v-else>mdi-cart-outline</v-icon>
-                  </v-btn>
-                </template>
-
-                <v-card min-width="300" class="mt-2 py-4 px-4 text-center cart-popup">
-                  <div v-if="cartStore.cartCount === 0">
-                    <v-icon size="64" color="grey-lighten-1" class="mb-2">mdi-cart-off</v-icon>
-                    <p class="text-grey-darken-1 mb-4">Chưa có sản phẩm nào trong giỏ hàng</p>
-                    <v-btn
-                      color="#2d7a5e"
-                      variant="flat"
-                      block
-                      class="text-none"
+              <v-card min-width="300" class="mt-2 py-4 px-4 text-center cart-popup">
+                <div v-if="cartStore.cartCount === 0">
+                  <v-icon size="64" color="grey-lighten-1" class="mb-2">mdi-cart-off</v-icon>
+                  <p class="text-grey-darken-1 mb-4">Chưa có sản phẩm nào trong giỏ hàng</p>
+                  <v-btn
+                    color="#ee9d2b"
+                    variant="flat"
+                    block
+                    class="text-none"
                       @click="() => $router.push('/home')"
                     >
                       Tiếp tục mua sắm
@@ -152,7 +149,6 @@
         </v-row>
       </v-container>
     </v-app-bar>
-  </div>
 </template>
 
 <script setup>
@@ -203,29 +199,78 @@ const goToProductDetail = (id) => {
 </script>
 
 <style scoped>
-/* Logo */
-.logo-text {
+.header-bar {
+  border-bottom: none;
+  position: relative;
+}
+
+.header-container {
+  padding-left: 40px !important;
+  padding-right: 40px !important;
+}
+
+@media (max-width: 959px) {
+  .header-container {
+    padding-left: 16px !important;
+    padding-right: 16px !important;
+  }
+}
+
+.logo-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 8px;
   cursor: pointer;
   user-select: none;
 }
 
-/* Search Container */
-.search-container {
-  display: flex;
-  align-items: center;
-  background: white;
-  border-radius: 30px;
-  overflow: hidden;
-  width: 550px;
-  height: 44px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-  transition: all 0.3s ease;
-  border: 1px solid transparent;
+.logo-icon {
+  width: 32px;
+  height: 32px;
+  color: #ee9d2b;
 }
 
-.search-container:focus-within {
-  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-  border: 1px solid #ffa500;
+.logo-svg {
+  width: 100%;
+  height: 100%;
+}
+
+.logo-text {
+  font-size: 20px;
+  font-weight: 900;
+  color: #181511;
+  letter-spacing: -0.015em;
+  margin: 0;
+}
+
+.search-wrapper {
+  display: flex;
+  align-items: center;
+  background: #f4f3f0;
+  border-radius: 12px;
+  padding: 0 16px;
+  height: 40px;
+  max-width: 400px;
+  width: 100%;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+.search-icon {
+  color: #897961;
+  margin-right: 8px;
+}
+
+.search-input {
+  border: none;
+  outline: none;
+  background: transparent;
+  width: 100%;
+  font-size: 14px;
+  color: #181511;
+}
+
+.search-input::placeholder {
+  color: #897961;
 }
 
 /* Category Dropdown */

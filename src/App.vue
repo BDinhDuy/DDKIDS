@@ -1,11 +1,13 @@
 <script setup>
   import Header from './components/header.vue'
+  import Navbar from './components/navbar.vue'
   import Footer from './components/footer.vue'
 </script>
 
 <template>
   <v-app>
     <Header></Header>
+    <Navbar></Navbar>
     <v-main class="main-content">
       <router-view></router-view>
     </v-main>
@@ -16,7 +18,7 @@
 <style scoped>
 /* Main content area */
 .main-content {
-  background-color: #f5f5f5;
+  background-color: #f8f7f6;
   min-height: calc(100vh - 60px); /* Full height minus header */
 }
 
