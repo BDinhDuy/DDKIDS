@@ -53,7 +53,7 @@ const handleTabClick = (tabId) => {
 	border-bottom: 1px solid #f4f3f0;
 	position: relative;
 	z-index: 40;
-	margin-top: 0;
+	margin-top: 65px;
 }
 
 .nav-container {

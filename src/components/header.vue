@@ -202,6 +202,7 @@ const goToProductDetail = (id) => {
 .header-bar {
   border-bottom: none;
   position: relative;
+  min-height: 72px !important;
 }
 
 .header-container {
