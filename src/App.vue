@@ -23,7 +23,11 @@
     <AuthHeader v-else></AuthHeader>
     <Navbar v-if="showNavbar"></Navbar>
     <v-main class="main-content">
-      <router-view></router-view>
+      <router-view v-slot="{ Component }">
+        <transition name="fade-slide" mode="out-in">
+          <component :is="Component" />
+        </transition>
+      </router-view>
     </v-main>
     <Footer></Footer>
   </v-app>
@@ -33,16 +37,33 @@
 /* Main content area */
 .main-content {
   background-color: #f8f7f6;
-  min-height: calc(100vh - 60px); /* Full height minus header */
-}
-
-/* Remove padding when header is hidden */
-.no-header .main-content {
-  padding-top: 0 !important;
+  min-height: calc(100vh - 60px);
 }
 
 /* Remove default Vuetify padding */
 .main-content :deep(.v-main__wrap) {
   padding: 0 !important;
+}
+
+/* Page transition animations */
+.fade-slide-enter-active,
+.fade-slide-leave-active {
+  transition: all 0.3s ease;
+}
+
+.fade-slide-enter-from {
+  opacity: 0;
+  transform: translateX(20px);
+}
+
+.fade-slide-leave-to {
+  opacity: 0;
+  transform: translateX(-20px);
+}
+
+.fade-slide-enter-to,
+.fade-slide-leave-from {
+  opacity: 1;
+  transform: translateX(0);
 }
 </style>

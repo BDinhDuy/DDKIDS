@@ -1,5 +1,5 @@
 <template>
-  <v-app-bar color="white" elevation="0" height="auto" class="auth-header-bar">
+  <div class="auth-header-bar">
     <v-container class="py-3 auth-header-container">
       <v-row align="center" no-gutters>
         <!-- Logo -->
@@ -42,9 +42,8 @@
         </v-col>
       </v-row>
     </v-container>
-  </v-app-bar>
+    </div>
 </template>
-
 <script setup>
 import { computed } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
@@ -66,8 +65,9 @@ const handleRegister = () => {
 
 <style scoped>
 .auth-header-bar {
+  background-color: white;
   position: relative;
-  min-height: 72px !important;
+  min-height: 72px;
 }
 
 .auth-header-container {

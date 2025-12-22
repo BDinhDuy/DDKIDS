@@ -1,5 +1,5 @@
 <template>
-  <v-app-bar color="white" elevation="0" height="auto" class="header-bar">
+  <div class="header-bar">
     <v-container class="py-3 header-container">
       <v-row align="center" no-gutters>
         <!-- Logo -->
@@ -148,7 +148,7 @@
           </v-col>
         </v-row>
       </v-container>
-    </v-app-bar>
+    </div>
 </template>
 
 <script setup>
@@ -200,9 +200,10 @@ const goToProductDetail = (id) => {
 
 <style scoped>
 .header-bar {
+  background-color: white;
   border-bottom: none;
   position: relative;
-  min-height: 72px !important;
+  min-height: 72px;
 }
 
 .header-container {
