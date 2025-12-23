@@ -59,15 +59,15 @@
 						<ul class="footer-contact">
 							<li class="d-flex align-start gap-2">
 								<v-icon size="small">mdi-map-marker</v-icon>
-								<span>123 Đường ABC, Quận 1, TP.HCM</span>
+								<span>1/1 đường 26 phường Phước Long Tp.Hồ Chí Minh</span>
 							</li>
 							<li class="d-flex align-center gap-2">
 								<v-icon size="small">mdi-phone</v-icon>
-								<span>1900 1234 56</span>
+								<span>0345466755</span>
 							</li>
 							<li class="d-flex align-center gap-2">
 								<v-icon size="small">mdi-email</v-icon>
-								<span>support@toystore.vn</span>
+								<span>support@ddkidstoystore.vn</span>
 							</li>
 						</ul>
 					</div>
@@ -77,7 +77,7 @@
 			<!-- Bottom Bar -->
 			<v-divider class="my-8"></v-divider>
 			<div class="footer-bottom">
-				<p class="footer-copyright">© 2023 ToyStore. All rights reserved.</p>
+				<p class="footer-copyright">© 2025 DDKidsToyStore. All rights reserved.</p>
 				<div class="payment-icons">
 					<div class="payment-placeholder"></div>
 					<div class="payment-placeholder"></div>

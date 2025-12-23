@@ -161,17 +161,6 @@ const cartStore = useCartStore()
 
 // Reactive data
 const searchQuery = ref('')
-const selectedCategory = ref('Tất cả')
-
-// Static data
-const categories = [
-  'Đồ chơi cho bé trai',
-  'Đồ chơi cho bé gái',
-  'Đồ chơi cho bé trai từ 1-3 tuổi',
-  'Đồ chơi cho bé gái từ 1-3 tuổi',
-  'Đồ chơi cho bé trai từ 4-6 tuổi',
-  'Đồ chơi cho bé gái từ 4-6 tuổi',
-]
 
 // Methods
 const handleSearch = () => {

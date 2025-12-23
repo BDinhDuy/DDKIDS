@@ -27,7 +27,7 @@
             <div class="form-content">
               <!-- Heading -->
               <div class="mb-8">
-                <h1 class="text-h4 font-weight-bold mb-2">Đăng ký tài khoản Phụ huynh</h1>
+                <h1 class="text-h4 font-weight-bold mb-2">Đăng ký tài khoản</h1>
                 <p class="text-body-1 text-grey-darken-1">
                   Đăng ký để quản lý tài khoản và nhận các ưu đãi đặc biệt dành riêng cho bé yêu của bạn.
                 </p>

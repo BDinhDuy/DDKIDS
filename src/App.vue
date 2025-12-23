@@ -15,6 +15,9 @@
   const showHeader = computed(() => {
     return route.meta.showHeader !== false
   })
+  const showFooter = computed(() => {
+    return route.meta.showFooter !== false
+  })
 </script>
 
 <template>
@@ -29,7 +32,7 @@
         </transition>
       </router-view>
     </v-main>
-    <Footer></Footer>
+    <Footer v-if="showFooter"></Footer>
   </v-app>
 </template>
 
