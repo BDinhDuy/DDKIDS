@@ -32,7 +32,7 @@
                 <!-- Email Input -->
                 <v-text-field v-model="email" label="Email hoặc Số điện thoại" placeholder="example@email.com"
                   variant="outlined" prepend-inner-icon="mdi-email-outline" color="#ee9d2b" class="mb-4"
-                  :rules="emailRules"></v-text-field>
+                  :rules="emailRules" clearable></v-text-field>
 
                 <!-- Password Input -->
                 <v-text-field v-model="password" label="Mật khẩu" placeholder="•••••••••" variant="outlined"
