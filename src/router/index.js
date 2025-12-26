@@ -1,40 +1,53 @@
 import { createRouter, createWebHistory } from "vue-router";
+import Home from "../components/home.vue";
+import Cart from "../components/cart/cart.vue";
+import Login from "../components/users/login.vue";
+import Register from "../components/users/register.vue";
+import ForgotPassword from "../components/users/forgotPassword.vue";
+import Checkout from "../components/cart/checkout.vue";
+import ProductDetail from "../components/products/producDetails.vue";
 
 const routes = [
   {
     path: "/",
     name: "home",
-    component: () => import("../components/home.vue"),
+    component: Home,
     meta: { showNavbar: true, showHeader: true, showFooter: true },
   },
   {
     path: "/cart",
     name: "cart",
-    component: () => import("../components/cart/cart.vue"),
+    component: Cart,
     meta: { showNavbar: true, showHeader: true, showFooter: true },
   },
   {
     path: "/login",
     name: "login",
-    component: () => import("../components/users/login.vue"),
+    component: Login,
     meta: { showNavbar: false, showHeader: false, showFooter: false },
   },
   {
     path: "/register",
     name: "register",
-    component: () => import("../components/users/register.vue"),
+    component: Register,
+    meta: { showNavbar: false, showHeader: false, showFooter: false },
+  },
+  {
+    path: "/forgot-password",
+    name: "forgot-password",
+    component: ForgotPassword,
     meta: { showNavbar: false, showHeader: false, showFooter: false },
   },
   {
     path: "/checkout",
     name: "checkout",
-    component: () => import("../components/cart/checkout.vue"),
+    component: Checkout,
     meta: { showNavbar: true, showHeader: true, showFooter: true },
   },
   {
     path: "/product/:id",
     name: "product-detail",
-    component: () => import("../components/products/producDetails.vue"),
+    component: ProductDetail,
     meta: { showNavbar: true, showHeader: true, showFooter: true },
   },
 ];

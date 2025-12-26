@@ -6,11 +6,7 @@
         <div class="image-section">
           <v-img
             src="https://lh3.googleusercontent.com/aida-public/AB6AXuDtf5V2X7_aFiQKkqsK1My9wWQkh61ByNeZEJ_I1rBMEDE7pqURAQfIAk8HMvTLQVbLPFboVof_R5e8RJwHdoLPK20BViJ3mY-k_Hv5WuFTTbiLF-daiohnblBodX8YluFm61WIjSwWhYwj8AgUxZaXFO0idrtbivDMNtNtAt-_ChSv7vokQry40nauI8lOagQ4UzAN43Kv8MZASBpN_dVR8E7FKuXn9-g0ELpm2gn8xZpG1gf5m-u5kDl8RHjlDKOAGD5Rto_Tw3X1"
-            alt="Happy child playing with colorful wooden building blocks"
-            cover
-            height="100%"
-            class="image-overlay"
-          >
+            alt="Happy child playing with colorful wooden building blocks" cover height="100%" class="image-overlay">
             <div class="overlay-gradient"></div>
             <div class="overlay-text">
               <h2 class="text-h4 font-weight-bold mb-2">Mang niềm vui đến từng ngôi nhà</h2>
@@ -34,46 +30,24 @@
               <!-- Form -->
               <v-form @submit.prevent="handleLogin">
                 <!-- Email Input -->
-                <v-text-field
-                  v-model="email"
-                  label="Email hoặc Tên đăng nhập"
-                  placeholder="example@email.com"
-                  variant="outlined"
-                  prepend-inner-icon="mdi-email-outline"
-                  color="#ee9d2b"
-                  class="mb-4"
-                  :rules="emailRules"
-                ></v-text-field>
+                <v-text-field v-model="email" label="Email hoặc Tên đăng nhập" placeholder="example@email.com"
+                  variant="outlined" prepend-inner-icon="mdi-email-outline" color="#ee9d2b" class="mb-4"
+                  :rules="emailRules"></v-text-field>
 
                 <!-- Password Input -->
-                <v-text-field
-                  v-model="password"
-                  label="Mật khẩu"
-                  placeholder="•••••••••"
-                  variant="outlined"
-                  prepend-inner-icon="mdi-lock-outline"
-                  :append-inner-icon="showPassword ? 'mdi-eye-off' : 'mdi-eye'"
-                  :type="showPassword ? 'text' : 'password'"
-                  color="#ee9d2b"
-                  class="mb-2"
-                  :rules="passwordRules"
-                  @click:append-inner="showPassword = !showPassword"
-                ></v-text-field>
+                <v-text-field v-model="password" label="Mật khẩu" placeholder="•••••••••" variant="outlined"
+                  prepend-inner-icon="mdi-lock-outline" :append-inner-icon="showPassword ? 'mdi-eye-off' : 'mdi-eye'"
+                  :type="showPassword ? 'text' : 'password'" color="#ee9d2b" class="mb-2" :rules="passwordRules"
+                  @click:append-inner="showPassword = !showPassword"></v-text-field>
 
                 <!-- Forgot Password Link -->
                 <div class="d-flex justify-end mb-6">
-                  <a href="#" class="forgot-link">Quên mật khẩu?</a>
+                  <a href="#" class="forgot-link" @click.prevent="goToForgotPassword">Quên mật khẩu?</a>
                 </div>
 
                 <!-- Login Button -->
-                <v-btn
-                  type="submit"
-                  block
-                  size="large"
-                  color="#ee9d2b"
-                  class="text-none font-weight-bold mb-6 login-btn"
-                  elevation="1"
-                >
+                <v-btn type="submit" block size="large" color="#ee9d2b"
+                  class="text-none font-weight-bold mb-6 login-btn" elevation="1">
                   Đăng nhập
                 </v-btn>
               </v-form>
@@ -88,38 +62,18 @@
               <!-- Social Buttons -->
               <v-row class="mb-6">
                 <v-col cols="6">
-                  <v-btn
-                    variant="outlined"
-                    block
-                    size="large"
-                    class="text-none social-btn"
-                    @click="loginWithGoogle"
-                  >
+                  <v-btn variant="outlined" block size="large" class="text-none social-btn" @click="loginWithGoogle">
                     <v-img
                       src="https://lh3.googleusercontent.com/aida-public/AB6AXuBPfAXkjZBb_fbkZkfzSbvAHk6YqkrfUf4Sx0tCpvtg_1_Qq-pjqMPsERGrSt1mXdjO1W6IVje1sNuh8oqYarR_VYsIxdGLu9I0aTiUHQQoYubcxOW8IuMCb2BnEQR3ZlfsNTh-v_ufqW89In_7zUDNR5Diy08cH7FsRuOW2j4knFmTLZg4r_E71euKLoi61u0dR9F1C_mvDVA3D68hkODBm8qgdOewGi73kdeT45IqAUDYX4BK7yHBFjPl8cJGzMWFUU9u96h-vAsi"
-                      alt="Google Logo"
-                      width="20"
-                      height="20"
-                      class="mr-2"
-                    ></v-img>
+                      alt="Google Logo" width="20" height="20" class="mr-2"></v-img>
                     Google
                   </v-btn>
                 </v-col>
                 <v-col cols="6">
-                  <v-btn
-                    variant="outlined"
-                    block
-                    size="large"
-                    class="text-none social-btn"
-                    @click="loginWithFacebook"
-                  >
+                  <v-btn variant="outlined" block size="large" class="text-none social-btn" @click="loginWithFacebook">
                     <v-img
                       src="https://lh3.googleusercontent.com/aida-public/AB6AXuBSbSwSnGmuxbFlXJxMr-9wwIaPIi_b6k7TbrsXD_1aCpXw_1tjpzLV9xLRihJ8EhPWKGjkf3C4q6M1B3YNm22X98pxt7DA04taffjjZx_7u7DOYQSmpqcM3lGCTRXwzvTXPZWXTF97mHyF3n_dqWGKGf3371leRx0bOiRbupRiq96oHOXp1agj8RI5a295GBM5M-QPvTKjM0G8y74sjY9rT-bxYaMMTjb-LpZxsufMDQq0sL5b31Qv05vClIsYHNix_xWCMBdahPBK"
-                      alt="Facebook Logo"
-                      width="20"
-                      height="20"
-                      class="mr-2"
-                    ></v-img>
+                      alt="Facebook Logo" width="20" height="20" class="mr-2"></v-img>
                     Facebook
                   </v-btn>
                 </v-col>
@@ -185,6 +139,10 @@ const loginWithFacebook = () => {
 
 const goToRegister = () => {
   router.push('/register')
+}
+
+const goToForgotPassword = () => {
+  router.push('/forgot-password')
 }
 </script>
 
@@ -314,7 +272,7 @@ const goToRegister = () => {
     min-height: auto;
     padding: 40px 0;
   }
-  
+
   .form-container {
     padding: 16px;
   }
