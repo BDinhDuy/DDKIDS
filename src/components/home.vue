@@ -202,10 +202,10 @@
 					</v-avatar>
 					<h2 class="newsletter-title">Đăng ký nhận tin</h2>
 					<p class="newsletter-text">
-						Nhận thông báo về các chương trình khuyến mãi và sản phẩm mới nhất từ ToyStore.
+						Nhận thông báo về các chương trình khuyến mãi và sản phẩm mới nhất từ DDKIDS.
 					</p>
 					<v-row justify="center" class="mt-6">
-						<v-col cols="12" sm="8" md="6">
+						<v-col cols="12" sm="8" md="10">
 							<div class="d-flex flex-column flex-sm-row ga-3">
 								<v-text-field
 									v-model="email"
@@ -216,7 +216,7 @@
 									rounded="lg"
 									class="flex-grow-1"
 								></v-text-field>
-								<v-btn color="#ee9d2b" size="large" class="text-none font-weight-bold" elevation="2">
+								<v-btn color="#ee9d2b" size="large" class="text-none font-weight-bold" elevation="2" @click="handleSubscribe">
 									Đăng ký
 								</v-btn>
 							</div>
@@ -225,6 +225,57 @@
 				</div>
 			</v-container>
 		</section>
+
+		<!-- Newsletter Success Dialog -->
+		<v-dialog v-model="showNewsletterDialog" max-width="480" persistent>
+			<v-card rounded="xl" class="newsletter-dialog">
+				<div class="gradient-top"></div>
+				
+				<v-btn
+					icon
+					variant="text"
+					class="close-btn"
+					size="small"
+					@click="showNewsletterDialog = false"
+				>
+					<v-icon>mdi-close</v-icon>
+				</v-btn>
+
+				<v-card-text class="text-center pa-8">
+					<v-avatar color="green-lighten-4" size="64" class="mb-4">
+						<v-icon color="green" size="40" class="bounce-icon">mdi-email-check</v-icon>
+					</v-avatar>
+					
+					<h3 class="text-h5 font-weight-black mb-3">
+						Đăng ký nhận tin thành công!
+					</h3>
+					
+					<p class="text-body-2 text-grey-darken-1 mb-6">
+						Cảm ơn bạn đã đăng ký! Bạn sẽ nhận được các thông tin khuyến mãi và tin tức mới nhất từ chúng tôi qua email <strong>{{ email }}</strong>.
+					</p>
+
+					<v-btn
+						block
+						color="#ee9d2b"
+						size="large"
+						class="text-none font-weight-bold mb-3"
+						@click="goHome"
+					>
+						Quay về trang chủ
+					</v-btn>
+					
+					<v-btn
+						block
+						variant="outlined"
+						size="large"
+						class="text-none"
+						@click="showNewsletterDialog = false"
+					>
+						Đóng
+					</v-btn>
+				</v-card-text>
+			</v-card>
+		</v-dialog>
 	</div>
 </template>
 
@@ -236,6 +287,7 @@ import { useCartStore } from '../stores/cart'
 const router = useRouter()
 const cartStore = useCartStore()
 const email = ref('')
+const showNewsletterDialog = ref(false)
 
 // Features data
 const features = ref([
@@ -312,6 +364,20 @@ const viewProduct = (id) => {
 const addToCart = (product) => {
 	console.log('Add to cart:', product)
 	// cartStore.addItem(product)
+}
+
+const handleSubscribe = () => {
+	if (!email.value) {
+		alert('Vui lòng nhập email')
+		return
+	}
+	showNewsletterDialog.value = true
+}
+
+const goHome = () => {
+	showNewsletterDialog.value = false
+	email.value = ''
+	window.scrollTo({ top: 0, behavior: 'smooth' })
 }
 </script>
 
@@ -675,6 +741,41 @@ const addToCart = (product) => {
 	font-size: 16px;
 	color: #999;
 	margin-bottom: 0;
+}
+
+/* Newsletter Dialog */
+.newsletter-dialog {
+	position: relative;
+	overflow: hidden;
+}
+
+.gradient-top {
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	height: 4px;
+	background: linear-gradient(90deg, #ee9d2b 0%, #f5b95f 50%, #ee9d2b 100%);
+}
+
+.close-btn {
+	position: absolute;
+	top: 12px;
+	right: 12px;
+	z-index: 1;
+}
+
+.bounce-icon {
+	animation: bounce 1s ease-in-out infinite;
+}
+
+@keyframes bounce {
+	0%, 100% {
+		transform: translateY(0);
+	}
+	50% {
+		transform: translateY(-10px);
+	}
 }
 
 /* Mobile responsive */

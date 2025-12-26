@@ -132,7 +132,7 @@
               sm="6"
               md="4"
             >
-              <v-card class="product-card" elevation="1" hover>
+              <v-card class="product-card" elevation="1" hover @click="goToDetail(product.id)">
                 <div class="product-image-wrapper">
                   <v-img
                     :src="product.image"
@@ -159,7 +159,7 @@
                     color="white"
                     class="add-to-cart-btn"
                     elevation="2"
-                    @click="addToCart(product)"
+                    @click.stop="addToCart(product)"
                   >
                     <v-icon color="#ee9d2b">mdi-cart-plus</v-icon>
                   </v-btn>
@@ -181,7 +181,7 @@
                   </div>
 
                   <!-- Product Name -->
-                  <h3 class="text-subtitle-1 font-weight-bold mb-2 product-name" @click="goToDetail(product.id)">
+                  <h3 class="text-subtitle-1 font-weight-bold mb-2 product-name">
                     {{ product.name }}
                   </h3>
 
@@ -301,6 +301,7 @@ const breadcrumbs = [
 // Filters
 const categories = [
   { label: 'Tất cả', value: 'all' },
+  { label: 'Đồ chơi mới ', value: 'new' },
   { label: 'Đồ chơi giáo dục', value: 'education' },
   { label: 'Đồ chơi vận động', value: 'sports' },
   { label: 'Xếp hình & Lắp ráp', value: 'building' },
@@ -416,6 +417,7 @@ const resetFilters = () => {
   border-radius: 16px;
   overflow: hidden;
   transition: all 0.3s ease;
+  cursor: pointer;
 }
 
 .product-card:hover {
@@ -459,13 +461,11 @@ const resetFilters = () => {
 }
 
 .product-name {
-  cursor: pointer;
   line-height: 1.4;
   display: -webkit-box;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
-  transition: color 0.2s;
 }
 
 .product-name:hover {

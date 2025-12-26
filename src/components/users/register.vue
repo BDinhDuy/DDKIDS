@@ -85,7 +85,7 @@
                       <a href="#" class="terms-link" @click.prevent>Điều khoản sử dụng</a>
                       và
                       <a href="#" class="terms-link" @click.prevent>Chính sách bảo mật</a>
-                      của ToyStore.
+                      của DDKIDS.
                     </div>
                   </template>
                 </v-checkbox>
