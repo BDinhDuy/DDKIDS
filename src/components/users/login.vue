@@ -30,7 +30,7 @@
               <!-- Form -->
               <v-form @submit.prevent="handleLogin">
                 <!-- Email Input -->
-                <v-text-field v-model="email" label="Email hoặc Tên đăng nhập" placeholder="example@email.com"
+                <v-text-field v-model="email" label="Email hoặc Số điện thoại" placeholder="example@email.com"
                   variant="outlined" prepend-inner-icon="mdi-email-outline" color="#ee9d2b" class="mb-4"
                   :rules="emailRules"></v-text-field>
 
@@ -63,17 +63,13 @@
               <v-row class="mb-6">
                 <v-col cols="6">
                   <v-btn variant="outlined" block size="large" class="text-none social-btn" @click="loginWithGoogle">
-                    <v-img
-                      src="https://lh3.googleusercontent.com/aida-public/AB6AXuBPfAXkjZBb_fbkZkfzSbvAHk6YqkrfUf4Sx0tCpvtg_1_Qq-pjqMPsERGrSt1mXdjO1W6IVje1sNuh8oqYarR_VYsIxdGLu9I0aTiUHQQoYubcxOW8IuMCb2BnEQR3ZlfsNTh-v_ufqW89In_7zUDNR5Diy08cH7FsRuOW2j4knFmTLZg4r_E71euKLoi61u0dR9F1C_mvDVA3D68hkODBm8qgdOewGi73kdeT45IqAUDYX4BK7yHBFjPl8cJGzMWFUU9u96h-vAsi"
-                      alt="Google Logo" width="20" height="20" class="mr-2"></v-img>
+                    <v-icon size="20" class="mr-2" color="#DB4437">mdi-google</v-icon>
                     Google
                   </v-btn>
                 </v-col>
                 <v-col cols="6">
                   <v-btn variant="outlined" block size="large" class="text-none social-btn" @click="loginWithFacebook">
-                    <v-img
-                      src="https://lh3.googleusercontent.com/aida-public/AB6AXuBSbSwSnGmuxbFlXJxMr-9wwIaPIi_b6k7TbrsXD_1aCpXw_1tjpzLV9xLRihJ8EhPWKGjkf3C4q6M1B3YNm22X98pxt7DA04taffjjZx_7u7DOYQSmpqcM3lGCTRXwzvTXPZWXTF97mHyF3n_dqWGKGf3371leRx0bOiRbupRiq96oHOXp1agj8RI5a295GBM5M-QPvTKjM0G8y74sjY9rT-bxYaMMTjb-LpZxsufMDQq0sL5b31Qv05vClIsYHNix_xWCMBdahPBK"
-                      alt="Facebook Logo" width="20" height="20" class="mr-2"></v-img>
+                    <v-icon size="20" class="mr-2" color="#1877F2">mdi-facebook</v-icon>
                     Facebook
                   </v-btn>
                 </v-col>
@@ -111,13 +107,28 @@ const showPassword = ref(false)
 
 // Validation rules
 const emailRules = [
-  v => !!v || 'Email hoặc tên đăng nhập là bắt buộc',
-  v => /.+@.+\..+/.test(v) || 'Email không hợp lệ'
+  v => !!v || 'Email hoặc số điện thoại là bắt buộc',
+  v => {
+    // Kiểm tra nếu là số điện thoại (10 số, bắt đầu bằng 0)
+    const phoneRegex = /^0\d{9}$/
+    // Kiểm tra nếu là email (có đuôi .com)
+    const emailRegex = /^[^\s@]+@[^\s@]+\.com$/
+
+    if (phoneRegex.test(v)) {
+      return true // Hợp lệ nếu là số điện thoại 10 số
+    }
+    if (emailRegex.test(v)) {
+      return true // Hợp lệ nếu là email .com
+    }
+    return 'Vui lòng nhập email (.com) hoặc số điện thoại (10 số)'
+  }
 ]
 
 const passwordRules = [
-  v => !!v || 'Mật khẩu là bắt buộc',
-  v => v.length >= 6 || 'Mật khẩu phải có ít nhất 6 ký tự'
+  v => !!v || 'Mật khẩu là bắt buộc (bao gồm chữ hoa và 6 kí tự)',
+  v => v.length >= 6 || 'Mật khẩu phải có ít nhất 6 ký tự',
+  v => /^[A-Z]/.test(v) || 'Ký tự đầu tiên phải viết hoa',
+  v => /^[A-Za-z0-9]+$/.test(v) || 'Mật khẩu chỉ được chứa chữ cái và số'
 ]
 
 // Methods
