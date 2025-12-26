@@ -108,16 +108,14 @@
               <v-row class="mb-6">
                 <v-col cols="6">
                   <v-btn variant="outlined" block size="large" class="text-none social-btn" @click="registerWithGoogle">
-                    <v-img
-                      src="https://lh3.googleusercontent.com/aida-public/AB6AXuBPfAXkjZBb_fbkZkfzSbvAHk6YqkrfUf4Sx0tCpvtg_1_Qq-pjqMPsERGrSt1mXdjO1W6IVje1sNuh8oqYarR_VYsIxdGLu9I0aTiUHQQoYubcxOW8IuMCb2BnEQR3ZlfsNTh-v_ufqW89In_7zUDNR5Diy08cH7FsRuOW2j4knFmTLZg4r_E71euKLoi61u0dR9F1C_mvDVA3D68hkODBm8qgdOewGi73kdeT45IqAUDYX4BK7yHBFjPl8cJGzMWFUU9u96h-vAsi"
-                      alt="Google Logo" width="20" height="20" class="mr-2"></v-img>
+                    <v-icon size="20" class="mr-2" color="#DB4437">mdi-google</v-icon>
                     Google
                   </v-btn>
                 </v-col>
                 <v-col cols="6">
                   <v-btn variant="outlined" block size="large" class="text-none social-btn"
                     @click="registerWithFacebook">
-                    <v-icon color="#1877F2" class="mr-2">mdi-facebook</v-icon>
+                    <v-icon size="20" class="mr-2" color="#1877F2">mdi-facebook</v-icon>
                     Facebook
                   </v-btn>
                 </v-col>

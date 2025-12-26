@@ -28,7 +28,7 @@
               </div>
 
               <!-- Form -->
-              <v-form @submit.prevent="handleLogin">
+              <v-form ref="formRef" @submit.prevent="handleLogin">
                 <!-- Email Input -->
                 <v-text-field v-model="email" label="Email hoặc Số điện thoại" placeholder="example@email.com"
                   variant="outlined" prepend-inner-icon="mdi-email-outline" color="#ee9d2b" class="mb-4"
@@ -47,7 +47,8 @@
 
                 <!-- Login Button -->
                 <v-btn type="submit" block size="large" color="#ee9d2b"
-                  class="text-none font-weight-bold mb-6 login-btn" elevation="1">
+                  class="text-none font-weight-bold mb-6 login-btn" elevation="1"
+                  :disabled="!email || !password">
                   Đăng nhập
                 </v-btn>
               </v-form>
@@ -83,7 +84,7 @@
 
               <!-- Secure Badge -->
               <div class="text-center secure-badge">
-                <v-icon size="small" class="mr-1">mdi-lock</v-icon>
+                <v-icon size="small" class="mr-1" color="green">mdi-lock</v-icon>
                 <span class="text-caption">Thông tin được bảo mật tuyệt đối</span>
               </div>
             </div>
@@ -99,6 +100,9 @@ import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 
 const router = useRouter()
+
+// Form ref
+const formRef = ref(null)
 
 // Form data
 const email = ref('')
@@ -127,12 +131,20 @@ const emailRules = [
 const passwordRules = [
   v => !!v || 'Mật khẩu là bắt buộc (bao gồm chữ hoa và 6 kí tự)',
   v => v.length >= 6 || 'Mật khẩu phải có ít nhất 6 ký tự',
-  v => /^[A-Z]/.test(v) || 'Ký tự đầu tiên phải viết hoa',
-  v => /^[A-Za-z0-9]+$/.test(v) || 'Mật khẩu chỉ được chứa chữ cái và số'
+  v => /^[A-Z]/.test(v) || 'Ký tự đầu tiên phải viết hoa'
 ]
 
 // Methods
-const handleLogin = () => {
+const handleLogin = async () => {
+  if (!email.value || !password.value) {
+    return
+  }
+  
+  const { valid } = await formRef.value.validate()
+  if (!valid) {
+    return
+  }
+  
   console.log('Login attempt:', email.value, password.value)
   // Add your login logic here
   router.push('/')
@@ -225,9 +237,14 @@ const goToForgotPassword = () => {
   box-shadow: 0 2px 4px rgba(238, 157, 43, 0.2) !important;
 }
 
-.login-btn:hover {
+.login-btn:hover:not(:disabled) {
   background-color: #d68515 !important;
   box-shadow: 0 4px 8px rgba(238, 157, 43, 0.3) !important;
+}
+
+.login-btn:disabled {
+  opacity: 0.5 !important;
+  background-color: #f5d9a8 !important;
 }
 
 .divider-section {
@@ -264,7 +281,6 @@ const goToForgotPassword = () => {
 }
 
 .secure-badge {
-  opacity: 0.6;
   color: #897961;
 }
 
