@@ -49,9 +49,9 @@
                     placeholder="Nhập họ tên"
                     variant="outlined"
                     color="#ee9d2b"
-                    hide-details
                     density="comfortable"
                     class="custom-text-field"
+                    :error-messages="nameError"
                   ></v-text-field>
                 </v-col>
                 <v-col cols="12" md="6">
@@ -63,9 +63,9 @@
                     placeholder="Nhập số điện thoại"
                     variant="outlined"
                     color="#ee9d2b"
-                    hide-details
                     density="comfortable"
                     class="custom-text-field"
+                    :error-messages="phoneError"
                   ></v-text-field>
                 </v-col>
                 <v-col cols="12">
@@ -78,9 +78,9 @@
                     type="email"
                     variant="outlined"
                     color="#ee9d2b"
-                    hide-details
                     density="comfortable"
                     class="custom-text-field"
+                    :error-messages="emailError"
                   ></v-text-field>
                 </v-col>
                 <v-col cols="12" md="6">
@@ -389,6 +389,7 @@ import { ref, computed, onMounted, watch } from 'vue'
 import { useCartStore } from '@/stores/cart'
 import { useRouter } from 'vue-router'
 import { fetchProvinces, fetchProvinceDetail } from '@/service/app'
+import { validateEmail, validatePhone, validateRequired } from '@/utils/validation'
 
 const cartStore = useCartStore()
 const router = useRouter()
@@ -405,6 +406,11 @@ const shippingInfo = ref({
   ward: '',
   address: ''
 })
+
+// Validation errors
+const emailError = ref('')
+const phoneError = ref('')
+const nameError = ref('')
 
 // Cities and Wards
 const cities = ref([])
@@ -496,7 +502,7 @@ const couponCode = ref('')
 const discount = ref(0)
 
 // Price Calculation
-const subtotal = computed(() => cartStore.totalAmount || 800000)
+const subtotal = computed(() => cartStore.totalAmount || 0)
 const shippingFee = ref(30000)
 const total = computed(() => subtotal.value + shippingFee.value - discount.value)
 
@@ -527,8 +533,34 @@ const applyCoupon = () => {
 }
 
 const placeOrder = () => {
-  // Validate form
-  if (!shippingInfo.value.fullName || !shippingInfo.value.phone || !shippingInfo.value.email) {
+  // Clear previous errors
+  emailError.value = ''
+  phoneError.value = ''
+  nameError.value = ''
+  
+  // Validate all fields using centralized validation
+  const nameValidation = validateRequired(shippingInfo.value.fullName, 'Họ và tên')
+  const phoneValidation = validatePhone(shippingInfo.value.phone)
+  const emailValidation = validateEmail(shippingInfo.value.email)
+  
+  let hasError = false
+  
+  if (!nameValidation.valid) {
+    nameError.value = nameValidation.error
+    hasError = true
+  }
+  
+  if (!phoneValidation.valid) {
+    phoneError.value = phoneValidation.error
+    hasError = true
+  }
+  
+  if (!emailValidation.valid) {
+    emailError.value = emailValidation.error
+    hasError = true
+  }
+  
+  if (hasError) {
     successMessage.value = 'Vui lòng điền đầy đủ thông tin giao hàng'
     snackbarColor.value = 'error'
     showSuccessSnackbar.value = true

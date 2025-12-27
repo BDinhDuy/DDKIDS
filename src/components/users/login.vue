@@ -32,7 +32,7 @@
                 <!-- Email Input -->
                 <v-text-field v-model="email" label="Email hoặc Số điện thoại" placeholder="example@email.com"
                   variant="outlined" prepend-inner-icon="mdi-email-outline" color="#ee9d2b" class="mb-4"
-                  :rules="emailRules" clearable></v-text-field>
+                  :rules="emailOrPhoneRules" clearable></v-text-field>
 
                 <!-- Password Input -->
                 <v-text-field v-model="password" label="Mật khẩu" placeholder="•••••••••" variant="outlined"
@@ -98,6 +98,7 @@
 <script setup>
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
+import { emailRules, passwordRules } from '@/utils/validation'
 
 const router = useRouter()
 
@@ -110,7 +111,8 @@ const password = ref('')
 const showPassword = ref(false)
 
 // Validation rules
-const emailRules = [
+// Login accepts both email and phone, so we keep custom validation here
+const emailOrPhoneRules = [
   v => !!v || 'Email hoặc số điện thoại là bắt buộc',
   v => {
     // Kiểm tra nếu là số điện thoại (10 số, bắt đầu bằng 0)

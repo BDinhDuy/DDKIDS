@@ -263,6 +263,13 @@ const orderNumber = ref('#84932021')
 // Timeline Progress
 const timelineProgress = ref(33)
 
+// Helper function to calculate future date
+const getFutureDate = (daysFromNow) => {
+  const date = new Date()
+  date.setDate(date.getDate() + daysFromNow)
+  return date.toLocaleDateString('vi-VN', { day: '2-digit', month: '2-digit' })
+}
+
 // Order Steps
 const orderSteps = ref([
   {
@@ -279,13 +286,13 @@ const orderSteps = ref([
   },
   {
     title: 'Đang giao',
-    date: 'Dự kiến 22/10',
+    date: `Dự kiến ${getFutureDate(1)}`,
     icon: 'mdi-truck-delivery',
     status: 'pending'
   },
   {
     title: 'Thành công',
-    date: 'Dự kiến 24/10',
+    date: `Dự kiến ${getFutureDate(3)}`,
     icon: 'mdi-checkbox-marked-circle',
     status: 'pending'
   }

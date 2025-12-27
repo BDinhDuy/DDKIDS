@@ -53,7 +53,7 @@
                   variant="outlined" prepend-inner-icon="mdi-lock-reset"
                   :append-inner-icon="showConfirmPassword ? 'mdi-eye-off' : 'mdi-eye'"
                   :type="showConfirmPassword ? 'text' : 'password'" color="#ee9d2b" class="mb-4"
-                  :rules="confirmPasswordRules"
+                  :rules="confirmPasswordRulesComputed"
                   @click:append-inner="showConfirmPassword = !showConfirmPassword"></v-text-field>
 
                 <!-- Child Info (Optional) -->
@@ -202,6 +202,7 @@
 <script setup>
 import { ref, onUnmounted, computed } from 'vue'
 import { useRouter } from 'vue-router'
+import { emailRules, passwordRules, nameRules, confirmPasswordRules, termsRules } from '@/utils/validation'
 
 const router = useRouter()
 
@@ -237,29 +238,8 @@ const formattedDate = computed(() => {
 })
 
 // Validation rules
-const nameRules = [
-  v => !!v || 'Tên là bắt buộc',
-  v => v.length >= 3 || 'Tên phải có ít nhất 3 ký tự'
-]
-
-const emailRules = [
-  v => !!v || 'Email là bắt buộc',
-  v => /^[^\s@]+@[^\s@]+\.com$/.test(v) || 'Email phải có đuôi .com'
-]
-
-const passwordRules = [
-  v => !!v || 'Mật khẩu là bắt buộc',
-  v => v.length >= 8 || 'Mật khẩu phải có ít nhất 8 ký tự'
-]
-
-const confirmPasswordRules = [
-  v => !!v || 'Xác nhận mật khẩu là bắt buộc',
-  v => v === password.value || 'Mật khẩu không khớp'
-]
-
-const termsRules = [
-  v => !!v || 'Bạn phải đồng ý với điều khoản'
-]
+// Validation rules imported from @/utils/validation
+const confirmPasswordRulesComputed = computed(() => confirmPasswordRules(password.value))
 
 // Methods
 const handleRegister = async () => {
