@@ -6,8 +6,10 @@ import Register from "../components/users/register.vue";
 import ForgotPassword from "../components/users/forgotPassword.vue";
 import Checkout from "../components/cart/checkout.vue";
 import checkoutDeatails from "../components/cart/checkoutDetails.vue";
+import orderSuccess from "../components/cart/orderSuccess.vue";
 import Product from "../components/products/products.vue";
 import ProductDetail from "../components/products/producDetails.vue";
+import { fa } from "vuetify/locale";
 
 const routes = [
   {
@@ -44,13 +46,19 @@ const routes = [
     path: "/checkout",
     name: "checkout",
     component: Checkout,
-    meta: { showNavbar: true, showHeader: true, showFooter: true },
+    meta: { showNavbar: false, showHeader: true, showFooter: true },
   },
   {
     path: "/checkoutDeatails",
     name: "checkout-details",
     component: checkoutDeatails,
-    meta: { showNavbar: true, showHeader: true, showFooter: true },
+    meta: { showNavbar: false, showHeader: true, showFooter: true },
+  },
+  {
+    path: "/orderSuccess",
+    name: "order-success",
+    component: orderSuccess,
+    meta: { showNavbar: false, showHeader: true, showFooter: true },
   },
   {
     path: "/products",
