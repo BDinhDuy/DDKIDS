@@ -6,12 +6,6 @@ export const useUserStore = defineStore("user", {
     isLoggedIn: false,
   }),
 
-  getters: {
-    userName: (state) => state.user?.name || "",
-    userAvatar: (state) => state.user?.avatar || "",
-    userEmail: (state) => state.user?.email || "",
-  },
-
   actions: {
     login(userData) {
       this.user = userData;
@@ -46,5 +40,11 @@ export const useUserStore = defineStore("user", {
         localStorage.setItem("user", JSON.stringify(this.user));
       }
     },
+  },
+
+  getters: {
+    userName: (state) => state.user?.name || "",
+    userAvatar: (state) => state.user?.avatar || "",
+    userEmail: (state) => state.user?.email || "",
   },
 });

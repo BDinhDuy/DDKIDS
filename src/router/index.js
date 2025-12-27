@@ -9,7 +9,8 @@ import checkoutDeatails from "../components/cart/checkoutDetails.vue";
 import orderSuccess from "../components/cart/orderSuccess.vue";
 import Product from "../components/products/products.vue";
 import ProductDetail from "../components/products/producDetails.vue";
-import { fa } from "vuetify/locale";
+import Contact from "../components/shop/contact.vue";  
+import Profile from "../components/users/profile.vue";
 
 const routes = [
   {
@@ -71,6 +72,18 @@ const routes = [
     name: "product-detail",
     component: ProductDetail,
     meta: { showNavbar: true, showHeader: true, showFooter: true },
+  },
+  {
+    path: "/contact",
+    name: "contact",
+    component: Contact,
+    meta: { showNavbar: false, showHeader: true, showFooter: true },
+  },
+  {
+    path: "/profile",
+    name: "profile",
+    component: Profile,
+    meta: { showNavbar: false, showHeader: true, showFooter: true },
   },
 ];
 
