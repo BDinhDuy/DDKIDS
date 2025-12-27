@@ -1,0 +1,13 @@
+/* Global Font Family */
+* {
+  font-family: sans-serif !important;
+}
+
+body {
+  font-family: sans-serif;
+}
+
+/* Vuetify Override */
+.v-application {
+  font-family: sans-serif;
+}

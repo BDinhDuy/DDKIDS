@@ -5,7 +5,7 @@ import Login from "../components/users/login.vue";
 import Register from "../components/users/register.vue";
 import ForgotPassword from "../components/users/forgotPassword.vue";
 import Checkout from "../components/cart/checkout.vue";
-import Product from "../components/products/product.vue";
+import Product from "../components/products/products.vue";
 import ProductDetail from "../components/products/producDetails.vue";
 
 const routes = [
@@ -46,8 +46,8 @@ const routes = [
     meta: { showNavbar: true, showHeader: true, showFooter: true },
   },
   {
-    path: "/product",
-    name: "product",
+    path: "/products",
+    name: "products",
     component: Product,
     meta: { showNavbar: true, showHeader: true, showFooter: true },
   },

@@ -14,7 +14,7 @@
 						<h2 class="hero-subtitle mb-8">
 							Giúp bé phát triển tư duy và sáng tạo với hàng ngàn mẫu đồ chơi an toàn, chính hãng từ các thương hiệu hàng đầu.
 						</h2>
-						<v-btn color="#ee9d2b" size="large" class="text-none font-weight-bold hero-btn" elevation="2">
+						<v-btn color="#ee9d2b" size="large" class="text-none font-weight-bold hero-btn" elevation="2" @click="goToShop">
 							Mua ngay
 							<v-icon end>mdi-arrow-right</v-icon>
 						</v-btn>
@@ -120,7 +120,7 @@
 										<p v-if="product.oldPrice" class="old-price">{{ formatPrice(product.oldPrice) }}</p>
 										<p class="product-price">{{ formatPrice(product.price) }}</p>
 									</div>
-									<v-btn icon size="small" color="#ee9d2b" elevation="1" @click.stop="addToCart(product)">
+									<v-btn icon size="small" color="#ee9d2b" elevation="1" @click.stop="addToCart(product, $event)">
 										<v-icon>mdi-cart-plus</v-icon>
 									</v-btn>
 								</div>
@@ -161,7 +161,7 @@
 								</div>
 								<div class="d-flex justify-space-between align-center">
 									<p class="product-price">{{ formatPrice(product.price) }}</p>
-									<v-btn icon size="small" color="#ee9d2b" elevation="1" @click.stop="addToCart(product)">
+									<v-btn icon size="small" color="#ee9d2b" elevation="1" @click.stop="addToCart(product, $event)">
 										<v-icon>mdi-cart-plus</v-icon>
 									</v-btn>
 								</div>
@@ -276,6 +276,25 @@
 				</v-card-text>
 			</v-card>
 		</v-dialog>
+
+		<!-- Add to Cart Snackbar -->
+		<v-snackbar
+			v-model="showAddToCartSnackbar"
+			:timeout="3000"
+			color="green"
+			location="top"
+			rounded="pill"
+		>
+			<div class="d-flex align-center">
+				<v-icon class="mr-2">mdi-check-circle</v-icon>
+				<span><strong>{{ addedProductName }}</strong> đã được thêm vào giỏ hàng!</span>
+			</div>
+			<template v-slot:actions>
+				<v-btn variant="text" @click="showAddToCartSnackbar = false">
+					Đóng
+				</v-btn>
+			</template>
+		</v-snackbar>
 	</div>
 </template>
 
@@ -288,6 +307,8 @@ const router = useRouter()
 const cartStore = useCartStore()
 const email = ref('')
 const showNewsletterDialog = ref(false)
+const showAddToCartSnackbar = ref(false)
+const addedProductName = ref('')
 
 // Features data
 const features = ref([
@@ -361,9 +382,70 @@ const viewProduct = (id) => {
 	router.push(`/product/${id}`)
 }
 
-const addToCart = (product) => {
-	console.log('Add to cart:', product)
-	// cartStore.addItem(product)
+const addToCart = (product, event) => {
+	// Create flying animation with dynamic element
+	const button = event.currentTarget
+	const productCard = button.closest('.product-card')
+	const productImg = productCard?.querySelector('.product-image img') || productCard?.querySelector('.v-img img')
+	
+	if (productImg) {
+		const imgRect = productImg.getBoundingClientRect()
+		
+		// Find cart icon - try multiple selectors
+		const cartIcon = document.querySelector('.v-badge') || 
+		                 document.querySelector('[class*="mdi-cart"]')?.closest('button') ||
+		                 document.querySelector('.header-bar')
+		
+		if (cartIcon) {
+			const cartRect = cartIcon.getBoundingClientRect()
+			
+			// Create a new flying image element dynamically
+			const flyImg = document.createElement('img')
+			flyImg.src = product.image
+			flyImg.className = 'flying-product-img'
+			flyImg.style.cssText = `
+				position: fixed;
+				left: ${imgRect.left}px;
+				top: ${imgRect.top}px;
+				width: ${imgRect.width}px;
+				height: ${imgRect.height}px;
+				object-fit: cover;
+				border-radius: 8px;
+				z-index: 9999;
+				pointer-events: none;
+				opacity: 1;
+				transition: all 2.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+				box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+			`
+			
+			// Add to document
+			document.body.appendChild(flyImg)
+			
+			// Force reflow to ensure transition works
+			flyImg.offsetHeight
+			
+			// Trigger animation
+			requestAnimationFrame(() => {
+				flyImg.style.left = cartRect.left + cartRect.width / 2 + 'px'
+				flyImg.style.top = cartRect.top + cartRect.height / 2 + 'px'
+				flyImg.style.width = '20px'
+				flyImg.style.height = '20px'
+				flyImg.style.opacity = '0'
+			})
+			
+			// Remove element after animation
+			setTimeout(() => {
+				if (flyImg && flyImg.parentNode) {
+					document.body.removeChild(flyImg)
+				}
+			}, 2500)
+		}
+	}
+	
+	// Add to cart
+	cartStore.addToCart(product)
+	addedProductName.value = product.name
+	showAddToCartSnackbar.value = true
 }
 
 const handleSubscribe = () => {
@@ -378,6 +460,10 @@ const goHome = () => {
 	showNewsletterDialog.value = false
 	email.value = ''
 	window.scrollTo({ top: 0, behavior: 'smooth' })
+}
+
+const goToShop = () => {
+	router.push('/products')
 }
 </script>
 
@@ -776,6 +862,19 @@ const goHome = () => {
 	50% {
 		transform: translateY(-10px);
 	}
+}
+
+/* Flying Product Animation */
+.flying-product-img {
+	position: fixed;
+	width: 80px;
+	height: 80px;
+	object-fit: cover;
+	border-radius: 8px;
+	z-index: 9999;
+	pointer-events: none;
+	transition: all 1.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+	box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
 }
 
 /* Mobile responsive */

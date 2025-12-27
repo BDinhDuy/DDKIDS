@@ -1,7 +1,7 @@
 <template>
   <div class="product-page">
     <!-- Breadcrumbs -->
-    <v-breadcrumbs :items="breadcrumbs" class="px-4 py-3">
+    <v-breadcrumbs :items="breadcrumbs" class="px-4 px-md-10 px-lg-16 py-3">
       <template v-slot:divider>
         <v-icon size="small">mdi-chevron-right</v-icon>
       </template>
