@@ -67,7 +67,7 @@
 							</li>
 							<li class="d-flex align-center gap-2">
 								<v-icon size="small">mdi-email</v-icon>
-								<span>support@ddkidsDDKIDS.vn</span>
+								<span>support@gmail.com</span>
 							</li>
 						</ul>
 					</div>
@@ -156,6 +156,7 @@ const handleContact = () => {
 	list-style: none;
 	padding: 0;
 	margin: 0;
+	cursor: pointer;
 }
 
 .footer-links li {

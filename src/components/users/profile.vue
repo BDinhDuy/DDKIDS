@@ -347,6 +347,56 @@
             </v-card>
           </div>
 
+          <!-- Personal Info Tab -->
+          <div v-else-if="activeTab === 'personal'">
+            <PersonalInfoTab
+              :user-info="userInfo"
+              @update:user-info="handleUpdateUserInfo"
+              @cancel="activeTab = 'dashboard'"
+            />
+          </div>
+
+          <!-- Order History Tab -->
+          <div v-else-if="activeTab === 'orders'">
+            <OrderHistoryTab
+              :orders="recentOrders"
+              @track-order="handleTrackOrder"
+              @confirm-received="handleConfirmReceived"
+              @rate-order="handleRateOrder"
+              @reorder="handleReorder"
+              @open-chat="showChatPopup = true"
+            />
+          </div>
+
+          <!-- Address Book Tab -->
+          <div v-else-if="activeTab === 'addresses'">
+            <AddressBookTab
+              :addresses="userAddresses"
+              @update:addresses="handleUpdateAddresses"
+              @set-default="handleSetDefaultAddress"
+              @open-chat="showChatPopup = true"
+            />
+          </div>
+
+          <!-- Wishlist Tab -->
+          <div v-else-if="activeTab === 'wishlist'">
+            <WishlistTab
+              :products="wishlistProducts"
+              @update:products="handleUpdateWishlist"
+              @remove-product="handleRemoveFromWishlist"
+              @clear-all="handleClearWishlist"
+              @open-chat="showChatPopup = true"
+            />
+          </div>
+
+          <!-- Change Password Tab -->
+          <div v-else-if="activeTab === 'password'">
+            <ChangePasswordTab
+              @password-changed="handlePasswordChanged"
+              @cancel="activeTab = 'dashboard'"
+            />
+          </div>
+
           <!-- Other Tabs Content (Placeholder) -->
           <div v-else class="tab-content">
             <v-card elevation="0" class="pa-8 text-center">
@@ -391,6 +441,11 @@ import { ref, computed } from 'vue'
 import { useRouter } from 'vue-router'
 import { useCartStore } from '@/stores/cart'
 import ChatPopup from '../shop/ChatPopup.vue'
+import PersonalInfoTab from './PersonalInfoTab.vue'
+import OrderHistoryTab from './OrderHistoryTab.vue'
+import AddressBookTab from './AddressBookTab.vue'
+import WishlistTab from './WishlistTab.vue'
+import ChangePasswordTab from './ChangePasswordTab.vue'
 
 const router = useRouter()
 const cartStore = useCartStore()
@@ -438,7 +493,11 @@ const userInfo = ref({
   firstName: 'Mai',
   email: 'mai.nguyen@example.com',
   phone: '090 123 4567',
+  birthdate: '1990-05-15',
+  gender: 'female',
   childBirthday: '15/06/2018',
+  kidName: 'Bé Bông',
+  kidBirthdate: '2018-06-15',
   tier: 'Thành viên Vàng',
   points: 1250,
   avatar: 'https://lh3.googleusercontent.com/aida-public/AB6AXuCH4SMBpJzusrTLNodKH7EO19GMb71kbrf81j6a9YUoTHudcdxIgZYCM1pEw75DDE-iM2ajs2tdtAL0uHfuUY9XcNeAb6g22ChkO_CCDSBxnyezPY0WubVzTiLPVDPPP4mWHYX9b96xEW6-MiYY-3A5dqNgk4dV780B4vo-wkIUsvW6byxEc1YzGBJLl83OIz1hUvq8LMeH7dA9vblM_gwC563riw6hfI2WRrAlDqbTIMXP11JeT93ZaJtg478c_w4VLnZzpyAWmyXf'
@@ -457,25 +516,66 @@ const recentOrders = ref([
     id: 1,
     orderNumber: '#ORD-2394',
     date: '20/10/2023',
+    time: '14:30',
     status: 'shipping',
     statusText: 'Đang giao',
-    total: 450000
+    total: 450000,
+    items: [
+      {
+        id: 1,
+        name: 'Bộ lắp ráp LEGO City - Trạm Cứu Hỏa',
+        variant: 'Phân loại: Bộ tiêu chuẩn',
+        quantity: 1,
+        price: 450000,
+        image: 'https://lh3.googleusercontent.com/aida-public/AB6AXuD3AOZZxYwWYwAI4rDV-DMiEK8uPvklwdVuybPgP2hVCtW0KGiHjLAxXkcNYD56UI7bnHnHtfRgJTe-TGkQrLIuF6duhXyCpySN2o7jmbWcy3RQgW6y_EisAKoG9i4yfn6-ZHR3sUf4UZZpgcuh_c_r170XiToWGSB1yNNbXxafaRcfhzEhfza7HUmOitIofCdTbct-qd2T9PGz2sQTC62vhP6vettqohJCoRJUAXlizoSv24t8Y9WopEpB4gDkUpF9KSUQxzcsunTO'
+      }
+    ]
   },
   {
     id: 2,
     orderNumber: '#ORD-2341',
     date: '15/09/2023',
+    time: '09:15',
     status: 'completed',
     statusText: 'Hoàn thành',
-    total: 1200000
+    total: 1200000,
+    items: [
+      {
+        id: 2,
+        name: 'Gấu bông Teddy Premium - Size L',
+        variant: 'Màu sắc: Nâu',
+        quantity: 1,
+        price: 320000,
+        image: 'https://lh3.googleusercontent.com/aida-public/AB6AXuB8ajBJ5JGIPjK8JWMOM5o0yW2zGEY5JWKwIcthxt60KUFMrk9OMIVOoiaFyKkgeJCCCCHL6Gc6li9EXBiTiSQaZHtR3RCi7TjqQ-DRl6tTOhbbbVfFPRYXH4sJeD8aLN0yfybNFcp-70HF6T2QuVBg9V7WL0o9QVcZ04aL-RH_gOvYteeL8T4kUd9pM6vySnqVWxaZgUPa4uaX5LXyksogrv6MOl6snP2JHaE2hWzpdJS4PXZW_1K60gnvTX_LPqMknl5yzhevwR3Tw'
+      },
+      {
+        id: 3,
+        name: 'Xe điều khiển từ xa RC - Tốc độ cao',
+        variant: 'Màu sắc: Đỏ',
+        quantity: 1,
+        price: 880000,
+        image: 'https://lh3.googleusercontent.com/aida-public/AB6AXuCoIyT0-1JcHj06S8KBKZyGxbZ2Fom2kXY8Uh0AsLFJckFlYm9ZatunPnPEcfNlhyYaCEypZ3Tr73OdwSqtdGarMfXenh26wYNGLglpd4tN_qez32UhfX0ZYbaHjnN0JE0mLU_wKVSRn6SxMpsbH747vui0OBT6E2mBCJAlCyXf83MG-gPyAYWcyAWH2q2DYQT0SSwd5aHGdxP3HFK-X3Jdx43WhD00tFrgKZCBy41JKk7wscP7YeVIhKTWBI47BE0_Q2XMFBnlnmXh'
+      }
+    ]
   },
   {
     id: 3,
     orderNumber: '#ORD-2209',
     date: '01/09/2023',
+    time: '18:45',
     status: 'cancelled',
     statusText: 'Đã hủy',
-    total: 320000
+    total: 320000,
+    items: [
+      {
+        id: 4,
+        name: 'Gấu bông Teddy Premium - Size L',
+        variant: 'Màu sắc: Nâu',
+        quantity: 1,
+        price: 320000,
+        image: 'https://lh3.googleusercontent.com/aida-public/AB6AXuB8ajBJ5JGIPjK8JWMOM5o0yW2zGEY5JWKwIcthxt60KUFMrk9OMIVOoiaFyKkgeJCCCCHL6Gc6li9EXBiTiSQaZHtR3RCi7TjqQ-DRl6tTOhbbbVfFPRYXH4sJeD8aLN0yfybNFcp-70HF6T2QuVBg9V7WL0o9QVcZ04aL-RH_gOvYteeL8T4kUd9pM6vySnqVWxaZgUPa4uaX5LXyksogrv6MOl6snP2JHaE2hWzpdJS4PXZW_1K60gnvTX_LPqMknl5yzhevwR3Tw'
+      }
+    ]
   }
 ])
 
@@ -486,6 +586,34 @@ const defaultAddress = ref({
   phone: '090 123 4567',
   fullAddress: 'Số 15, Ngõ 234 Đường Hoàng Quốc Việt, Phường Cổ Nhuế 1, Quận Bắc Từ Liêm, Hà Nội'
 })
+
+// User addresses
+const userAddresses = ref([
+  {
+    id: 1,
+    name: 'Nguyễn Thị Mai',
+    phone: '090 123 4567',
+    type: 'Nhà riêng',
+    fullAddress: 'Số 15, Ngõ 234 Đường Hoàng Quốc Việt, Phường Cổ Nhuế 1, Quận Bắc Từ Liêm, Hà Nội',
+    isDefault: true
+  },
+  {
+    id: 2,
+    name: 'Nguyễn Thị Mai',
+    phone: '090 999 8888',
+    type: 'Văn phòng',
+    fullAddress: 'Tầng 12, Tòa nhà Keangnam Landmark 72, Phạm Hùng, Phường Mễ Trì, Quận Nam Từ Liêm, Hà Nội',
+    isDefault: false
+  },
+  {
+    id: 3,
+    name: 'Nguyễn Văn Hùng',
+    phone: '091 234 5678',
+    type: 'Nhà ông bà',
+    fullAddress: 'Số 5, Đường Trần Phú, Phường Văn Quán, Quận Hà Đông, Hà Nội',
+    isDefault: false
+  }
+])
 
 // Wishlist products
 const wishlistProducts = ref([
@@ -591,6 +719,107 @@ const handleLogout = () => {
 const callHotline = () => {
   // Open phone dialer with hotline number
   window.location.href = 'tel:19001234'
+}
+
+const handleUpdateUserInfo = (updatedInfo) => {
+  // Update user info with the new data
+  userInfo.value = {
+    ...userInfo.value,
+    ...updatedInfo
+  }
+  
+  console.log('User info updated:', updatedInfo)
+  // Here you would typically make an API call to save the data
+}
+
+const handleTrackOrder = (orderId) => {
+  console.log('Track order:', orderId)
+  // Implement order tracking logic
+  // Could open a tracking modal or navigate to tracking page
+}
+
+const handleConfirmReceived = (orderId) => {
+  console.log('Confirm received:', orderId)
+  // Update order status to completed
+  const orderIndex = recentOrders.value.findIndex(o => o.id === orderId)
+  if (orderIndex > -1) {
+    recentOrders.value[orderIndex].status = 'completed'
+    recentOrders.value[orderIndex].statusText = 'Hoàn thành'
+  }
+}
+
+const handleRateOrder = (orderId) => {
+  console.log('Rate order:', orderId)
+  // Navigate to review page or open review modal
+  router.push(`/order/${orderId}/review`)
+}
+
+const handleReorder = (orderId) => {
+  console.log('Reorder:', orderId)
+  // Find order and add items to cart
+  const order = recentOrders.value.find(o => o.id === orderId)
+  if (order && order.items) {
+    order.items.forEach(item => {
+      cartStore.addToCart({
+        id: item.id || Math.random(),
+        name: item.name,
+        price: item.price,
+        image: item.image,
+        quantity: item.quantity
+      })
+    })
+  }
+}
+
+const handleUpdateAddresses = (updatedAddresses) => {
+  userAddresses.value = updatedAddresses
+  
+  // Update default address display
+  const defaultAddr = updatedAddresses.find(addr => addr.isDefault)
+  if (defaultAddr) {
+    defaultAddress.value = {
+      type: defaultAddr.type,
+      name: defaultAddr.name,
+      phone: defaultAddr.phone,
+      fullAddress: defaultAddr.fullAddress
+    }
+  }
+  
+  console.log('Addresses updated:', updatedAddresses)
+  // Here you would typically make an API call to save the data
+}
+
+const handleSetDefaultAddress = (addressId) => {
+  console.log('Set default address:', addressId)
+  // API call to set default address
+}
+
+const handleUpdateWishlist = (updatedProducts) => {
+  wishlistProducts.value = updatedProducts
+  stats.value.wishlistCount = updatedProducts.length
+  console.log('Wishlist updated:', updatedProducts)
+  // API call to save wishlist
+}
+
+const handleRemoveFromWishlist = (productId) => {
+  console.log('Remove from wishlist:', productId)
+  // API call to remove product
+}
+
+const handleClearWishlist = () => {
+  wishlistProducts.value = []
+  stats.value.wishlistCount = 0
+  console.log('Wishlist cleared')
+  // API call to clear wishlist
+}
+
+const handlePasswordChanged = (data) => {
+  console.log('Password changed at:', data.timestamp)
+  // You might want to show a global notification or logout the user if needed
+  // For now, we'll just navigate back to dashboard or keep them on the page
+  
+  // Optional: Redirect to login if security policy requires re-login
+  // router.push('/login')
 }
 </script>
 
