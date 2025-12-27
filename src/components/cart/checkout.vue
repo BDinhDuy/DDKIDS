@@ -371,7 +371,7 @@
     <v-snackbar
       v-model="showSuccessSnackbar"
       :timeout="3000"
-      color="success"
+      :color="snackbarColor"
       location="top"
     >
       {{ successMessage }}
@@ -503,6 +503,7 @@ const total = computed(() => subtotal.value + shippingFee.value - discount.value
 // Snackbar
 const showSuccessSnackbar = ref(false)
 const successMessage = ref('')
+const snackbarColor = ref('success')
 
 // Methods
 const formatPrice = (price) => {
@@ -516,9 +517,11 @@ const applyCoupon = () => {
   if (couponCode.value.toLowerCase() === 'discount10') {
     discount.value = subtotal.value * 0.1
     successMessage.value = 'Áp dụng mã giảm giá thành công!'
+    snackbarColor.value = 'success'
     showSuccessSnackbar.value = true
   } else if (couponCode.value) {
     successMessage.value = 'Mã giảm giá không hợp lệ'
+    snackbarColor.value = 'error'
     showSuccessSnackbar.value = true
   }
 }
@@ -527,12 +530,14 @@ const placeOrder = () => {
   // Validate form
   if (!shippingInfo.value.fullName || !shippingInfo.value.phone || !shippingInfo.value.email) {
     successMessage.value = 'Vui lòng điền đầy đủ thông tin giao hàng'
+    snackbarColor.value = 'error'
     showSuccessSnackbar.value = true
     return
   }
 
   if (!shippingInfo.value.city || !shippingInfo.value.ward || !shippingInfo.value.address) {
     successMessage.value = 'Vui lòng điền đầy đủ địa chỉ'
+    snackbarColor.value = 'error'
     showSuccessSnackbar.value = true
     return
   }
@@ -569,6 +574,7 @@ const placeOrder = () => {
   localStorage.setItem('shippingInfo', JSON.stringify(shippingInfo.value))
   
   successMessage.value = 'Đặt hàng thành công! Đang chuyển đến trang thanh toán...'
+  snackbarColor.value = 'success'
   showSuccessSnackbar.value = true
   
   // Chuyển sang trang checkoutDetails sau 1.5s
