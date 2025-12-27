@@ -93,7 +93,7 @@
 				<div class="d-flex justify-space-between align-center mb-6">
 					<h2 class="section-title">Sản phẩm nổi bật</h2>
 					<a href="#" class="view-all-link">
-						<span>Xem tất cả</span>
+						<span @click="goToShop">Xem tất cả</span>
 						<v-icon size="small">mdi-arrow-right</v-icon>
 					</a>
 				</div>
@@ -104,6 +104,18 @@
 								<v-chip v-if="product.badge" :color="product.badgeColor" label size="small" class="product-badge">
 									{{ product.badge }}
 								</v-chip>
+								<v-btn
+									icon
+									size="small"
+									variant="flat"
+									color="white"
+									class="favorite-btn"
+									@click.stop="toggleFavorite(product)"
+								>
+									<v-icon :color="isFavorite(product.id) ? 'red' : 'grey-lighten-1'">
+										{{ isFavorite(product.id) ? 'mdi-heart' : 'mdi-heart-outline' }}
+									</v-icon>
+								</v-btn>
 								<v-img :src="product.image" :alt="product.name" aspect-ratio="1" cover class="product-image"></v-img>
 							</div>
 							<v-card-text class="product-info">
@@ -137,7 +149,7 @@
 				<div class="d-flex justify-space-between align-center mb-6">
 					<h2 class="section-title">Đồ chơi mới nhất</h2>
 					<a href="#" class="view-all-link">
-						<span>Xem toàn bộ</span>
+						<span @click="goToShop">Xem toàn bộ</span>
 						<v-icon size="small">mdi-arrow-right</v-icon>
 					</a>
 				</div>
@@ -148,6 +160,18 @@
 								<v-chip v-if="product.badge" color="green" label size="small" class="product-badge">
 									{{ product.badge }}
 								</v-chip>
+								<v-btn
+									icon
+									size="small"
+									variant="flat"
+									color="white"
+									class="favorite-btn"
+									@click.stop="toggleFavorite(product)"
+								>
+									<v-icon :color="isFavorite(product.id) ? 'red' : 'grey-lighten-1'">
+										{{ isFavorite(product.id) ? 'mdi-heart' : 'mdi-heart-outline' }}
+									</v-icon>
+								</v-btn>
 								<v-img :src="product.image" :alt="product.name" aspect-ratio="1" cover class="product-image"></v-img>
 							</div>
 							<v-card-text class="product-info">
@@ -295,6 +319,22 @@
 				</v-btn>
 			</template>
 		</v-snackbar>
+
+		<!-- Favorite Snackbar -->
+		<v-snackbar
+			v-model="showFavoriteSnackbar"
+			:timeout="3000"
+			color="pink-darken-1"
+			location="top"
+		>
+			<v-icon start>mdi-heart</v-icon>
+			{{ favoriteMessage }}
+			<template v-slot:actions>
+				<v-btn color="white" variant="text" @click="showFavoriteSnackbar = false">
+					Đóng
+				</v-btn>
+			</template>
+		</v-snackbar>
 	</div>
 </template>
 
@@ -310,6 +350,11 @@ const email = ref('')
 const showNewsletterDialog = ref(false)
 const showAddToCartSnackbar = ref(false)
 const addedProductName = ref('')
+
+// Favorite state
+const favorites = ref([])
+const showFavoriteSnackbar = ref(false)
+const favoriteMessage = ref('')
 
 // Features data
 const features = ref([
@@ -370,6 +415,22 @@ const newProducts = ref([
 ])
 
 // Methods
+const isFavorite = (productId) => {
+	return favorites.value.includes(productId)
+}
+
+const toggleFavorite = (product) => {
+	const index = favorites.value.indexOf(product.id)
+	if (index > -1) {
+		favorites.value.splice(index, 1)
+		favoriteMessage.value = 'Đã xóa khỏi danh sách yêu thích'
+	} else {
+		favorites.value.push(product.id)
+		favoriteMessage.value = `Đã thêm "${product.name}" vào danh sách yêu thích`
+	}
+	showFavoriteSnackbar.value = true
+}
+
 const navigateToCategory = (id) => {
 	console.log('Navigate to category:', id)
 	// router.push(`/category/${id}`)
@@ -691,6 +752,13 @@ const goToShop = () => {
 	left: 8px;
 	z-index: 2;
 	font-weight: 700;
+}
+
+.favorite-btn {
+	position: absolute;
+	top: 8px;
+	right: 8px;
+	z-index: 2;
 }
 
 .product-image {

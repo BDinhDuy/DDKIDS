@@ -98,9 +98,11 @@
 <script setup>
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
+import { useUserStore } from '@/stores/user'
 import { emailRules, passwordRules } from '@/utils/validation'
 
 const router = useRouter()
+const userStore = useUserStore()
 
 // Form ref
 const formRef = ref(null)
@@ -143,18 +145,46 @@ const handleLogin = async () => {
   }
   
   console.log('Login attempt:', email.value, password.value)
-  // Add your login logic here
+  
+  // Simulate login success with mock user data
+  // TODO: Replace with actual API call
+  const userData = {
+    id: 1,
+    name: email.value.split('@')[0] || 'Người dùng',
+    email: email.value,
+    avatar: 'https://ui-avatars.com/api/?name=' + encodeURIComponent(email.value.split('@')[0] || 'User') + '&background=ee9d2b&color=fff'
+  }
+  
+  userStore.login(userData)
   router.push('/')
 }
 
 const loginWithGoogle = () => {
   console.log('Login with Google')
   // Add Google OAuth logic here
+  // Simulate successful login
+  const userData = {
+    id: 2,
+    name: 'Google User',
+    email: 'user@gmail.com',
+    avatar: 'https://ui-avatars.com/api/?name=Google+User&background=DB4437&color=fff'
+  }
+  userStore.login(userData)
+  router.push('/')
 }
 
 const loginWithFacebook = () => {
   console.log('Login with Facebook')
   // Add Facebook OAuth logic here
+  // Simulate successful login
+  const userData = {
+    id: 3,
+    name: 'Facebook User',
+    email: 'user@facebook.com',
+    avatar: 'https://ui-avatars.com/api/?name=Facebook+User&background=1877F2&color=fff'
+  }
+  userStore.login(userData)
+  router.push('/')
 }
 
 const goToRegister = () => {

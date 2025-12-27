@@ -20,6 +20,7 @@ export const BANKS = [
 
 // Shipping
 export const SHIPPING_FEE = 30000;
+export const DDKIDS = "DDKIDS";
 
 // LocalStorage Keys
 export const STORAGE_KEYS = {

@@ -10,7 +10,7 @@
                 <path d="M42.4379 44C42.4379 44 36.0744 33.9038 41.1692 24C46.8624 12.9336 42.2078 4 42.2078 4L7.01134 4C7.01134 4 11.6577 12.932 5.96912 23.9969C0.876273 33.9029 7.27094 44 7.27094 44L42.4379 44Z" fill="currentColor"></path>
               </svg>
             </div>
-            <h2 class="logo-text">DDKIDS</h2>
+            <h2 class="logo-text">{{ DDKIDS }}</h2>
           </div>
         </v-col>
 
@@ -36,27 +36,83 @@
               Giới thiệu
             </v-btn>
 
-            <!-- Register Button -->
-            <v-btn
-              variant="flat"
-              color="#f4f3f0"
-              class="text-none font-weight-bold"
-              size="small"
-              @click="handleRegister"
+            <!-- User Menu (when logged in) -->
+            <v-menu
+              v-if="userStore.isLoggedIn"
+              offset-y
+              location="bottom end"
+              transition="slide-y-transition"
             >
-              Đăng ký
-            </v-btn>
+              <template v-slot:activator="{ props }">
+                <v-btn
+                  variant="flat"
+                  color="#f4f3f0"
+                  class="text-none user-menu-btn"
+                  v-bind="props"
+                >
+                  <v-avatar size="32" class="mr-2">
+                    <v-img v-if="userStore.userAvatar" :src="userStore.userAvatar"></v-img>
+                    <v-icon v-else>mdi-account-circle</v-icon>
+                  </v-avatar>
+                  <span class="font-weight-bold d-none d-sm-inline">{{ userStore.userName }}</span>
+                  <v-icon end size="small">mdi-chevron-down</v-icon>
+                </v-btn>
+              </template>
 
-            <!-- Login Button -->
-            <v-btn
-              variant="flat"
-              color="#ee9d2b"
-              class="text-none font-weight-bold"
-              size="small"
-              @click="handleLogin"
-            >
-              Đăng nhập
-            </v-btn>
+              <v-card min-width="250" class="mt-2 user-menu-card">
+                <v-list density="compact">
+                  <v-list-item
+                    prepend-icon="mdi-account"
+                    title="Thông tin cá nhân"
+                    @click="handleProfile"
+                  ></v-list-item>
+                  
+                  <v-list-item
+                    prepend-icon="mdi-heart"
+                    title="Danh sách yêu thích"
+                    @click="handleWishlist"
+                  ></v-list-item>
+                  
+                  <v-list-item
+                    prepend-icon="mdi-map-marker"
+                    title="Địa chỉ mua hàng"
+                    @click="handleAddresses"
+                  ></v-list-item>
+                  
+                  <v-divider class="my-2"></v-divider>
+                  
+                  <v-list-item
+                    prepend-icon="mdi-logout"
+                    title="Đăng xuất"
+                    @click="handleLogout"
+                    class="text-red"
+                  ></v-list-item>
+                </v-list>
+              </v-card>
+            </v-menu>
+
+            <!-- Login/Register Buttons (when not logged in) -->
+            <template v-else>
+              <v-btn
+                variant="flat"
+                color="#f4f3f0"
+                class="text-none font-weight-bold"
+                size="small"
+                @click="handleRegister"
+              >
+                Đăng ký
+              </v-btn>
+
+              <v-btn
+                variant="flat"
+                color="#ee9d2b"
+                class="text-none font-weight-bold"
+                size="small"
+                @click="handleLogin"
+              >
+                Đăng nhập
+              </v-btn>
+            </template>
 
             <!-- Cart Button -->
             <v-menu
@@ -152,15 +208,23 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { useCartStore } from '../stores/cart'
+import { useUserStore } from '../stores/user'
+import { DDKIDS } from '@/utils/constants'
 
 const router = useRouter()
 const cartStore = useCartStore()
+const userStore = useUserStore()
 
 // Reactive data
 const searchQuery = ref('')
+
+// Initialize user on mount
+onMounted(() => {
+  userStore.initUser()
+})
 
 // Methods
 const handleSearch = () => {
@@ -179,6 +243,23 @@ const handleRegister = () => {
 
 const handleCart = () => {
   router.push('/cart')
+}
+
+const handleProfile = () => {
+  router.push('/profile')
+}
+
+const handleWishlist = () => {
+  router.push('/wishlist')
+}
+
+const handleAddresses = () => {
+  router.push('/addresses')
+}
+
+const handleLogout = () => {
+  userStore.logout()
+  router.push('/')
 }
 
 const goToProductDetail = (id) => {
@@ -446,5 +527,34 @@ const goToProductDetail = (id) => {
 /* Hover effects */
 .v-btn:hover {
   opacity: 0.9;
+}
+
+/* User Menu */
+.user-menu-btn {
+  padding: 4px 12px !important;
+  height: auto !important;
+  min-height: 40px;
+}
+
+.user-menu-card {
+  border-radius: 12px !important;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.15) !important;
+}
+
+.user-menu-card .v-list-item {
+  min-height: 44px;
+  transition: background-color 0.2s;
+}
+
+.user-menu-card .v-list-item:hover {
+  background-color: rgba(238, 157, 43, 0.08);
+}
+
+.user-menu-card .v-list-item.text-red {
+  color: #d32f2f;
+}
+
+.user-menu-card .v-list-item.text-red:hover {
+  background-color: rgba(211, 47, 47, 0.08);
 }
 </style>

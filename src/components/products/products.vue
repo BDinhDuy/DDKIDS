@@ -152,6 +152,20 @@
                     {{ product.badge }}
                   </v-chip>
 
+                  <!-- Favorite Button -->
+                  <v-btn
+                    icon
+                    size="small"
+                    color="white"
+                    class="favorite-btn"
+                    elevation="2"
+                    @click.stop="toggleFavorite(product)"
+                  >
+                    <v-icon :color="isFavorite(product.id) ? 'red' : 'grey-lighten-1'">
+                      {{ isFavorite(product.id) ? 'mdi-heart' : 'mdi-heart-outline' }}
+                    </v-icon>
+                  </v-btn>
+
                   <!-- Add to Cart Button -->
                   <v-btn
                     icon
@@ -282,6 +296,22 @@
         </v-card-actions>
       </v-card>
     </v-dialog>
+
+    <!-- Favorite Snackbar -->
+    <v-snackbar
+      v-model="showFavoriteSnackbar"
+      :timeout="3000"
+      color="pink-darken-1"
+      location="top"
+    >
+      <v-icon start>mdi-heart</v-icon>
+      {{ favoriteMessage }}
+      <template v-slot:actions>
+        <v-btn color="white" variant="text" @click="showFavoriteSnackbar = false">
+          Đóng
+        </v-btn>
+      </template>
+    </v-snackbar>
   </div>
 </template>
 
@@ -291,6 +321,11 @@ import { useRouter } from 'vue-router'
 import { formatPrice } from '@/utils/helpers'
 
 const router = useRouter()
+
+// Favorite state
+const favorites = ref([])
+const showFavoriteSnackbar = ref(false)
+const favoriteMessage = ref('')
 
 // Breadcrumbs
 const breadcrumbs = [
@@ -388,6 +423,22 @@ const products = ref([
 ])
 
 // Methods
+const isFavorite = (productId) => {
+  return favorites.value.includes(productId)
+}
+
+const toggleFavorite = (product) => {
+  const index = favorites.value.indexOf(product.id)
+  if (index > -1) {
+    favorites.value.splice(index, 1)
+    favoriteMessage.value = 'Đã xóa khỏi danh sách yêu thích'
+  } else {
+    favorites.value.push(product.id)
+    favoriteMessage.value = `Đã thêm "${product.name}" vào danh sách yêu thích`
+  }
+  showFavoriteSnackbar.value = true
+}
+
 const addToCart = (product) => {
   console.log('Add to cart:', product)
   // TODO: Implement cart logic
@@ -441,6 +492,13 @@ const resetFilters = () => {
   left: 12px;
   z-index: 1;
   font-weight: bold;
+}
+
+.favorite-btn {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  z-index: 2;
 }
 
 .add-to-cart-btn {
