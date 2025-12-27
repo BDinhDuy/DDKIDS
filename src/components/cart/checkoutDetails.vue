@@ -251,6 +251,8 @@
 <script setup>
 import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
+import { formatPrice, copyToClipboard as copyText } from '@/utils/helpers'
+import { getCurrentOrder } from '@/utils/storage'
 
 const router = useRouter()
 
@@ -274,13 +276,12 @@ const orderInfo = ref({
 // Load order data from localStorage on component mount
 onMounted(() => {
   try {
-    const savedOrder = localStorage.getItem('currentOrder')
+    const savedOrder = getCurrentOrder()
     if (savedOrder) {
-      const order = JSON.parse(savedOrder)
-      orderInfo.value = order
+      orderInfo.value = savedOrder
       
       // Generate transfer content based on order total
-      const totalK = Math.floor(order.total / 1000)
+      const totalK = Math.floor(savedOrder.total / 1000)
       bankInfo.value.transferContent = `TOY${totalK}K`
     } else {
       // If no order found, redirect back to checkout
@@ -301,21 +302,10 @@ const showSnackbar = ref(false)
 const snackbarMessage = ref('')
 
 // Methods
-const formatPrice = (price) => {
-  return new Intl.NumberFormat('vi-VN', {
-    style: 'currency',
-    currency: 'VND'
-  }).format(price)
-}
-
 const copyToClipboard = async (text, message) => {
-  try {
-    await navigator.clipboard.writeText(text)
-    snackbarMessage.value = message
-    showSnackbar.value = true
-  } catch (error) {
-    console.error('Failed to copy:', error)
-    snackbarMessage.value = 'Không thể sao chép'
+  const result = await copyText(text, message)
+  if (result.success) {
+    snackbarMessage.value = result.message
     showSnackbar.value = true
   }
 }

@@ -162,7 +162,6 @@
                     <div>
                       <p class="font-weight-bold mb-1">{{ orderInfo.shippingInfo?.fullName }}</p>
                       <p class="text-body-2 mb-1">{{ orderInfo.shippingInfo?.address }}</p>
-                      <p class="text-body-2 mb-1">{{ getCityName(orderInfo.shippingInfo?.city) }}</p>
                       <p class="text-body-2" style="color: #897961;">{{ orderInfo.shippingInfo?.phone }}</p>
                     </div>
                   </div>
@@ -253,22 +252,17 @@
 import { ref, computed, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { useCartStore } from '@/stores/cart'
+import { formatPrice, getFutureDate, generateOrderNumber } from '@/utils/helpers'
+import { getCurrentOrder, clearOrderData } from '@/utils/storage'
 
 const router = useRouter()
 const cartStore = useCartStore()
 
 // Order Number
-const orderNumber = ref('#84932021')
+const orderNumber = ref(generateOrderNumber())
 
 // Timeline Progress
 const timelineProgress = ref(33)
-
-// Helper function to calculate future date
-const getFutureDate = (daysFromNow) => {
-  const date = new Date()
-  date.setDate(date.getDate() + daysFromNow)
-  return date.toLocaleDateString('vi-VN', { day: '2-digit', month: '2-digit' })
-}
 
 // Order Steps
 const orderSteps = ref([
@@ -335,23 +329,18 @@ const recommendations = ref([
 const showSnackbar = ref(false)
 const snackbarMessage = ref('')
 
-// Load order from localStorage
+// Load order from storage and clear cart
 onMounted(() => {
   try {
-    const savedOrder = localStorage.getItem('currentOrder')
+    const savedOrder = getCurrentOrder()
     if (savedOrder) {
-      orderInfo.value = JSON.parse(savedOrder)
-      
-      // Generate order number from timestamp
-      const timestamp = new Date().getTime().toString().slice(-8)
-      orderNumber.value = `#${timestamp}`
+      orderInfo.value = savedOrder
       
       // Clear cart after successful order
       cartStore.cartItems = []
       
-      // Clear order and shipping info from localStorage
-      localStorage.removeItem('currentOrder')
-      localStorage.removeItem('shippingInfo')
+      // Clear order data from storage
+      clearOrderData()
     } else {
       console.warn('No order found, redirecting to home')
       router.push('/')
@@ -363,17 +352,6 @@ onMounted(() => {
 })
 
 // Methods
-const formatPrice = (price) => {
-  return new Intl.NumberFormat('vi-VN', {
-    style: 'currency',
-    currency: 'VND'
-  }).format(price)
-}
-
-const getCityName = (cityCode) => {
-  // This would ideally fetch from API or stored data
-  return 'TP. Hồ Chí Minh'
-}
 
 const getPaymentIcon = (method) => {
   const icons = {

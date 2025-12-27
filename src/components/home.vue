@@ -302,6 +302,7 @@
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { useCartStore } from '../stores/cart'
+import { formatPrice } from '@/utils/helpers'
 
 const router = useRouter()
 const cartStore = useCartStore()
@@ -369,10 +370,6 @@ const newProducts = ref([
 ])
 
 // Methods
-const formatPrice = (price) => {
-	return price.toLocaleString('vi-VN') + 'đ'
-}
-
 const navigateToCategory = (id) => {
 	console.log('Navigate to category:', id)
 	// router.push(`/category/${id}`)

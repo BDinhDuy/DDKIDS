@@ -288,6 +288,7 @@
 <script setup>
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
+import { formatPrice } from '@/utils/helpers'
 
 const router = useRouter()
 
@@ -387,10 +388,6 @@ const products = ref([
 ])
 
 // Methods
-const formatPrice = (price) => {
-  return new Intl.NumberFormat('vi-VN').format(price)
-}
-
 const addToCart = (product) => {
   console.log('Add to cart:', product)
   // TODO: Implement cart logic

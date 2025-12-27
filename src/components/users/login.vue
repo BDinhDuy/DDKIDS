@@ -130,11 +130,6 @@ const emailOrPhoneRules = [
   }
 ]
 
-const passwordRules = [
-  v => !!v || 'Mật khẩu là bắt buộc (bao gồm chữ hoa và 6 kí tự)',
-  v => v.length >= 6 || 'Mật khẩu phải có ít nhất 6 ký tự',
-  v => /^[A-Z]/.test(v) || 'Ký tự đầu tiên phải viết hoa'
-]
 
 // Methods
 const handleLogin = async () => {

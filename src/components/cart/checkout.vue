@@ -390,6 +390,9 @@ import { useCartStore } from '@/stores/cart'
 import { useRouter } from 'vue-router'
 import { fetchProvinces, fetchProvinceDetail } from '@/service/app'
 import { validateEmail, validatePhone, validateRequired } from '@/utils/validation'
+import { formatPrice } from '@/utils/helpers'
+import { BANKS, PAYMENT_METHODS, SHIPPING_FEE, COUPONS } from '@/utils/constants'
+import { saveCurrentOrder, saveShippingInfo, getShippingInfo } from '@/utils/storage'
 
 const cartStore = useCartStore()
 const router = useRouter()
@@ -427,15 +430,14 @@ onMounted(async () => {
     }))
     
     // Load thông tin shipping đã lưu từ localStorage
-    const savedShippingInfo = localStorage.getItem('shippingInfo')
+    const savedShippingInfo = getShippingInfo()
     if (savedShippingInfo) {
       isLoadingFromStorage.value = true
-      const parsedInfo = JSON.parse(savedShippingInfo)
-      shippingInfo.value = parsedInfo
+      shippingInfo.value = savedShippingInfo
       
       // Nếu có city, load lại danh sách wards
-      if (parsedInfo.city) {
-        const provinceDetail = await fetchProvinceDetail(parsedInfo.city)
+      if (savedShippingInfo.city) {
+        const provinceDetail = await fetchProvinceDetail(savedShippingInfo.city)
         const allWards = []
         provinceDetail.districts?.forEach(district => {
           if (district.wards) {
@@ -488,14 +490,9 @@ watch(() => shippingInfo.value.city, async (newCityCode, oldCityCode) => {
 })
 
 // Payment
-const paymentMethod = ref('bank')
+const paymentMethod = ref(PAYMENT_METHODS.BANK)
 const selectedBank = ref('vietcombank')
-const banks = ref([
-  { id: 'vietcombank', name: 'Vietcombank', color: '#007f3d' },
-  { id: 'techcombank', name: 'Techcombank', color: '#e30613' },
-  { id: 'acb', name: 'ACB', color: '#0057a8' },
-  { id: 'bidv', name: 'BIDV', color: '#00843d' }
-])
+const banks = BANKS
 
 // Coupon
 const couponCode = ref('')
@@ -503,8 +500,8 @@ const discount = ref(0)
 
 // Price Calculation
 const subtotal = computed(() => cartStore.totalAmount || 0)
-const shippingFee = ref(30000)
-const total = computed(() => subtotal.value + shippingFee.value - discount.value)
+const shippingFee = SHIPPING_FEE
+const total = computed(() => subtotal.value + shippingFee - discount.value)
 
 // Snackbar
 const showSuccessSnackbar = ref(false)
@@ -512,17 +509,11 @@ const successMessage = ref('')
 const snackbarColor = ref('success')
 
 // Methods
-const formatPrice = (price) => {
-  return new Intl.NumberFormat('vi-VN', {
-    style: 'currency',
-    currency: 'VND'
-  }).format(price)
-}
 
 const applyCoupon = () => {
-  if (couponCode.value.toLowerCase() === 'discount10') {
-    discount.value = subtotal.value * 0.1
-    successMessage.value = 'Áp dụng mã giảm giá thành công!'
+  if (couponCode.value.toUpperCase() === COUPONS.DISCOUNT10.code) {
+    discount.value = subtotal.value * (COUPONS.DISCOUNT10.percentage / 100)
+    successMessage.value = `Áp dụng mã giảm giá ${COUPONS.DISCOUNT10.percentage}% thành công!`
     snackbarColor.value = 'success'
     showSuccessSnackbar.value = true
   } else if (couponCode.value) {
@@ -599,11 +590,9 @@ const placeOrder = () => {
 
   console.log('Order placed:', order)
   
-  // Lưu order vào localStorage để chuyển sang trang checkoutDetails
-  localStorage.setItem('currentOrder', JSON.stringify(order))
-  
-  // Lưu thông tin shipping để khi quay lại vẫn còn
-  localStorage.setItem('shippingInfo', JSON.stringify(shippingInfo.value))
+  // Lưu order và shipping info
+  saveCurrentOrder(order)
+  saveShippingInfo(shippingInfo.value)
   
   successMessage.value = 'Đặt hàng thành công! Đang chuyển đến trang thanh toán...'
   snackbarColor.value = 'success'

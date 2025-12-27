@@ -1,8 +1,3 @@
-/**
- * Validation Rules and Functions
- * Centralized validation logic for forms across the application
- */
-
 // Email validation
 export const emailRules = [
   (v) => !!v || "Email là bắt buộc",
