@@ -246,15 +246,15 @@ const handleCart = () => {
 }
 
 const handleProfile = () => {
-  router.push('/profile')
+  router.push({ path: '/profile', query: { tab: 'personal' } })
 }
 
 const handleWishlist = () => {
-  router.push('/wishlist')
+  router.push({ path: '/profile', query: { tab: 'wishlist' } })
 }
 
 const handleAddresses = () => {
-  router.push('/addresses')
+  router.push({ path: '/profile', query: { tab: 'addresses' } })
 }
 
 const handleLogout = () => {

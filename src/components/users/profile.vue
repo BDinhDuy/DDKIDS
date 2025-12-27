@@ -437,8 +437,8 @@
 </template>
 
 <script setup>
-import { ref, computed } from 'vue'
-import { useRouter } from 'vue-router'
+import { ref, computed, onMounted, watch } from 'vue'
+import { useRouter, useRoute } from 'vue-router'
 import { useCartStore } from '@/stores/cart'
 import ChatPopup from '../shop/ChatPopup.vue'
 import PersonalInfoTab from './PersonalInfoTab.vue'
@@ -448,10 +448,29 @@ import WishlistTab from './WishlistTab.vue'
 import ChangePasswordTab from './ChangePasswordTab.vue'
 
 const router = useRouter()
+const route = useRoute()
 const cartStore = useCartStore()
 
 // Active tab state
 const activeTab = ref('dashboard')
+
+// Sync activeTab with route query
+onMounted(() => {
+  if (route.query.tab) {
+    activeTab.value = route.query.tab
+  }
+})
+
+watch(() => route.query.tab, (newTab) => {
+  if (newTab) {
+    activeTab.value = newTab
+  }
+})
+
+watch(activeTab, (newTab) => {
+  // Optional: Update URL without reloading when tab changes
+  // router.replace({ query: { ...route.query, tab: newTab } })
+})
 
 // Chat popup state
 const showChatPopup = ref(false)
