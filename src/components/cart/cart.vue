@@ -105,8 +105,10 @@
 
 <script setup>
 import { useCartStore } from '../../stores/cart'
+import { useRouter } from 'vue-router'
 
 const cartStore = useCartStore()
+const router = useRouter()
 </script>
 
 <style scoped>
