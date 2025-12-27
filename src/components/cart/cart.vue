@@ -74,7 +74,7 @@
             block
             flat
             class="text-none font-weight-bold"
-            @click="$router.push('/checkout')"
+            @click="router.push('/checkout')"
           >
             TIẾN HÀNH THANH TOÁN
           </v-btn>
@@ -84,7 +84,7 @@
             block
             class="text-none mt-2"
             color="grey-darken-1"
-            @click="$router.push('/product')"
+            @click="router.push('/product')"
           >
             Tiếp tục mua sắm
           </v-btn>
@@ -96,7 +96,7 @@
     <v-card v-else flat border rounded="lg" class="pa-12 text-center">
       <v-icon size="100" color="grey-lighten-2" class="mb-4">mdi-cart-off</v-icon>
       <div class="text-h5 text-grey-darken-1 mb-6">Giỏ hàng của bạn đang trống</div>
-      <v-btn color="#2d7a5e" size="large" @click="$router.push('/')">
+      <v-btn color="#2d7a5e" size="large" @click="router.push('/')">
         QUAY LẠI CỬA HÀNG
       </v-btn>
     </v-card>
