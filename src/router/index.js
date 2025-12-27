@@ -5,6 +5,7 @@ import Login from "../components/users/login.vue";
 import Register from "../components/users/register.vue";
 import ForgotPassword from "../components/users/forgotPassword.vue";
 import Checkout from "../components/cart/checkout.vue";
+import checkoutDeatails from "../components/cart/checkoutDetails.vue";
 import Product from "../components/products/products.vue";
 import ProductDetail from "../components/products/producDetails.vue";
 
@@ -43,6 +44,12 @@ const routes = [
     path: "/checkout",
     name: "checkout",
     component: Checkout,
+    meta: { showNavbar: true, showHeader: true, showFooter: true },
+  },
+  {
+    path: "/checkoutDeatails",
+    name: "checkout-details",
+    component: checkoutDeatails,
     meta: { showNavbar: true, showHeader: true, showFooter: true },
   },
   {
