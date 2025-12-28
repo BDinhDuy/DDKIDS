@@ -146,7 +146,7 @@
               </div>
               <div class="security-badge">
                 <v-icon size="12" color="#9ca3af">mdi-lock</v-icon>
-                <p class="security-text">Được bảo mật bởi {{DDKIDS}} LiveChat</p>
+                <p class="security-text">Được bảo mật bởi {{APP_INFO.NAME}} LiveChat</p>
               </div>
             </div>
           </div>
@@ -159,7 +159,7 @@
 <script setup>
 import { ref, computed, nextTick, watch } from 'vue'
 import { useDisplay } from 'vuetify'
-import {DDKIDS} from '@/utils/constants'
+import {APP_INFO} from '@/utils/constants'
 
 const props = defineProps({
   modelValue: {

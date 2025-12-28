@@ -11,7 +11,7 @@
 									<path d="M42.4379 44C42.4379 44 36.0744 33.9038 41.1692 24C46.8624 12.9336 42.2078 4 42.2078 4L7.01134 4C7.01134 4 11.6577 12.932 5.96912 23.9969C0.876273 33.9029 7.27094 44 7.27094 44L42.4379 44Z" fill="currentColor"></path>
 								</svg>
 							</div>
-							<h2 class="footer-logo-text">{{ DDKIDS }}</h2>
+							<h2 class="footer-logo-text">{{ APP_INFO.NAME }}</h2>
 						</div>
 						<p class="footer-desc">Cửa hàng đồ chơi trẻ em uy tín hàng đầu. Mang đến niềm vui và sự phát triển toàn diện cho bé yêu của bạn.</p>
 						<div class="d-flex gap-4 mt-4">
@@ -77,7 +77,7 @@
 			<!-- Bottom Bar -->
 			<v-divider class="my-8"></v-divider>
 			<div class="footer-bottom">
-				<p class="footer-copyright">© 2025 {{ DDKIDS }}. All rights reserved.</p>
+				<p class="footer-copyright">© 2025 {{ APP_INFO.NAME }}. All rights reserved.</p>
 				<div class="payment-icons">
 					<div class="payment-placeholder"></div>
 					<div class="payment-placeholder"></div>
@@ -89,7 +89,7 @@
 </template>
 
 <script setup>
-import { DDKIDS } from '@/utils/constants'
+import { APP_INFO } from '@/utils/constants'
 import router from '../router';
 
 const handleContact = () => {

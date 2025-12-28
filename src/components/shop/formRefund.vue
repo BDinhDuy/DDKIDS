@@ -336,20 +336,6 @@ const policies = ref([
   'Hỗ trợ lấy hàng tận nhà cho đơn hàng trên 500k.'
 ])
 
-const form = ref({
-  orderId: '',
-  orderDate: '',
-  productName: '',
-  returnReason: '',
-  quantity: 1,
-  condition: 'new',
-  description: '',
-  images: [],
-  fullName: '',
-  phone: '',
-  email: ''
-})
-
 const returnReasons = ref([
   { title: 'Sản phẩm bị lỗi / Hư hỏng', value: 'defective' },
   { title: 'Giao sai sản phẩm', value: 'wrong_item' },

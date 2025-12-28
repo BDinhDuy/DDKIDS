@@ -31,9 +31,19 @@
                 </td>
                 <td class="text-center">
                   <div class="d-flex align-center justify-center">
-                    <v-btn icon="mdi-minus" size="x-small" variant="outlined" @click="item.quantity > 1 ? item.quantity-- : null"></v-btn>
+                    <v-btn 
+                      icon="mdi-minus" 
+                      size="x-small" 
+                      variant="outlined" 
+                      @click="cartStore.updateQuantity(item.id, item.quantity - 1)"
+                    ></v-btn>
                     <span class="mx-3">{{ item.quantity }}</span>
-                    <v-btn icon="mdi-plus" size="x-small" variant="outlined" @click="item.quantity++"></v-btn>
+                    <v-btn 
+                      icon="mdi-plus" 
+                      size="x-small" 
+                      variant="outlined" 
+                      @click="cartStore.updateQuantity(item.id, item.quantity + 1)"
+                    ></v-btn>
                   </div>
                 </td>
                 <td class="text-right">{{ item.price.toLocaleString() }}đ</td>

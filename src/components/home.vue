@@ -226,7 +226,7 @@
 					</v-avatar>
 					<h2 class="newsletter-title">Đăng ký nhận tin</h2>
 					<p class="newsletter-text">
-						Nhận thông báo về các chương trình khuyến mãi và sản phẩm mới nhất từ {{ DDKIDS }}.
+						Nhận thông báo về các chương trình khuyến mãi và sản phẩm mới nhất từ {{ APP_INFO.NAME }}.
 					</p>
 					<v-row justify="center" class="mt-6">
 						<v-col cols="12" sm="8" md="10">
@@ -343,7 +343,7 @@ import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { useCartStore } from '../stores/cart'
 import { formatPrice } from '@/utils/helpers'
-import { DDKIDS } from '@/utils/constants'
+import { APP_INFO } from '@/utils/constants'
 
 const router = useRouter()
 const cartStore = useCartStore()

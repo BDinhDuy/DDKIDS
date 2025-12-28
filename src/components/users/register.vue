@@ -85,7 +85,7 @@
                       <a href="#" class="terms-link" @click.prevent>Điều khoản sử dụng</a>
                       và
                       <a href="#" class="terms-link" @click.prevent>Chính sách bảo mật</a>
-                      của {{ DDKIDS }}.
+                      của {{ APP_INFO.NAME }}.
                     </div>
                   </template>
                 </v-checkbox>
@@ -203,7 +203,7 @@
 import { ref, onUnmounted, computed } from 'vue'
 import { useRouter } from 'vue-router'
 import { emailRules, passwordRules, nameRules, confirmPasswordRules, termsRules } from '@/utils/validation'
-import { DDKIDS } from '@/utils/constants'
+import { APP_INFO } from '@/utils/constants'
 const router = useRouter()
 
 // Form ref
