@@ -1,13 +1,44 @@
 <script setup>
-  import { computed } from 'vue'
+  import { computed, ref, watch } from 'vue'
   import { useRoute } from 'vue-router'
+  import { useUserStore } from '@/stores/user'
   import Header from './components/header.vue'
   import AuthHeader from './components/authHeader.vue'
   import Navbar from './components/navbar.vue'
   import Footer from './components/footer.vue'
   import BackToTop from './components/BackToTop.vue'
+  import BirthdayPopup from './components/users/BirthdayPopup.vue'
 
   const route = useRoute()
+  const userStore = useUserStore()
+  const showBirthdayPopup = ref(false)
+  
+  // Kiểm tra sinh nhật khi user đăng nhập
+  const checkBirthdayInCurrentMonth = () => {
+    if (!userStore.isLoggedIn || !userStore.userBirthdate) {
+      return false
+    }
+    
+    const today = new Date()
+    const birthdate = new Date(userStore.userBirthdate)
+    
+    // Kiểm tra nếu tháng sinh nhật trùng với tháng hiện tại
+    return today.getMonth() === birthdate.getMonth()
+  }
+
+  // Watch khi user login để hiển thị popup sinh nhật
+  watch(() => userStore.isLoggedIn, (isLoggedIn) => {
+    if (isLoggedIn && checkBirthdayInCurrentMonth()) {
+      // Kiểm tra xem đã show popup trong session chưa
+      const birthdayShownKey = `birthdayShown_${new Date().getFullYear()}_${new Date().getMonth()}`
+      const hasShownThisMonth = sessionStorage.getItem(birthdayShownKey)
+      
+      if (!hasShownThisMonth) {
+        showBirthdayPopup.value = true
+        sessionStorage.setItem(birthdayShownKey, 'true')
+      }
+    }
+  }, { immediate: true })
   
   const showNavbar = computed(() => {
     return route.meta.showNavbar !== false
@@ -35,6 +66,7 @@
     </v-main>
     <Footer v-if="showFooter"></Footer>
     <BackToTop />
+    <BirthdayPopup v-model="showBirthdayPopup" />
   </v-app>
 </template>
 

@@ -152,7 +152,9 @@ const handleLogin = async () => {
     id: 1,
     name: email.value.split('@')[0] || 'Người dùng',
     email: email.value,
-    avatar: 'https://ui-avatars.com/api/?name=' + encodeURIComponent(email.value.split('@')[0] || 'User') + '&background=ee9d2b&color=fff'
+    avatar: 'https://ui-avatars.com/api/?name=' + encodeURIComponent(email.value.split('@')[0] || 'User') + '&background=ee9d2b&color=fff',
+    // Mock birthdate - tháng hiện tại để test popup
+    birthdate: new Date(2020, new Date().getMonth(), 15).toISOString()
   }
   
   userStore.login(userData)
@@ -167,7 +169,8 @@ const loginWithGoogle = () => {
     id: 2,
     name: 'Google User',
     email: 'user@gmail.com',
-    avatar: 'https://ui-avatars.com/api/?name=Google+User&background=DB4437&color=fff'
+    avatar: 'https://ui-avatars.com/api/?name=Google+User&background=DB4437&color=fff',
+    birthdate: new Date(2020, new Date().getMonth(), 15).toISOString()
   }
   userStore.login(userData)
   router.push('/')
@@ -181,7 +184,8 @@ const loginWithFacebook = () => {
     id: 3,
     name: 'Facebook User',
     email: 'user@facebook.com',
-    avatar: 'https://ui-avatars.com/api/?name=Facebook+User&background=1877F2&color=fff'
+    avatar: 'https://ui-avatars.com/api/?name=Facebook+User&background=1877F2&color=fff',
+    birthdate: new Date(2020, new Date().getMonth(), 15).toISOString()
   }
   userStore.login(userData)
   router.push('/')
