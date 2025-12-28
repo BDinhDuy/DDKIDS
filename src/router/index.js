@@ -15,6 +15,7 @@ import Policy from "../components/shop/policy.vue";
 import policyRefund from "../components/shop/policyRefund.vue";
 import policyTransition from "../components/shop/policyTransition.vue";
 import notFound from "../components/404notFound.vue";
+import formRefund from "../components/shop/formRefund.vue";
 
 const routes = [
   {
@@ -93,6 +94,12 @@ const routes = [
     path: "/policy-refund",
     name: "policyRefund",
     component: policyRefund,
+    meta: { showNavbar: false, showHeader: true, showFooter: true },
+  },
+  {
+    path: "/form-refund",
+    name: "formRefund",
+    component: formRefund,
     meta: { showNavbar: false, showHeader: true, showFooter: true },
   },
   {

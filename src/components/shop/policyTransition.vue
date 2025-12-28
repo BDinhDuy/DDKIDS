@@ -1,45 +1,52 @@
 <template>
   <v-container fluid class="shipping-page pa-0">
-    <v-container class="py-8">
+    <v-container class="py-6 px-4 px-md-10" style="max-width: 960px;">
       <!-- Breadcrumbs -->
-      <v-breadcrumbs :items="breadcrumbs" class="pa-0 mb-6">
-        <template v-slot:divider>
-          <v-icon size="small">mdi-chevron-right</v-icon>
-        </template>
-      </v-breadcrumbs>
+      <div class="d-flex flex-wrap align-center text-body-2 mb-5">
+        <a href="#" class="text-grey-darken-1 text-decoration-none hover-primary">Trang chủ</a>
+        <span class="mx-2 text-grey">/</span>
+        <a href="#" class="text-grey-darken-1 text-decoration-none hover-primary">Thông tin</a>
+        <span class="mx-2 text-grey">/</span>
+        <span class="font-weight-medium">Chính sách vận chuyển</span>
+      </div>
 
       <!-- Hero Section -->
-      <v-card class="mb-8 overflow-hidden" elevation="2">
-        <v-row no-gutters>
-          <v-col cols="12" md="6">
-            <v-img
-              src="https://lh3.googleusercontent.com/aida-public/AB6AXuDj7a3SdRUk1OilYNGC7eKs5M73PSXhY9us3_4um0yLO34gHJhUOUTt98hl6e0r87CoDCMfNYP2M0lDuu0pJMcctV_28_yGFVfN_62DI7f8l87t2_sVG1H0N4umUprWl17HJJnBzKtnbKkDeJgsFnktfK2f3fRvjzt5KfZsxaWHAiARQkeIfeUNHaeuRywxxACC_6mtoFRny6UMUqsOFnR9NukL1sfsvbs3cHXiPLulRncXZ-0zvKS7MwMgc4pv_7V-cNfMDsDeYD0R"
-              alt="Yellow toy delivery truck"
-              cover
-              height="400"
-              class="hero-image"
-            ></v-img>
+      <v-card class="mb-5 rounded-xl overflow-hidden hero-card" elevation="1">
+        <v-row no-gutters align="center">
+          <v-col cols="12" md="6" class="pa-6 pa-md-10">
+            <div class="position-relative hero-image-wrapper">
+              <v-img
+                src="https://lh3.googleusercontent.com/aida-public/AB6AXuDj7a3SdRUk1OilYNGC7eKs5M73PSXhY9us3_4um0yLO34gHJhUOUTt98hl6e0r87CoDCMfNYP2M0lDuu0pJMcctV_28_yGFVfN_62DI7f8l87t2_sVG1H0N4umUprWl17HJJnBzKtnbKkDeJgsFnktfK2f3fRvjzt5KfZsxaWHAiARQkeIfeUNHaeuRywxxACC_6mtoFRny6UMUqsOFnR9NukL1sfsvbs3cHXiPLulRncXZ-0zvKS7MwMgc4pv_7V-cNfMDsDeYD0R"
+                alt="Yellow toy delivery truck"
+                class="rounded-xl hero-image"
+                aspect-ratio="1.33"
+              ></v-img>
+            </div>
           </v-col>
           <v-col cols="12" md="6">
-            <v-card-text class="pa-8 d-flex flex-column justify-center h-100">
-              <h1 class="text-h3 font-weight-black mb-4">
+            <v-card-text class="pa-6 pa-md-10">
+              <h1 class="text-h4 text-md-h3 font-weight-black mb-3 line-height-tight">
                 Chính sách Vận chuyển & Giao nhận
               </h1>
-              <p class="text-body-1 text-grey-darken-1 mb-6">
-                Chúng tôi cam kết mang những món đồ chơi an toàn đến tay bé yêu nhanh nhất có thể 
-                với dịch vụ vận chuyển tin cậy và chuyên nghiệp.
+              <p class="text-body-2 text-grey-darken-1 mb-6 line-height-relaxed">
+                Chúng tôi cam kết mang những món đồ chơi an toàn đến tay bé yêu nhanh nhất có thể với dịch vụ vận chuyển tin cậy và chuyên nghiệp.
               </p>
               <div class="d-flex gap-3 flex-wrap">
                 <v-btn
-                  color="primary"
+                  color="#ee9d2b"
                   size="large"
-                  elevation="4"
+                  class="font-weight-bold text-none rounded-xl px-6 text-white btn-primary"
+                  elevation="2"
+                  @click="router.push('/')"
                 >
                   Tiếp tục mua sắm
                 </v-btn>
                 <v-btn
-                  variant="outlined"
+                  variant="tonal"
+                  color="grey-lighten-2"
                   size="large"
+                  class="font-weight-bold text-none rounded-xl px-6"
+                  @click="showChatPopup = true"
                 >
                   Liên hệ hỗ trợ
                 </v-btn>
@@ -50,12 +57,11 @@
       </v-card>
 
       <!-- Feature Cards -->
-      <div class="mb-8">
+      <div class="mb-5">
         <div class="mb-6">
-          <h2 class="text-h4 font-weight-bold mb-2">Dịch vụ nổi bật</h2>
-          <p class="text-grey-darken-1">Những ưu đãi vận chuyển tốt nhất dành cho khách hàng.</p>
+          <h2 class="text-h5 font-weight-bold mb-2">Dịch vụ nổi bật</h2>
+          <p class="text-body-2 text-grey-darken-1">Những ưu đãi vận chuyển tốt nhất dành cho khách hàng.</p>
         </div>
-        
         <v-row>
           <v-col
             v-for="feature in features"
@@ -63,118 +69,110 @@
             cols="12"
             md="4"
           >
-            <v-card class="h-100 hover-card" elevation="1">
-              <v-card-text class="pa-6">
-                <v-avatar
-                  color="primary-lighten-4"
-                  size="56"
-                  class="mb-4"
-                >
-                  <v-icon color="primary" size="32">{{ feature.icon }}</v-icon>
-                </v-avatar>
-                <h3 class="text-h6 font-weight-bold mb-2">{{ feature.title }}</h3>
-                <p class="text-body-2 text-grey-darken-1">{{ feature.description }}</p>
-              </v-card-text>
+            <v-card class="feature-card rounded-xl pa-6 h-100" elevation="0">
+              <div class="d-flex flex-column gap-4">
+                <div class="feature-icon-circle">
+                  <v-icon :icon="feature.icon" size="32" class="primary-text"></v-icon>
+                </div>
+                <div>
+                  <h3 class="text-h6 font-weight-bold mb-2">{{ feature.title }}</h3>
+                  <p class="text-body-2 text-grey-darken-1">{{ feature.description }}</p>
+                </div>
+              </div>
             </v-card>
           </v-col>
         </v-row>
       </div>
 
       <!-- Shipping Rates Table -->
-      <v-card class="mb-8" elevation="2">
-        <v-card-title class="text-h5 font-weight-bold bg-grey-lighten-4">
-          Bảng phí & Thời gian giao hàng dự kiến
+      <v-card class="mb-5 rounded-xl overflow-hidden" elevation="1">
+        <v-card-title class="pa-6 border-b">
+          <h2 class="text-h6 font-weight-bold">Bảng phí & Thời gian giao hàng dự kiến</h2>
         </v-card-title>
-        <v-divider></v-divider>
-        <v-table>
-          <thead>
-            <tr>
-              <th class="text-left font-weight-bold">Hình thức</th>
-              <th class="text-left font-weight-bold">Khu vực</th>
-              <th class="text-left font-weight-bold">Thời gian dự kiến</th>
-              <th class="text-left font-weight-bold">Phí vận chuyển</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr
-              v-for="rate in shippingRates"
-              :key="rate.method"
-              class="hover-row"
-            >
-              <td class="font-weight-bold">
-                {{ rate.method }}
-                <v-chip
-                  v-if="rate.hot"
-                  color="red"
-                  size="x-small"
-                  class="ml-2"
-                  label
-                >
-                  Hot
-                </v-chip>
-              </td>
-              <td>{{ rate.area }}</td>
-              <td>{{ rate.time }}</td>
-              <td class="font-weight-bold">
-                {{ rate.fee }}
-                <span v-if="rate.note" class="text-caption text-primary ml-1">
-                  {{ rate.note }}
-                </span>
-              </td>
-            </tr>
-          </tbody>
-        </v-table>
-        <v-alert
-          type="info"
-          variant="tonal"
-          class="ma-0 rounded-0"
-          density="compact"
-        >
-          <template v-slot:prepend>
-            <v-icon>mdi-information</v-icon>
-          </template>
-          Thời gian giao hàng có thể lâu hơn dự kiến 1-2 ngày trong các dịp lễ, tết hoặc các chương trình khuyến mãi lớn.
-        </v-alert>
+        <div class="table-responsive">
+          <v-table class="shipping-table">
+            <thead class="table-header">
+              <tr>
+                <th class="font-weight-bold">Hình thức</th>
+                <th class="font-weight-bold">Khu vực</th>
+                <th class="font-weight-bold">Thời gian dự kiến</th>
+                <th class="font-weight-bold">Phí vận chuyển</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="(rate, index) in shippingRates" :key="index" class="table-row">
+                <td class="font-weight-medium">
+                  <div class="d-flex align-center gap-2">
+                    {{ rate.type }}
+                    <v-chip
+                      v-if="rate.isHot"
+                      color="red-lighten-5"
+                      text-color="red-darken-2"
+                      size="x-small"
+                      class="font-weight-bold"
+                    >
+                      Hot
+                    </v-chip>
+                  </div>
+                </td>
+                <td>{{ rate.area }}</td>
+                <td>{{ rate.time }}</td>
+                <td class="font-weight-bold">
+                  {{ rate.fee }}
+                  <span v-if="rate.note" class="text-caption primary-text ml-1">{{ rate.note }}</span>
+                </td>
+              </tr>
+            </tbody>
+          </v-table>
+        </div>
+        <v-card-text class="pa-4 bg-orange-lighten-5 border-t">
+          <div class="d-flex gap-2 align-start">
+            <v-icon icon="mdi-information-outline" size="small" class="text-grey-darken-1 mt-1"></v-icon>
+            <p class="text-caption text-grey-darken-1">
+              Thời gian giao hàng có thể lâu hơn dự kiến 1-2 ngày trong các dịp lễ, tết hoặc các chương trình khuyến mãi lớn.
+            </p>
+          </div>
+        </v-card-text>
       </v-card>
 
-      <!-- Detailed Policies & FAQ -->
+      <!-- Policy & FAQ Grid -->
       <v-row>
-        <!-- Left Column: Policies & FAQ -->
+        <!-- Left Column: Policy & FAQ -->
         <v-col cols="12" lg="8">
           <!-- Policy Section -->
           <div class="mb-8">
-            <div class="d-flex align-center gap-2 mb-4">
-              <v-icon color="primary">mdi-shield-check</v-icon>
-              <h3 class="text-h5 font-weight-bold">Chính sách đồng kiểm</h3>
+            <h3 class="text-h6 font-weight-bold mb-4 d-flex align-center gap-2">
+              <v-icon icon="mdi-shield-check-outline" class="primary-text"></v-icon>
+              Chính sách đồng kiểm
+            </h3>
+            <div class="policy-content text-body-2 text-grey-darken-1">
+              <p class="mb-2">Để đảm bảo quyền lợi của khách hàng, ToyStore khuyến khích quý khách hàng:</p>
+              <ul class="policy-list">
+                <li>Mở gói hàng và kiểm tra tình trạng bên ngoài của sản phẩm (không rách bao bì, móp méo hộp) ngay tại thời điểm nhận hàng.</li>
+                <li>Nếu phát hiện lỗi ngoại quan, quý khách có quyền từ chối nhận hàng và liên hệ ngay với CSKH.</li>
+                <li>Lưu ý: Không hỗ trợ thử sản phẩm (lắp pin, vận hành thử) khi chưa thanh toán.</li>
+              </ul>
             </div>
-            <v-card elevation="1">
-              <v-card-text>
-                <p class="mb-3">Để đảm bảo quyền lợi của khách hàng, ToyStore khuyến khích quý khách hàng:</p>
-                <ul class="policy-list">
-                  <li>Mở gói hàng và kiểm tra tình trạng bên ngoài của sản phẩm (không rách bao bì, móp méo hộp) ngay tại thời điểm nhận hàng.</li>
-                  <li>Nếu phát hiện lỗi ngoại quan, quý khách có quyền từ chối nhận hàng và liên hệ ngay với CSKH.</li>
-                  <li>Lưu ý: Không hỗ trợ thử sản phẩm (lắp pin, vận hành thử) khi chưa thanh toán.</li>
-                </ul>
-              </v-card-text>
-            </v-card>
           </div>
 
           <!-- FAQ Section -->
-          <div>
-            <div class="d-flex align-center gap-2 mb-4">
-              <v-icon color="primary">mdi-help-circle</v-icon>
-              <h3 class="text-h5 font-weight-bold">Câu hỏi thường gặp</h3>
-            </div>
-            <v-expansion-panels variant="accordion">
+          <div class="mb-6">
+            <h3 class="text-h6 font-weight-bold mb-4 d-flex align-center gap-2">
+              <v-icon icon="mdi-help-circle-outline" class="primary-text"></v-icon>
+              Câu hỏi thường gặp
+            </h3>
+            <v-expansion-panels variant="accordion" class="faq-accordion">
               <v-expansion-panel
                 v-for="(faq, index) in faqs"
                 :key="index"
+                class="mb-3 rounded-xl"
+                elevation="0"
               >
                 <v-expansion-panel-title class="font-weight-medium">
                   {{ faq.question }}
                 </v-expansion-panel-title>
-                <v-expansion-panel-text>
-                  <p class="text-grey-darken-1 pt-2">{{ faq.answer }}</p>
+                <v-expansion-panel-text class="text-body-2 text-grey-darken-1">
+                  {{ faq.answer }}
                 </v-expansion-panel-text>
               </v-expansion-panel>
             </v-expansion-panels>
@@ -183,83 +181,65 @@
 
         <!-- Right Column: Partners & Help -->
         <v-col cols="12" lg="4">
-          <!-- Partners -->
-          <v-card class="mb-6" elevation="1">
-            <v-card-title class="font-weight-bold">Đối tác vận chuyển</v-card-title>
-            <v-card-text>
+          <!-- Partners Card -->
+          <v-card class="mb-6 rounded-xl" elevation="0">
+            <v-card-text class="pa-6">
+              <h4 class="text-subtitle-1 font-weight-bold mb-4">Đối tác vận chuyển</h4>
               <v-row>
                 <v-col
                   v-for="partner in partners"
                   :key="partner"
                   cols="6"
                 >
-                  <v-card
-                    variant="outlined"
-                    class="text-center pa-3"
-                    color="grey-lighten-3"
-                  >
-                    <div class="text-caption font-weight-bold text-grey">{{ partner }}</div>
-                  </v-card>
+                  <div class="partner-logo rounded-lg">
+                    {{ partner }}
+                  </div>
                 </v-col>
               </v-row>
             </v-card-text>
           </v-card>
 
-          <!-- Help CTA -->
-          <v-card color="primary-lighten-5" elevation="1">
-            <v-card-text class="text-center pa-6">
-              <v-avatar
-                color="primary"
-                size="56"
-                class="mb-4 elevation-4"
-              >
-                <v-icon color="white" size="32">mdi-headset</v-icon>
+          <!-- Help CTA Card -->
+          <v-card class="rounded-xl cta-card" elevation="0">
+            <v-card-text class="pa-6 text-center">
+              <v-avatar color="#ee9d2b" size="48" class="mb-4">
+                <v-icon icon="mdi-headset" color="white" size="28"></v-icon>
               </v-avatar>
               <h4 class="text-h6 font-weight-bold mb-2">Cần hỗ trợ thêm?</h4>
               <p class="text-body-2 text-grey-darken-1 mb-4">
                 Đội ngũ CSKH luôn sẵn sàng giải đáp thắc mắc của bạn từ 8:00 - 22:00 hàng ngày.
               </p>
               <v-btn
-                color="primary"
+                color="#ee9d2b"
                 block
                 size="large"
-                prepend-icon="mdi-chat"
+                class="font-weight-bold text-none rounded-xl text-white mb-3"
+                elevation="0"
+                @click="showChatPopup = true"
               >
                 Chat ngay
               </v-btn>
-              <div class="text-caption text-grey-darken-1 mt-3">
-                Hoặc gọi hotline: 
-                <a href="tel:19001234" class="text-primary font-weight-bold text-decoration-none">
-                  1900 1234
-                </a>
+              <div class="text-caption text-grey-darken-1">
+                Hoặc gọi hotline: <a href="tel:19001234" class="font-weight-bold primary-text text-decoration-none">1900 1234</a>
               </div>
             </v-card-text>
           </v-card>
         </v-col>
       </v-row>
     </v-container>
+
+    <!-- Chat Popup -->
+    <ChatPopup v-model="showChatPopup" />
   </v-container>
 </template>
 
 <script setup>
 import { ref } from 'vue'
+import { useRouter } from 'vue-router'
+import ChatPopup from './ChatPopup.vue'
 
-const breadcrumbs = ref([
-  {
-    title: 'Trang chủ',
-    disabled: false,
-    href: '/'
-  },
-  {
-    title: 'Thông tin',
-    disabled: false,
-    href: '#'
-  },
-  {
-    title: 'Chính sách vận chuyển',
-    disabled: true
-  }
-])
+const router = useRouter()
+const showChatPopup = ref(false)
 
 const features = ref([
   {
@@ -273,7 +253,7 @@ const features = ref([
     description: 'Nhận hàng ngay trong 2 giờ đối với khu vực nội thành Hà Nội & TP.HCM.'
   },
   {
-    icon: 'mdi-check-decagram',
+    icon: 'mdi-shield-check',
     title: 'Kiểm tra hàng trước',
     description: 'Khách hàng được quyền mở hộp kiểm tra ngoại quan trước khi thanh toán (COD).'
   }
@@ -281,28 +261,28 @@ const features = ref([
 
 const shippingRates = ref([
   {
-    method: 'Tiêu chuẩn',
+    type: 'Tiêu chuẩn',
     area: 'Toàn quốc',
     time: '3 - 5 ngày',
     fee: '30.000đ',
     note: '(Miễn phí > 500k)',
-    hot: false
+    isHot: false
   },
   {
-    method: 'Nhanh',
+    type: 'Nhanh',
     area: 'Hà Nội / TP.HCM',
     time: '1 - 2 ngày',
     fee: '45.000đ',
-    note: null,
-    hot: false
+    note: '',
+    isHot: false
   },
   {
-    method: 'Hỏa tốc',
+    type: 'Hỏa tốc',
     area: 'Nội thành HN/HCM',
     time: '2 - 4 giờ',
     fee: 'Theo ứng dụng (Grab/Ahamove)',
-    note: null,
-    hot: true
+    note: '',
+    isHot: true
   }
 ])
 
@@ -321,12 +301,7 @@ const faqs = ref([
   }
 ])
 
-const partners = ref([
-  'GHN',
-  'Viettel Post',
-  'GrabExpress',
-  'Ahamove'
-])
+const partners = ref(['GHN', 'Viettel Post', 'GrabExpress', 'Ahamove'])
 </script>
 
 <style scoped>
@@ -335,48 +310,207 @@ const partners = ref([
   min-height: 100vh;
 }
 
-.hero-image {
+.primary-text {
+  color: #ee9d2b !important;
+}
+
+.hover-primary:hover {
+  color: #ee9d2b !important;
+}
+
+.line-height-tight {
+  line-height: 1.2;
+}
+
+.line-height-relaxed {
+  line-height: 1.6;
+}
+
+/* Hero Card */
+.hero-card {
+  background-color: #ffffff;
+  border: 1px solid #f4f3f0;
+}
+
+.hero-image-wrapper {
   position: relative;
 }
 
-.hover-card {
+.hero-image {
+  border-radius: 12px;
+  overflow: hidden;
+  transition: transform 0.3s ease;
+}
+
+.hero-image:hover {
+  transform: scale(1.02);
+}
+
+.btn-primary {
+  box-shadow: 0 4px 12px rgba(238, 157, 43, 0.3) !important;
+}
+
+.btn-primary:hover {
+  background-color: #d68a1f !important;
+}
+
+/* Feature Cards */
+.feature-card {
+  background-color: #ffffff;
+  border: 1px solid #e6e1db;
   transition: all 0.3s ease;
 }
 
-.hover-card:hover {
+.feature-card:hover {
   transform: translateY(-4px);
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12) !important;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.08);
 }
 
-.hover-row:hover {
+.feature-icon-circle {
+  width: 48px;
+  height: 48px;
+  background-color: rgba(238, 157, 43, 0.1);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Shipping Table */
+.shipping-table {
+  background-color: #ffffff;
+}
+
+.table-header {
+  background-color: rgba(238, 157, 43, 0.05);
+}
+
+.table-header th {
+  color: #181511 !important;
+  font-weight: 700;
+  padding: 16px 24px;
+  white-space: nowrap;
+}
+
+.table-row {
+  transition: background-color 0.2s ease;
+}
+
+.table-row:hover {
   background-color: rgba(0, 0, 0, 0.02);
 }
 
+.table-row td {
+  padding: 16px 24px;
+  color: #897961;
+}
+
+.border-b {
+  border-bottom: 1px solid #f4f3f0;
+}
+
+.border-t {
+  border-top: 1px solid #f4f3f0;
+}
+
+/* Policy Content */
+.policy-content {
+  line-height: 1.6;
+}
+
 .policy-list {
-  list-style-type: disc;
-  margin-left: 20px;
+  list-style: none;
+  padding-left: 0;
 }
 
 .policy-list li {
+  position: relative;
+  padding-left: 20px;
   margin-bottom: 8px;
-  color: #666;
+}
+
+.policy-list li:before {
+  content: '•';
+  position: absolute;
+  left: 0;
+  color: #ee9d2b;
+  font-weight: bold;
+}
+
+/* FAQ Accordion */
+.faq-accordion :deep(.v-expansion-panel) {
+  background-color: #ffffff;
+  border: 1px solid #e6e1db;
+  margin-bottom: 12px;
+}
+
+.faq-accordion :deep(.v-expansion-panel-title) {
+  font-size: 0.9375rem;
+}
+
+.faq-accordion :deep(.v-expansion-panel-title:hover) {
+  background-color: rgba(0, 0, 0, 0.02);
+}
+
+.faq-accordion :deep(.v-expansion-panel-text__wrapper) {
+  padding: 0 16px 16px 16px;
+  border-top: 1px solid #f4f3f0;
+}
+
+/* Partners */
+.partner-logo {
+  background-color: #f4f3f0;
+  border: 1px solid #e6e1db;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.75rem;
+  font-weight: bold;
+  color: #999;
+}
+
+/* CTA Card */
+.cta-card {
+  background: linear-gradient(135deg, #fff9f0 0%, #ffffff 100%);
+  border: 1px solid rgba(238, 157, 43, 0.2);
+}
+
+/* Gap utilities */
+.gap-2 {
+  gap: 8px;
 }
 
 .gap-3 {
   gap: 12px;
 }
 
-/* Table styling */
-:deep(.v-table) {
-  background-color: transparent;
+.gap-4 {
+  gap: 16px;
 }
 
-:deep(.v-table thead tr th) {
-  background-color: rgba(238, 157, 43, 0.05);
-  font-weight: 700;
+/* Responsive */
+@media (max-width: 960px) {
+  .hero-image {
+    max-width: 100%;
+  }
+  
+  .table-responsive {
+    overflow-x: auto;
+  }
 }
 
-:deep(.v-table tbody tr:hover) {
-  background-color: rgba(0, 0, 0, 0.02);
+@media (max-width: 600px) {
+  .text-h3 {
+    font-size: 1.75rem !important;
+  }
+  
+  .text-h4 {
+    font-size: 1.5rem !important;
+  }
+  
+  .text-h5 {
+    font-size: 1.25rem !important;
+  }
 }
 </style>

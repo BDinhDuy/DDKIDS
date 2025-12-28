@@ -11,34 +11,16 @@
 
   const route = useRoute()
   const userStore = useUserStore()
-  const showBirthdayPopup = ref(false)
   
-  // Kiểm tra sinh nhật khi user đăng nhập
-  const checkBirthdayInCurrentMonth = () => {
-    if (!userStore.isLoggedIn || !userStore.userBirthdate) {
-      return false
-    }
-    
-    const today = new Date()
-    const birthdate = new Date(userStore.userBirthdate)
-    
-    // Kiểm tra nếu tháng sinh nhật trùng với tháng hiện tại
-    return today.getMonth() === birthdate.getMonth()
-  }
-
-  // Watch khi user login để hiển thị popup sinh nhật
-  watch(() => userStore.isLoggedIn, (isLoggedIn) => {
-    if (isLoggedIn && checkBirthdayInCurrentMonth()) {
-      // Kiểm tra xem đã show popup trong session chưa
-      const birthdayShownKey = `birthdayShown_${new Date().getFullYear()}_${new Date().getMonth()}`
-      const hasShownThisMonth = sessionStorage.getItem(birthdayShownKey)
-      
-      if (!hasShownThisMonth) {
-        showBirthdayPopup.value = true
-        sessionStorage.setItem(birthdayShownKey, 'true')
+  // Sử dụng computed để bind với store state
+  const showBirthdayPopup = computed({
+    get: () => userStore.shouldShowBirthdayPopup,
+    set: (value) => {
+      if (!value) {
+        userStore.closeBirthdayPopup()
       }
     }
-  }, { immediate: true })
+  })
   
   const showNavbar = computed(() => {
     return route.meta.showNavbar !== false
