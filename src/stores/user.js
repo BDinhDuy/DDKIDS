@@ -46,5 +46,6 @@ export const useUserStore = defineStore("user", {
     userName: (state) => state.user?.name || "",
     userAvatar: (state) => state.user?.avatar || "",
     userEmail: (state) => state.user?.email || "",
+    userBirthdate: (state) => state.user?.birthdate || null,
   },
 });

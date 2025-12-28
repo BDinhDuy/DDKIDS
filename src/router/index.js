@@ -9,8 +9,12 @@ import checkoutDeatails from "../components/cart/checkoutDetails.vue";
 import orderSuccess from "../components/cart/orderSuccess.vue";
 import Product from "../components/products/products.vue";
 import ProductDetail from "../components/products/producDetails.vue";
-import Contact from "../components/shop/contact.vue";  
+import Contact from "../components/shop/contact.vue";
 import Profile from "../components/users/profile.vue";
+import Policy from "../components/shop/policy.vue";
+import policyRefund from "../components/shop/policyRefund.vue";
+import policyTransition from "../components/shop/policyTransition.vue";
+import notFound from "../components/404notFound.vue";
 
 const routes = [
   {
@@ -77,6 +81,30 @@ const routes = [
     path: "/contact",
     name: "contact",
     component: Contact,
+    meta: { showNavbar: false, showHeader: true, showFooter: true },
+  },
+  {
+    path: "/policy",
+    name: "policy",
+    component: Policy,
+    meta: { showNavbar: false, showHeader: true, showFooter: true },
+  },
+  {
+    path: "/policy-refund",
+    name: "policyRefund",
+    component: policyRefund,
+    meta: { showNavbar: false, showHeader: true, showFooter: true },
+  },
+  {
+    path: "/policy-transition",
+    name: "policyTransition",
+    component: policyTransition,
+    meta: { showNavbar: false, showHeader: true, showFooter: true },
+  },
+  {
+    path: "/404-not-found",
+    name: "notFound",
+    component: notFound,
     meta: { showNavbar: false, showHeader: true, showFooter: true },
   },
   {

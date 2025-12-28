@@ -5,6 +5,7 @@
   import AuthHeader from './components/authHeader.vue'
   import Navbar from './components/navbar.vue'
   import Footer from './components/footer.vue'
+  import BackToTop from './components/BackToTop.vue'
 
   const route = useRoute()
   
@@ -33,6 +34,7 @@
       </router-view>
     </v-main>
     <Footer v-if="showFooter"></Footer>
+    <BackToTop />
   </v-app>
 </template>
 
