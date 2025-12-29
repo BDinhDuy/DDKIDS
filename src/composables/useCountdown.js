@@ -9,11 +9,6 @@ export function useCountdown(initialSeconds = 5) {
   const isRunning = ref(false);
   let intervalId = null;
 
-  /**
-   * Start countdown
-   * @param {Function} callback - Function to call when countdown reaches 0
-   * @param {number} seconds - Starting seconds (optional)
-   */
   const start = (callback, seconds = initialSeconds) => {
     if (isRunning.value) {
       stop();
@@ -34,9 +29,7 @@ export function useCountdown(initialSeconds = 5) {
     }, 1000);
   };
 
-  /**
-   * Stop countdown
-   */
+
   const stop = () => {
     if (intervalId) {
       clearInterval(intervalId);
@@ -45,18 +38,11 @@ export function useCountdown(initialSeconds = 5) {
     isRunning.value = false;
   };
 
-  /**
-   * Reset countdown
-   * @param {number} seconds - Seconds to reset to
-   */
   const reset = (seconds = initialSeconds) => {
     stop();
     countdown.value = seconds;
   };
 
-  /**
-   * Pause countdown
-   */
   const pause = () => {
     if (intervalId) {
       clearInterval(intervalId);
@@ -65,10 +51,6 @@ export function useCountdown(initialSeconds = 5) {
     isRunning.value = false;
   };
 
-  /**
-   * Resume countdown
-   * @param {Function} callback - Function to call when countdown reaches 0
-   */
   const resume = (callback) => {
     if (!isRunning.value && countdown.value > 0) {
       start(callback, countdown.value);

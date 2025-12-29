@@ -10,10 +10,6 @@ export function useForm(initialValues = {}) {
   const isSubmitting = ref(false);
   const errors = ref({});
 
-  /**
-   * Validate form
-   * @returns {Promise<boolean>}
-   */
   const validate = async () => {
     if (!formRef.value) return false;
 
@@ -21,9 +17,6 @@ export function useForm(initialValues = {}) {
     return valid;
   };
 
-  /**
-   * Reset form
-   */
   const reset = () => {
     formData.value = { ...initialValues };
     errors.value = {};
@@ -32,9 +25,6 @@ export function useForm(initialValues = {}) {
     }
   };
 
-  /**
-   * Reset validation
-   */
   const resetValidation = () => {
     errors.value = {};
     if (formRef.value) {
@@ -42,37 +32,18 @@ export function useForm(initialValues = {}) {
     }
   };
 
-  /**
-   * Set field value
-   * @param {string} field
-   * @param {any} value
-   */
   const setFieldValue = (field, value) => {
     formData.value[field] = value;
   };
 
-  /**
-   * Set field error
-   * @param {string} field
-   * @param {string} error
-   */
   const setFieldError = (field, error) => {
     errors.value[field] = error;
   };
 
-  /**
-   * Clear field error
-   * @param {string} field
-   */
   const clearFieldError = (field) => {
     delete errors.value[field];
   };
 
-  /**
-   * Handle form submission
-   * @param {Function} submitFn - Function to execute on submit
-   * @returns {Promise<void>}
-   */
   const handleSubmit = async (submitFn) => {
     const isValid = await validate();
     if (!isValid) return;
