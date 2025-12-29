@@ -5,7 +5,7 @@
         <!-- Logo -->
         <v-col cols="auto" class="d-flex align-center">
           <div class="logo-wrapper">
-          <img :src="ASSETS.LOGO" alt="" class="logo-img">
+          <img :src="ASSETS.LOGO" alt="" class="logo-img" @click="handleHome">
           </div>
         </v-col>
 
@@ -234,11 +234,11 @@ const handleSearch = () => {
 }
 
 const handleLogin = () => {
-  router.push('/login')
+  router.push('/auth/login')
 }
 
 const handleRegister = () => {
-  router.push('/register')
+  router.push('/auth/register')
 }
 
 const handleCart = () => {
@@ -246,7 +246,7 @@ const handleCart = () => {
 }
 
 const handleProfile = () => {
-  router.push({ path: '/profile', query: { tab: 'personal' } })
+  router.push({ path: '/profile', query: { tab: 'dashboard' } })
 }
 
 const handleWishlist = () => {
@@ -265,6 +265,10 @@ const handleLogout = () => {
 const goToProductDetail = (id) => {
   console.log('Navigate to product detail:', id)
   router.push(`/product/${id}`)
+}
+
+const handleHome = () => {
+  router.push('/')
 }
 </script>
 

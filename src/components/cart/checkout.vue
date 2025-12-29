@@ -600,7 +600,7 @@ const placeOrder = () => {
   
   // Chuyển sang trang checkoutDetails sau 1.5s
   setTimeout(() => {
-    router.push('/checkoutDeatails')
+    router.push('/checkout/details')
   }, 1500)
 }
 </script>

@@ -56,11 +56,11 @@ const isLoginPage = computed(() => route.name === 'login')
 const isRegisterPage = computed(() => route.name === 'register')
 
 const handleLogin = () => {
-  router.push('/login')
+  router.push('/auth/login')
 }
 
 const handleRegister = () => {
-  router.push('/register')
+  router.push('/auth/register')
 }
 </script>
 

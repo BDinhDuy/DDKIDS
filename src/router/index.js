@@ -1,123 +1,159 @@
 import { createRouter, createWebHistory } from "vue-router";
-import Home from "../components/home.vue";
-import Cart from "../components/cart/cart.vue";
-import Login from "../components/users/login.vue";
-import Register from "../components/users/register.vue";
-import ForgotPassword from "../components/users/forgotPassword.vue";
-import Checkout from "../components/cart/checkout.vue";
-import checkoutDeatails from "../components/cart/checkoutDetails.vue";
-import orderSuccess from "../components/cart/orderSuccess.vue";
-import Product from "../components/products/products.vue";
-import ProductDetail from "../components/products/producDetails.vue";
-import Contact from "../components/shop/contact.vue";
-import Profile from "../components/users/profile.vue";
-import Policy from "../components/shop/policy.vue";
-import policyRefund from "../components/shop/policyRefund.vue";
-import policyTransition from "../components/shop/policyTransition.vue";
-import notFound from "../components/404notFound.vue";
-import formRefund from "../components/shop/formRefund.vue";
+import { components } from "vuetify/dist/vuetify.js";
 
 const routes = [
   {
     path: "/",
     name: "home",
-    component: Home,
+    component: () => import("../components/home.vue"),
     meta: { showNavbar: true, showHeader: true, showFooter: true },
   },
+  
+  // Cart & Checkout Flow
   {
     path: "/cart",
     name: "cart",
-    component: Cart,
+    component: () => import("../components/cart/cart.vue"),
     meta: { showNavbar: true, showHeader: true, showFooter: true },
   },
   {
-    path: "/login",
-    name: "login",
-    component: Login,
-    meta: { showNavbar: false, showHeader: false, showFooter: false },
-  },
-  {
-    path: "/register",
-    name: "register",
-    component: Register,
-    meta: { showNavbar: false, showHeader: false, showFooter: false },
-  },
-  {
-    path: "/forgot-password",
-    name: "forgot-password",
-    component: ForgotPassword,
-    meta: { showNavbar: false, showHeader: false, showFooter: false },
-  },
-  {
     path: "/checkout",
-    name: "checkout",
-    component: Checkout,
-    meta: { showNavbar: false, showHeader: true, showFooter: true },
+    children: [
+      {
+        path: "",
+        name: "checkout",
+        component: () => import("../components/cart/checkout.vue"),
+        meta: { showNavbar: false, showHeader: true, showFooter: true },
+      },
+      {
+        path: "details",
+        name: "checkout-details",
+        component: () => import("../components/cart/checkoutDetails.vue"),
+        meta: { showNavbar: false, showHeader: true, showFooter: true },
+      },
+      {
+        path: "success",
+        name: "order-success",
+        component: () => import("../components/cart/orderSuccess.vue"),
+        meta: { showNavbar: false, showHeader: true, showFooter: true },
+      },
+    ],
   },
-  {
-    path: "/checkoutDeatails",
-    name: "checkout-details",
-    component: checkoutDeatails,
-    meta: { showNavbar: false, showHeader: true, showFooter: true },
-  },
-  {
-    path: "/orderSuccess",
-    name: "order-success",
-    component: orderSuccess,
-    meta: { showNavbar: false, showHeader: true, showFooter: true },
-  },
+
+  // Products
   {
     path: "/products",
     name: "products",
-    component: Product,
+    component: () => import("../components/products/products.vue"),
     meta: { showNavbar: true, showHeader: true, showFooter: true },
   },
   {
     path: "/product/:id",
     name: "product-detail",
-    component: ProductDetail,
+    component: () => import("../components/products/producDetails.vue"),
     meta: { showNavbar: true, showHeader: true, showFooter: true },
   },
+
+  // User Authentication
   {
-    path: "/contact",
-    name: "contact",
-    component: Contact,
-    meta: { showNavbar: false, showHeader: true, showFooter: true },
+    path: "/auth",
+    meta: { showNavbar: false, showHeader: false, showFooter: false },
+    children: [
+      {
+        path: "login",
+        name: "login",
+        component: () => import("../components/users/auth/login.vue"),
+      },
+      {
+        path: "register",
+        name: "register",
+        component: () => import("../components/users/auth/register.vue"),
+      },
+      {
+        path: "forgot-password",
+        name: "forgot-password",
+        component: () => import("../components/users/forgotPassword.vue"),
+      },
+    ],
   },
-  {
-    path: "/policy",
-    name: "policy",
-    component: Policy,
-    meta: { showNavbar: false, showHeader: true, showFooter: true },
-  },
-  {
-    path: "/policy-refund",
-    name: "policyRefund",
-    component: policyRefund,
-    meta: { showNavbar: false, showHeader: true, showFooter: true },
-  },
-  {
-    path: "/form-refund",
-    name: "formRefund",
-    component: formRefund,
-    meta: { showNavbar: false, showHeader: true, showFooter: true },
-  },
-  {
-    path: "/policy-transition",
-    name: "policyTransition",
-    component: policyTransition,
-    meta: { showNavbar: false, showHeader: true, showFooter: true },
-  },
-  {
-    path: "/404-not-found",
-    name: "notFound",
-    component: notFound,
-    meta: { showNavbar: false, showHeader: true, showFooter: true },
-  },
+
+  // Profile with tabs
   {
     path: "/profile",
-    name: "profile",
-    component: Profile,
+    component: () => import("../components/users/profile.vue"),
+    meta: { showNavbar: false, showHeader: true, showFooter: true },
+    children: [
+      {
+        path: "",
+        name: "profile",
+        components: () => import("../components/users/profile.vue"),
+      },
+      {
+        path: "personal",
+        name: "profile-personal",
+        component: () => import("../components/users/PersonalInfoTab.vue"),
+      },
+      {
+        path: "wishlist",
+        name: "profile-wishlist",
+        component: () => import("../components/users/WishlistTab.vue"),
+      },
+      {
+        path: "addresses",
+        name: "profile-addresses",
+        component: () => import("../components/users/AddressBookTab.vue"),
+      },
+      {
+        path: "orders",
+        name: "profile-orders",
+        component: () => import("../components/users/OrderHistoryTab.vue"),
+      },
+      {
+        path: "change-password",
+        name: "profile-password",
+        component: () => import("../components/users/ChangePasswordTab.vue"),
+      },
+    ],
+  },
+
+  // Shop & Policies
+  {
+    path: "/shop",
+    meta: { showNavbar: false, showHeader: true, showFooter: true },
+    children: [
+      {
+        path: "contact",
+        name: "contact",
+        component: () => import("../components/shop/contact.vue"),
+      },
+      {
+        path: "policy",
+        name: "policy",
+        component: () => import("../components/shop/policy.vue"),
+      },
+      {
+        path: "policy/refund",
+        name: "policyRefund",
+        component: () => import("../components/shop/policyRefund.vue"),
+      },
+      {
+        path: "policy/shipping",
+        name: "policyTransition",
+        component: () => import("../components/shop/policyTransition.vue"),
+      },
+      {
+        path: "form-refund",
+        name: "formRefund",
+        component: () => import("../components/shop/formRefund.vue"),
+      },
+    ],
+  },
+
+  // 404 Not Found (must be last)
+  {
+    path: '/:pathMatch(.*)*',
+    name: 'notFound',
+    component: () => import("../components/404notFound.vue"),
     meta: { showNavbar: false, showHeader: true, showFooter: true },
   },
 ];

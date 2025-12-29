@@ -192,11 +192,11 @@ const loginWithFacebook = () => {
 }
 
 const goToRegister = () => {
-  router.push('/register')
+  router.push('/auth/register')
 }
 
 const goToForgotPassword = () => {
-  router.push('/forgot-password')
+  router.push('/auth/forgot-password')
 }
 </script>
 

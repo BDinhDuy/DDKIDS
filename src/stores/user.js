@@ -96,7 +96,7 @@ export const useUserStore = defineStore("user", {
           this.user = JSON.parse(savedUser);
           this.isLoggedIn = true;
           // Don't show birthday popup on init, only on login
-          this.shouldShowBirthdayPopup = false;
+          this.shouldShowBirthdayPopup = true;
         }
       } catch (error) {
         console.error("Init user error:", error);

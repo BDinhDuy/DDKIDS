@@ -732,7 +732,7 @@ const viewProduct = (productId) => {
 const handleLogout = () => {
   // Implement logout logic
   console.log('Logging out...')
-  router.push('/login')
+  router.push('/auth/login')
 }
 
 const callHotline = () => {

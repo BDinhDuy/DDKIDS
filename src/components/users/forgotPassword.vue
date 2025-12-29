@@ -225,7 +225,7 @@ const closeDialog = () => {
 const goToLogin = () => {
     clearInterval(countdownInterval)
     clearTimeout(redirectTimeout)
-    router.push('/login')
+    router.push('/auth/login')
 }
 
 // Cleanup on component unmount

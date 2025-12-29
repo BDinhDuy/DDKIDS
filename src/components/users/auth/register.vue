@@ -297,7 +297,7 @@ const registerWithFacebook = () => {
 
 const goToLogin = () => {
   clearInterval(countdownInterval)
-  router.push('/login')
+  router.push('/auth/login')
 }
 
 // Cleanup on component unmount

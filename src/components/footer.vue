@@ -89,7 +89,7 @@ import { APP_INFO, ASSETS } from '@/utils/constants'
 import router from '../router';
 
 const handleContact = () => {
-	router.push('/contact');
+	router.push('/shop/contact');
 }
 </script>
 
