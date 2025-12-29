@@ -4,13 +4,8 @@
       <v-row align="center" no-gutters>
         <!-- Logo -->
         <v-col cols="auto" class="d-flex align-center">
-          <div class="logo-wrapper" @click="showBirthdayPopup = true">
-            <div class="logo-icon">
-              <svg fill="none" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg" class="logo-svg">
-                <path d="M42.4379 44C42.4379 44 36.0744 33.9038 41.1692 24C46.8624 12.9336 42.2078 4 42.2078 4L7.01134 4C7.01134 4 11.6577 12.932 5.96912 23.9969C0.876273 33.9029 7.27094 44 7.27094 44L42.4379 44Z" fill="currentColor"></path>
-              </svg>
-            </div>
-            <h2 class="logo-text">{{ APP_INFO.name }}</h2>
+          <div class="logo-wrapper">
+          <img :src="ASSETS.LOGO" alt="" class="logo-img">
           </div>
         </v-col>
 
@@ -215,7 +210,7 @@ import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { useCartStore } from '../stores/cart'
 import { useUserStore } from '../stores/user'
-import { APP_INFO } from '@/utils/constants'
+import { ASSETS } from '@/utils/constants'
 import BirthdayPopup from './users/BirthdayPopup.vue'
 
 const router = useRouter()
@@ -299,6 +294,12 @@ const goToProductDetail = (id) => {
   gap: 8px;
   cursor: pointer;
   user-select: none;
+}
+
+.logo-img {
+  width: 48px;
+  height: 48px;
+  object-fit: contain;
 }
 
 .logo-icon {

@@ -6,11 +6,7 @@
 				<v-col cols="12" md="6" lg="3">
 					<div class="footer-brand">
 						<div class="d-flex align-center gap-2 mb-4">
-							<div class="footer-logo-icon">
-								<svg fill="none" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg" class="logo-svg">
-									<path d="M42.4379 44C42.4379 44 36.0744 33.9038 41.1692 24C46.8624 12.9336 42.2078 4 42.2078 4L7.01134 4C7.01134 4 11.6577 12.932 5.96912 23.9969C0.876273 33.9029 7.27094 44 7.27094 44L42.4379 44Z" fill="currentColor"></path>
-								</svg>
-							</div>
+							<img :src="ASSETS.LOGO" alt="" class="footer-logo-icon" />
 							<h2 class="footer-logo-text">{{ APP_INFO.NAME }}</h2>
 						</div>
 						<p class="footer-desc">Cửa hàng đồ chơi trẻ em uy tín hàng đầu. Mang đến niềm vui và sự phát triển toàn diện cho bé yêu của bạn.</p>
@@ -33,8 +29,8 @@
 					<div class="footer-column">
 						<h3 class="footer-heading">Về chúng tôi</h3>
 						<ul class="footer-links">
-							<li><a href="#">Câu hỏi thường gặp</a></li>
-							<li><a href="#">Hướng dẫn mua hàng</a></li>
+							<li>Câu hỏi thường gặp</li>
+							<li>Hướng dẫn mua hàng</li>
 							<li @click="handleContact">Liên hệ</li>
 						</ul>
 					</div>
@@ -45,9 +41,9 @@
 					<div class="footer-column">
 						<h3 class="footer-heading">Hỗ trợ khách hàng</h3>
 						<ul class="footer-links">
-							<li><a href="#">Chính sách đổi trả</a></li>
-							<li><a href="#">Chính sách bảo mật</a></li>
-							<li><a href="#">Điều khoản sử dụng</a></li>
+							<li>Chính sách đổi trả</li>
+							<li>Chính sách bảo mật</li>
+							<li>Điều khoản sử dụng</li>
 						</ul>
 					</div>
 				</v-col>
@@ -58,16 +54,16 @@
 						<h3 class="footer-heading">Liên hệ</h3>
 						<ul class="footer-contact">
 							<li class="d-flex align-start gap-2">
-								<v-icon size="small">mdi-map-marker</v-icon>
+								<v-icon size="small" class="pr-2">mdi-map-marker</v-icon>
 								<span>1/1 đường 26 phường Phước Long Tp.Hồ Chí Minh</span>
 							</li>
 							<li class="d-flex align-center gap-2">
-								<v-icon size="small">mdi-phone</v-icon>
+								<v-icon size="small" class="pr-2">mdi-phone</v-icon>
 								<span>0345466755</span>
 							</li>
 							<li class="d-flex align-center gap-2">
-								<v-icon size="small">mdi-email</v-icon>
-								<span>support@gmail.com</span>
+								<v-icon size="small" class="pr-2">mdi-email</v-icon>
+								<span>ddkids8382@gmail.com</span>
 							</li>
 						</ul>
 					</div>
@@ -89,7 +85,7 @@
 </template>
 
 <script setup>
-import { APP_INFO } from '@/utils/constants'
+import { APP_INFO, ASSETS } from '@/utils/constants'
 import router from '../router';
 
 const handleContact = () => {
@@ -161,16 +157,11 @@ const handleContact = () => {
 
 .footer-links li {
 	margin-bottom: 12px;
-}
-
-.footer-links a {
 	font-size: 14px;
 	color: #666;
-	text-decoration: none;
-	transition: color 0.2s;
 }
 
-.footer-links a:hover {
+.footer-links li:hover {
 	color: #ee9d2b;
 }
 

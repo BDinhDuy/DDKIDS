@@ -212,3 +212,7 @@ export const API_ENDPOINTS = {
   PROVINCES: "https://provinces.open-api.vn/api",
   // Add more endpoints as needed
 };
+
+export const ASSETS = {
+  LOGO: "../src/assets/img/DDKIDS.webp",
+}

@@ -21,7 +21,4 @@ const cartStore = useCartStore();
 userStore.initUser();
 cartStore.initCart();
 
-userStore.initUser();
-cartStore.initCart();
-
 app.use(router).use(vuetify).mount("#app");
