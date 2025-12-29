@@ -18,26 +18,22 @@ const routes = [
   },
   {
     path: "/checkout",
-    children: [
-      {
-        path: "",
-        name: "checkout",
-        component: () => import("../components/cart/checkout.vue"),
-        meta: { showNavbar: false, showHeader: true, showFooter: true },
-      },
-      {
-        path: "details",
-        name: "checkout-details",
-        component: () => import("../components/cart/checkoutDetails.vue"),
-        meta: { showNavbar: false, showHeader: true, showFooter: true },
-      },
-      {
-        path: "success",
-        name: "order-success",
-        component: () => import("../components/cart/orderSuccess.vue"),
-        meta: { showNavbar: false, showHeader: true, showFooter: true },
-      },
-    ],
+    name: "checkout",
+    component: () => import("../components/cart/checkout.vue"),
+    meta: { showNavbar: false, showHeader: true, showFooter: true },
+  },
+  {
+    path: "/checkout/details",
+    name: "checkout-details",
+    component: () => import("../components/cart/checkoutDetails.vue"),
+    meta: { showNavbar: false, showHeader: true, showFooter: true },
+  },
+  {
+    // Đổi đường dẫn đẹp hơn: /checkout/success
+    path: "/checkout/success",
+    name: "order-success",
+    component: () => import("../components/cart/orderSuccess.vue"),
+    meta: { showNavbar: false, showHeader: true, showFooter: true },
   },
 
   // Products
