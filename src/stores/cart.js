@@ -11,9 +11,6 @@ export const useCartStore = defineStore("cart", {
   }),
 
   actions: {
-    /**
-     * Initialize cart from localStorage
-     */
     initCart() {
       try {
         const savedCart = localStorage.getItem(STORAGE_KEY);
@@ -26,9 +23,6 @@ export const useCartStore = defineStore("cart", {
       }
     },
 
-    /**
-     * Save cart to localStorage
-     */
     saveCart() {
       try {
         localStorage.setItem(STORAGE_KEY, JSON.stringify(this.cartItems));
@@ -37,11 +31,6 @@ export const useCartStore = defineStore("cart", {
       }
     },
 
-    /**
-     * Add product to cart
-     * @param {Object} product - Product object
-     * @param {number} quantity - Quantity to add (default: 1)
-     */
     addToCart(product, quantity = 1) {
       if (!product || !product.id) {
         console.error("Invalid product");
@@ -68,10 +57,6 @@ export const useCartStore = defineStore("cart", {
       }
     },
 
-    /**
-     * Remove product from cart
-     * @param {string|number} productId - Product ID
-     */
     removeFromCart(productId) {
       try {
         this.cartItems = this.cartItems.filter((item) => item.id !== productId);
@@ -84,11 +69,6 @@ export const useCartStore = defineStore("cart", {
       }
     },
 
-    /**
-     * Update product quantity
-     * @param {string|number} productId - Product ID
-     * @param {number} quantity - New quantity
-     */
     updateQuantity(productId, quantity) {
       try {
         const item = this.cartItems.find((item) => item.id === productId);
@@ -110,9 +90,6 @@ export const useCartStore = defineStore("cart", {
       }
     },
 
-    /**
-     * Clear all items from cart
-     */
     clearCart() {
       try {
         this.cartItems = [];
@@ -125,20 +102,10 @@ export const useCartStore = defineStore("cart", {
       }
     },
 
-    /**
-     * Check if product is in cart
-     * @param {string|number} productId - Product ID
-     * @returns {boolean}
-     */
     isInCart(productId) {
       return this.cartItems.some((item) => item.id === productId);
     },
 
-    /**
-     * Get product quantity in cart
-     * @param {string|number} productId - Product ID
-     * @returns {number}
-     */
     getProductQuantity(productId) {
       const item = this.cartItems.find((item) => item.id === productId);
       return item ? item.quantity : 0;
@@ -146,31 +113,19 @@ export const useCartStore = defineStore("cart", {
   },
 
   getters: {
-    /**
-     * Get total number of items in cart
-     */
     cartCount: (state) => {
       return state.cartItems.reduce((sum, item) => sum + item.quantity, 0);
     },
 
-    /**
-     * Get total number of unique products
-     */
     uniqueProductCount: (state) => state.cartItems.length,
 
-    /**
-     * Get total amount
-     */
     totalAmount: (state) => {
       return state.cartItems.reduce(
         (acc, item) => acc + (item.price || 0) * item.quantity,
         0
       );
     },
-
-    /**
-     * Check if cart is empty
-     */
+    
     isEmpty: (state) => state.cartItems.length === 0,
   },
 });

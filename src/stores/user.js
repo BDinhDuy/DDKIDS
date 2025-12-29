@@ -17,10 +17,6 @@ export const useUserStore = defineStore("user", {
   }),
 
   actions: {
-    /**
-     * Login user
-     * @param {Object} userData - User data object
-     */
     login(userData) {
       try {
         this.user = userData;
@@ -39,9 +35,6 @@ export const useUserStore = defineStore("user", {
       }
     },
 
-    /**
-     * Check if should show birthday popup
-     */
     checkAndSetBirthdayPopup() {
       if (!this.user?.birthdate) {
         this.shouldShowBirthdayPopup = false;
@@ -63,16 +56,10 @@ export const useUserStore = defineStore("user", {
       }
     },
 
-    /**
-     * Close birthday popup
-     */
     closeBirthdayPopup() {
       this.shouldShowBirthdayPopup = false;
     },
 
-    /**
-     * Logout user
-     */
     logout() {
       this.user = null;
       this.isLoggedIn = false;
@@ -82,9 +69,6 @@ export const useUserStore = defineStore("user", {
       this.clearUserFromStorage();
     },
 
-    /**
-     * Initialize user from storage
-     */
     initUser() {
       try {
         const savedUser = localStorage.getItem(STORAGE_KEYS.USER);
@@ -104,10 +88,6 @@ export const useUserStore = defineStore("user", {
       }
     },
 
-    /**
-     * Update user information
-     * @param {Object} userData - Updated user data
-     */
     updateUserInfo(userData) {
       if (!this.user) {
         console.warn("No user to update");
@@ -124,32 +104,19 @@ export const useUserStore = defineStore("user", {
       }
     },
 
-    /**
-     * Save user to localStorage
-     * @param {Object} userData
-     */
     saveUserToStorage(userData) {
       localStorage.setItem(STORAGE_KEYS.USER, JSON.stringify(userData));
       localStorage.setItem(STORAGE_KEYS.IS_LOGGED_IN, "true");
     },
 
-    /**
-     * Clear user from localStorage
-     */
     clearUserFromStorage() {
       localStorage.removeItem(STORAGE_KEYS.USER);
       localStorage.removeItem(STORAGE_KEYS.IS_LOGGED_IN);
     },
 
-    /**
-     * Get birthday storage key
-     * @returns {string}
-     */
     getBirthdayStorageKey() {
       const today = new Date();
-      return `${
-        STORAGE_KEYS.BIRTHDAY_SHOWN
-      }_${today.getFullYear()}_${today.getMonth()}`;
+      return `${STORAGE_KEYS.BIRTHDAY_SHOWN}_${today.getFullYear()}_${today.getMonth()}`;
     },
   },
 
