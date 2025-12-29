@@ -468,8 +468,8 @@ watch(() => route.query.tab, (newTab) => {
 })
 
 watch(activeTab, (newTab) => {
-  // Optional: Update URL without reloading when tab changes
-  // router.replace({ query: { ...route.query, tab: newTab } })
+  // Update URL without reloading when tab changes
+  router.replace({ query: { ...route.query, tab: newTab } })
 })
 
 // Chat popup state

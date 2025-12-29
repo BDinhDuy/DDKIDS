@@ -77,43 +77,12 @@ const routes = [
     ],
   },
 
-  // Profile with tabs
+  // Profile (state-based tabs with query params)
   {
     path: "/profile",
+    name: "profile",
     component: () => import("../components/users/profile.vue"),
     meta: { showNavbar: false, showHeader: true, showFooter: true },
-    children: [
-      {
-        path: "",
-        name: "profile",
-        components: () => import("../components/users/profile.vue"),
-      },
-      {
-        path: "personal",
-        name: "profile-personal",
-        component: () => import("../components/users/PersonalInfoTab.vue"),
-      },
-      {
-        path: "wishlist",
-        name: "profile-wishlist",
-        component: () => import("../components/users/WishlistTab.vue"),
-      },
-      {
-        path: "addresses",
-        name: "profile-addresses",
-        component: () => import("../components/users/AddressBookTab.vue"),
-      },
-      {
-        path: "orders",
-        name: "profile-orders",
-        component: () => import("../components/users/OrderHistoryTab.vue"),
-      },
-      {
-        path: "change-password",
-        name: "profile-password",
-        component: () => import("../components/users/ChangePasswordTab.vue"),
-      },
-    ],
   },
 
   // Shop & Policies
