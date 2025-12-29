@@ -1,5 +1,4 @@
 import { createRouter, createWebHistory } from "vue-router";
-import { components } from "vuetify/dist/vuetify.js";
 
 const routes = [
   {
@@ -8,7 +7,7 @@ const routes = [
     component: () => import("../components/home.vue"),
     meta: { showNavbar: true, showHeader: true, showFooter: true },
   },
-  
+
   // Cart & Checkout Flow
   {
     path: "/cart",
@@ -116,8 +115,8 @@ const routes = [
 
   // 404 Not Found (must be last)
   {
-    path: '/:pathMatch(.*)*',
-    name: 'notFound',
+    path: "/:pathMatch(.*)*",
+    name: "notFound",
     component: () => import("../components/404notFound.vue"),
     meta: { showNavbar: false, showHeader: true, showFooter: true },
   },

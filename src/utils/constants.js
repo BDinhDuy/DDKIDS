@@ -140,9 +140,9 @@ export const VALIDATION = {
 export const APP_INFO = {
   NAME: "DDKIDS",
   FULL_NAME: "ToyStore - Đồ chơi trẻ em",
-  HOTLINE: "1900 1234",
-  EMAIL: "support@ddkids.vn",
-  ADDRESS: "123 Đường ABC, Quận XYZ, TP. Hồ Chí Minh",
+  HOTLINE: "0798382513",
+  EMAIL: "ddkids8382@gmail.com",
+  ADDRESS: "1/1 đường 26, phường Phước Long, TP Hồ Chí Minh",
 };
 
 // ==================== PAGINATION ====================
@@ -215,4 +215,4 @@ export const API_ENDPOINTS = {
 
 export const ASSETS = {
   LOGO: "../src/assets/img/DDKIDS.webp",
-}
+};

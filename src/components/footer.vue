@@ -55,15 +55,15 @@
 						<ul class="footer-contact">
 							<li class="d-flex align-start gap-2">
 								<v-icon size="small" class="pr-2">mdi-map-marker</v-icon>
-								<span>1/1 đường 26 phường Phước Long Tp.Hồ Chí Minh</span>
+								<span>{{ APP_INFO.ADDRESS }}</span>
 							</li>
 							<li class="d-flex align-center gap-2">
 								<v-icon size="small" class="pr-2">mdi-phone</v-icon>
-								<span>0345466755</span>
+								<span>{{ APP_INFO.HOTLINE }}</span>
 							</li>
 							<li class="d-flex align-center gap-2">
 								<v-icon size="small" class="pr-2">mdi-email</v-icon>
-								<span>ddkids8382@gmail.com</span>
+								<span>{{ APP_INFO.EMAIL }}</span>
 							</li>
 						</ul>
 					</div>

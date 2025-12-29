@@ -1,7 +1,7 @@
 // Email validation
 export const emailRules = [
-  (v) => !!v || "Email là bắt buộc",
-  (v) => /^[^\s@]+@[^\s@]+\.com$/.test(v) || "Email phải có đuôi .com",
+  (value) => !!value || "Email là bắt buộc",
+  (value) => /^[^\s@]+@[^\s@]+\.com$/.test(value) || "Email phải có đuôi .com",
 ];
 
 export const validateEmail = (email) => {
@@ -16,8 +16,8 @@ export const validateEmail = (email) => {
 
 // Password validation
 export const passwordRules = [
-  (v) => !!v || "Mật khẩu là bắt buộc",
-  (v) => v.length >= 8 || "Mật khẩu phải có ít nhất 8 ký tự",
+  (value) => !!value || "Mật khẩu là bắt buộc",
+  (value) => value.length >= 8 || "Mật khẩu phải có ít nhất 8 ký tự",
 ];
 
 export const validatePassword = (password) => {
@@ -32,8 +32,8 @@ export const validatePassword = (password) => {
 
 // Name validation
 export const nameRules = [
-  (v) => !!v || "Tên là bắt buộc",
-  (v) => v.length >= 3 || "Tên phải có ít nhất 3 ký tự",
+  (value) => !!value || "Tên là bắt buộc",
+  (value) => value.length >= 3 || "Tên phải có ít nhất 3 ký tự",
 ];
 
 export const validateName = (name) => {
@@ -48,8 +48,9 @@ export const validateName = (name) => {
 
 // Phone validation (Vietnam phone numbers)
 export const phoneRules = [
-  (v) => !!v || "Số điện thoại là bắt buộc",
-  (v) => /^(0[3|5|7|8|9])+([0-9]{8})$/.test(v) || "Số điện thoại không hợp lệ",
+  (value) => !!value || "Số điện thoại là bắt buộc",
+  (value) =>
+    /^(0[3|5|7|8|9])+([0-9]{8})$/.test(value) || "Số điện thoại không hợp lệ",
 ];
 
 export const validatePhone = (phone) => {
@@ -64,8 +65,8 @@ export const validatePhone = (phone) => {
 
 // Confirm password validation (requires original password)
 export const confirmPasswordRules = (password) => [
-  (v) => !!v || "Xác nhận mật khẩu là bắt buộc",
-  (v) => v === password || "Mật khẩu không khớp",
+  (value) => !!value || "Xác nhận mật khẩu là bắt buộc",
+  (value) => value === password || "Mật khẩu không khớp",
 ];
 
 export const validateConfirmPassword = (password, confirmPassword) => {
@@ -79,11 +80,13 @@ export const validateConfirmPassword = (password, confirmPassword) => {
 };
 
 // Terms validation
-export const termsRules = [(v) => !!v || "Bạn phải đồng ý với điều khoản"];
+export const termsRules = [
+  (value) => !!value || "Bạn phải đồng ý với điều khoản",
+];
 
 // Required field validation
 export const requiredRules = (fieldName = "Trường này") => [
-  (v) => !!v || `${fieldName} là bắt buộc`,
+  (value) => !!value || `${fieldName} là bắt buộc`,
 ];
 
 export const validateRequired = (value, fieldName = "Trường này") => {
