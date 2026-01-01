@@ -1,4 +1,9 @@
 import { defineStore } from "pinia";
+import {
+  saveToStorage,
+  getFromStorage,
+  removeFromStorage,
+} from "../utils/storage";
 
 // Storage keys
 const STORAGE_KEYS = {
@@ -71,13 +76,11 @@ export const useUserStore = defineStore("user", {
 
     initUser() {
       try {
-        const savedUser = localStorage.getItem(STORAGE_KEYS.USER);
-        const savedLoginStatus = localStorage.getItem(
-          STORAGE_KEYS.IS_LOGGED_IN
-        );
+        const savedUser = getFromStorage(STORAGE_KEYS.USER);
+        const savedLoginStatus = getFromStorage(STORAGE_KEYS.IS_LOGGED_IN);
 
-        if (savedUser && savedLoginStatus === "true") {
-          this.user = JSON.parse(savedUser);
+        if (savedUser && savedLoginStatus === true) {
+          this.user = savedUser;
           this.isLoggedIn = true;
           // Don't show birthday popup on init, only on login
           this.shouldShowBirthdayPopup = true;
@@ -116,7 +119,9 @@ export const useUserStore = defineStore("user", {
 
     getBirthdayStorageKey() {
       const today = new Date();
-      return `${STORAGE_KEYS.BIRTHDAY_SHOWN}_${today.getFullYear()}_${today.getMonth()}`;
+      return `${
+        STORAGE_KEYS.BIRTHDAY_SHOWN
+      }_${today.getFullYear()}_${today.getMonth()}`;
     },
   },
 

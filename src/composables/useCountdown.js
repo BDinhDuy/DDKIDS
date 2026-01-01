@@ -29,7 +29,6 @@ export function useCountdown(initialSeconds = 5) {
     }, 1000);
   };
 
-
   const stop = () => {
     if (intervalId) {
       clearInterval(intervalId);

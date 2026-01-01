@@ -242,14 +242,23 @@
 </template>
 
 <script setup>
-import { ref, computed } from 'vue'
+import { ref, computed, watch } from 'vue'
+import { useForm } from '@/composables/useForm'
+import { useNotification } from '@/composables/useNotification'
 
 // Emits
 const emit = defineEmits(['password-changed', 'cancel'])
 
+// Use composables
+const { formData, formRef, validate, reset } = useForm({
+  currentPassword: '',
+  newPassword: '',
+  confirmPassword: ''
+})
+
+const { showSuccess, showError: showErrorNotification, showInfo } = useNotification()
+
 // Refs
-const formRef = ref(null)
-const loading = ref(false)
 const showError = ref(false)
 const errorMessage = ref('')
 
@@ -258,22 +267,9 @@ const showCurrentPassword = ref(false)
 const showNewPassword = ref(false)
 const showConfirmPassword = ref(false)
 
-// Form data
-const formData = ref({
-  currentPassword: '',
-  newPassword: '',
-  confirmPassword: ''
-})
-
 // Password strength
 const passwordStrength = ref(0)
 const lastChanged = ref('20/05/2023 - 3 tháng trước')
-
-// Snackbar
-const showSnackbar = ref(false)
-const snackbarMessage = ref('')
-const snackbarColor = ref('success')
-const snackbarIcon = ref('mdi-check-circle')
 
 // Validation rules
 const rules = {
@@ -328,6 +324,9 @@ const strengthClass = computed(() => {
   return classes[passwordStrength.value - 1] || 'weak'
 })
 
+// Watch for password changes
+watch(() => formData.value.newPassword, checkPasswordStrength)
+
 // Methods
 const checkPasswordStrength = () => {
   const metRequirements = passwordRequirements.value.filter(req => req.met).length
@@ -335,56 +334,44 @@ const checkPasswordStrength = () => {
 }
 
 const handleSubmit = async () => {
-  const { valid } = await formRef.value.validate()
+  const isValid = await validate()
   
-  if (valid) {
+  if (isValid) {
     if (!passwordsMatch.value) {
       showError.value = true
       errorMessage.value = 'Mật khẩu xác nhận không trùng khớp'
       return
     }
-
-    loading.value = true
     
     // Simulate API call
-    setTimeout(() => {
-      loading.value = false
+    await new Promise(resolve => setTimeout(resolve, 1500))
+    
+    // Simulate success
+    const success = Math.random() > 0.3 // 70% success rate
+    
+    if (success) {
+      emit('password-changed', {
+        timestamp: new Date().toISOString()
+      })
       
-      // Simulate success
-      const success = Math.random() > 0.3 // 70% success rate
+      showSuccess('Đổi mật khẩu thành công!')
       
-      if (success) {
-        emit('password-changed', {
-          timestamp: new Date().toISOString()
-        })
-        
-        showNotification('Đổi mật khẩu thành công!', 'success', 'mdi-check-circle')
-        
-        // Reset form
-        formData.value = {
-          currentPassword: '',
-          newPassword: '',
-          confirmPassword: ''
-        }
-        formRef.value?.resetValidation()
-        passwordStrength.value = 0
-        
-        // Update last changed
-        lastChanged.value = new Date().toLocaleDateString('vi-VN') + ' - Vừa xong'
-      } else {
-        showError.value = true
-        errorMessage.value = 'Mật khẩu hiện tại không chính xác. Vui lòng kiểm tra lại.'
-      }
-    }, 1500)
+      // Reset form
+      reset()
+      formRef.value?.resetValidation()
+      passwordStrength.value = 0
+      
+      // Update last changed
+      lastChanged.value = new Date().toLocaleDateString('vi-VN') + ' - Vừa xong'
+    } else {
+      showError.value = true
+      errorMessage.value = 'Mật khẩu hiện tại không chính xác. Vui lòng kiểm tra lại.'
+    }
   }
 }
 
 const handleCancel = () => {
-  formData.value = {
-    currentPassword: '',
-    newPassword: '',
-    confirmPassword: ''
-  }
+  reset()
   formRef.value?.resetValidation()
   passwordStrength.value = 0
   showError.value = false
@@ -393,21 +380,14 @@ const handleCancel = () => {
 
 const handleForgotPassword = () => {
   console.log('Forgot password clicked')
-  showNotification('Đang chuyển đến trang khôi phục mật khẩu...', 'info', 'mdi-information')
+  showInfo('Đang chuyển đến trang khôi phục mật khẩu...')
   // Navigate to forgot password page
 }
 
 const contactSupport = () => {
   console.log('Contact support clicked')
-  showNotification('Đang kết nối với bộ phận hỗ trợ...', 'info', 'mdi-headset')
+  showInfo('Đang kết nối với hỗ trợ khách hàng...')
   // Open support chat or navigate to support page
-}
-
-const showNotification = (message, color, icon) => {
-  snackbarMessage.value = message
-  snackbarColor.value = color
-  snackbarIcon.value = icon
-  showSnackbar.value = true
 }
 </script>
 

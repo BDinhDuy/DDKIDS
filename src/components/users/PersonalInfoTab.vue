@@ -302,17 +302,8 @@ const props = defineProps({
 // Emits
 const emit = defineEmits(['update:userInfo', 'cancel'])
 
-// Refs
-const formRef = ref(null)
-const fileInput = ref(null)
-const loading = ref(false)
-const showSnackbar = ref(false)
-const snackbarMessage = ref('')
-const snackbarColor = ref('success')
-const snackbarIcon = ref('mdi-check-circle')
-
-// Form data
-const formData = ref({
+// Use composables
+const { formData, formRef, validate, isSubmitting, setFieldValue } = useForm({
   fullName: props.userInfo.name || '',
   email: props.userInfo.email || '',
   phone: props.userInfo.phone || '',
@@ -322,6 +313,11 @@ const formData = ref({
   kidBirthdate: props.userInfo.kidBirthdate || '',
   avatar: props.userInfo.avatar || ''
 })
+
+const { showSuccess, showError, showInfo, showWarning } = useNotification()
+
+// Refs
+const fileInput = ref(null)
 
 // Validation rules
 const rules = {
@@ -338,45 +334,35 @@ const rules = {
 
 // Methods
 const handleSubmit = async () => {
-  const { valid } = await formRef.value.validate()
+  const isValid = await validate()
   
-  if (valid) {
-    loading.value = true
-    
+  if (isValid) {
     // Simulate API call
-    setTimeout(() => {
-      loading.value = false
-      
-      // Emit update event
-      emit('update:userInfo', {
-        name: formData.value.fullName,
-        email: formData.value.email,
-        phone: formData.value.phone,
-        birthdate: formData.value.birthdate,
-        gender: formData.value.gender,
-        kidName: formData.value.kidName,
-        kidBirthdate: formData.value.kidBirthdate,
-        avatar: formData.value.avatar
-      })
-      
-      // Show success message
-      showNotification('Cập nhật thông tin thành công!', 'success', 'mdi-check-circle')
-    }, 1000)
+    await new Promise(resolve => setTimeout(resolve, 1000))
+    
+    // Emit update event
+    emit('update:userInfo', {
+      name: formData.value.fullName,
+      email: formData.value.email,
+      phone: formData.value.phone,
+      birthdate: formData.value.birthdate,
+      gender: formData.value.gender,
+      kidName: formData.value.kidName,
+      kidBirthdate: formData.value.kidBirthdate,
+      avatar: formData.value.avatar
+    })
+    
+    // Show success message
+    showSuccess('Cập nhật thông tin thành công!')
   }
 }
 
 const handleCancel = () => {
   // Reset form to original values
-  formData.value = {
-    fullName: props.userInfo.name || '',
-    email: props.userInfo.email || '',
-    phone: props.userInfo.phone || '',
-    birthdate: props.userInfo.birthdate || '',
-    gender: props.userInfo.gender || 'female',
-    kidName: props.userInfo.kidName || '',
-    kidBirthdate: props.userInfo.kidBirthdate || '',
-    avatar: props.userInfo.avatar || ''
-  }
+  Object.keys(formData.value).forEach(key => {
+    const propKey = key === 'fullName' ? 'name' : key
+    formData.value[key] = props.userInfo[propKey] || (key === 'gender' ? 'female' : '')
+  })
   
   formRef.value?.resetValidation()
   emit('cancel')
@@ -391,48 +377,41 @@ const handleFileChange = (event) => {
   if (file) {
     // Validate file size (2MB max)
     if (file.size > 2 * 1024 * 1024) {
-      showNotification('Kích thước file không được vượt quá 2MB', 'error', 'mdi-alert-circle')
+      showError('Kích thước file không được vượt quá 2MB')
       return
     }
     
     // Validate file type
     if (!['image/jpeg', 'image/png'].includes(file.type)) {
-      showNotification('Chỉ chấp nhận file JPG hoặc PNG', 'error', 'mdi-alert-circle')
+      showError('Chỉ chấp nhận file JPG hoặc PNG')
       return
     }
     
     // Create preview URL
     const reader = new FileReader()
     reader.onload = (e) => {
-      formData.value.avatar = e.target.result
-      showNotification('Ảnh đại diện đã được cập nhật', 'success', 'mdi-check-circle')
+      setFieldValue('avatar', e.target.result)
+      showSuccess('Ảnh đại diện đã được cập nhật')
     }
     reader.readAsDataURL(file)
   }
 }
 
 const handleRemoveAvatar = () => {
-  formData.value.avatar = 'https://via.placeholder.com/96'
-  showNotification('Đã xóa ảnh đại diện', 'info', 'mdi-information')
+  setFieldValue('avatar', 'https://via.placeholder.com/96')
+  showInfo('Đã xóa ảnh đại diện')
 }
 
 const handleLinkSocial = (platform) => {
   console.log('Link social account:', platform)
-  showNotification(`Đang liên kết tài khoản ${platform}...`, 'info', 'mdi-information')
+  showInfo(`Đang liên kết tài khoản ${platform}...`)
   // Implement social linking logic
 }
 
 const handleUnlinkSocial = (platform) => {
   console.log('Unlink social account:', platform)
-  showNotification(`Đã hủy liên kết tài khoản ${platform}`, 'warning', 'mdi-alert')
+  showWarning(`Đã hủy liên kết tài khoản ${platform}`)
   // Implement social unlinking logic
-}
-
-const showNotification = (message, color, icon) => {
-  snackbarMessage.value = message
-  snackbarColor.value = color
-  snackbarIcon.value = icon
-  showSnackbar.value = true
 }
 </script>
 

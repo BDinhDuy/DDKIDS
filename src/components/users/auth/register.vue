@@ -33,23 +33,23 @@
               <!-- Form -->
               <v-form ref="formRef" @submit.prevent="handleRegister">
                 <!-- Parent Name -->
-                <v-text-field v-model="parentName" label="Tên của bạn (Phụ huynh)" placeholder="Nhập họ và tên"
+                <v-text-field v-model="formData.parentName" label="Tên của bạn (Phụ huynh)" placeholder="Nhập họ và tên"
                   variant="outlined" prepend-inner-icon="mdi-account-outline" color="#ee9d2b" class="mb-4"
                   :rules="nameRules" clearable></v-text-field>
 
                 <!-- Email -->
-                <v-text-field v-model="email" label="Email" placeholder="name@example.com" variant="outlined"
+                <v-text-field v-model="formData.email" label="Email" placeholder="name@example.com" variant="outlined"
                   prepend-inner-icon="mdi-email-outline" color="#ee9d2b" class="mb-4"
                   :rules="emailRules" clearable></v-text-field>
 
                 <!-- Password -->
-                <v-text-field v-model="password" label="Mật khẩu" placeholder="Tối thiểu 8 ký tự" variant="outlined"
+                <v-text-field v-model="formData.password" label="Mật khẩu" placeholder="Tối thiểu 8 ký tự" variant="outlined"
                   prepend-inner-icon="mdi-lock-outline" :append-inner-icon="showPassword ? 'mdi-eye-off' : 'mdi-eye'"
                   :type="showPassword ? 'text' : 'password'" color="#ee9d2b" class="mb-4" :rules="passwordRules"
                   @click:append-inner="showPassword = !showPassword"></v-text-field>
 
                 <!-- Confirm Password -->
-                <v-text-field v-model="confirmPassword" label="Xác nhận mật khẩu" placeholder="Nhập lại mật khẩu"
+                <v-text-field v-model="formData.confirmPassword" label="Xác nhận mật khẩu" placeholder="Nhập lại mật khẩu"
                   variant="outlined" prepend-inner-icon="mdi-lock-reset"
                   :append-inner-icon="showConfirmPassword ? 'mdi-eye-off' : 'mdi-eye'"
                   :type="showConfirmPassword ? 'text' : 'password'" color="#ee9d2b" class="mb-4"
@@ -59,7 +59,7 @@
                 <!-- Child Info (Optional) -->
                 <v-row>
                   <v-col cols="12" sm="6">
-                    <v-text-field v-model="childName" label="Tên bé (Tùy chọn)" placeholder="Tên bé" variant="outlined"
+                    <v-text-field v-model="formData.childName" label="Tên bé (Tùy chọn)" placeholder="Tên bé" variant="outlined"
                       prepend-inner-icon="mdi-baby-face-outline" color="#ee9d2b" clearable></v-text-field>
                   </v-col>
                   <v-col cols="12" sm="6">
@@ -69,16 +69,16 @@
                         <v-text-field v-model="formattedDate" label="Ngày sinh bé (Tùy chọn)"
                           placeholder="Chọn ngày sinh" variant="outlined" prepend-inner-icon="mdi-cake-variant"
                           color="#ee9d2b" readonly v-bind="props" clearable
-                          @click:clear="childBirthdate = null"></v-text-field>
+                          @click:clear="formData.childBirthdate = null"></v-text-field>
                       </template>
-                      <v-date-picker v-model="childBirthdate" color="#ee9d2b" @update:model-value="dateMenu = false"
+                      <v-date-picker v-model="formData.childBirthdate" color="#ee9d2b" @update:model-value="dateMenu = false"
                         :max="new Date().toISOString().substr(0, 10)" show-adjacent-months></v-date-picker>
                     </v-menu>
                   </v-col>
                 </v-row>
 
                 <!-- Terms Checkbox -->
-                <v-checkbox v-model="agreeTerms" color="#ee9d2b" class="mb-2" :rules="termsRules">
+                <v-checkbox v-model="formData.agreeTerms" color="#ee9d2b" class="mb-2" :rules="termsRules">
                   <template v-slot:label>
                     <div class="terms-label">
                       Tôi đồng ý với
@@ -200,37 +200,38 @@
 </template>
 
 <script setup>
-import { ref, onUnmounted, computed } from 'vue'
+import { ref, computed } from 'vue'
 import { useRouter } from 'vue-router'
+import { useForm } from '@/composables/useForm'
+import { useCountdown } from '@/composables/useCountdown'
+import { useDialog } from '@/composables/useDialog'
 import { emailRules, passwordRules, nameRules, confirmPasswordRules, termsRules } from '@/utils/validation'
 import { APP_INFO } from '@/utils/constants'
+
 const router = useRouter()
 
-// Form ref
-const formRef = ref(null)
+// Use composables
+const { formData, formRef, validate } = useForm({
+  parentName: '',
+  email: '',
+  password: '',
+  confirmPassword: '',
+  childName: '',
+  childBirthdate: null,
+  agreeTerms: false
+})
 
-// Form data
-const parentName = ref('')
-const email = ref('')
-const password = ref('')
-const confirmPassword = ref('')
-const childName = ref('')
-const childBirthdate = ref(null)
-const agreeTerms = ref(false)
+const { isOpen: showSuccessDialog, open: openSuccessDialog, close: closeSuccessDialog } = useDialog()
+const { countdown, start: startCountdown } = useCountdown(5)
+
 const showPassword = ref(false)
 const showConfirmPassword = ref(false)
 const dateMenu = ref(false)
 
-// Dialog state
-const showSuccessDialog = ref(false)
-const countdown = ref(5)
-
-let countdownInterval = null
-
 // Computed formatted date
 const formattedDate = computed(() => {
-  if (!childBirthdate.value) return ''
-  const date = new Date(childBirthdate.value)
+  if (!formData.value.childBirthdate) return ''
+  const date = new Date(formData.value.childBirthdate)
   const day = String(date.getDate()).padStart(2, '0')
   const month = String(date.getMonth() + 1).padStart(2, '0')
   const year = date.getFullYear()
@@ -238,50 +239,32 @@ const formattedDate = computed(() => {
 })
 
 // Validation rules
-// Validation rules imported from @/utils/validation
-const confirmPasswordRulesComputed = computed(() => confirmPasswordRules(password.value))
+const confirmPasswordRulesComputed = computed(() => confirmPasswordRules(formData.value.password))
 
 // Methods
 const handleRegister = async () => {
-  // Validate form trước khi submit
-  const { valid } = await formRef.value.validate()
-
-  if (!valid) {
-    return // Dừng lại nếu form không hợp lệ
+  const isValid = await validate()
+  if (!isValid) {
+    return
   }
 
   console.log('Register attempt:', {
-    parentName: parentName.value,
-    email: email.value,
-    childName: childName.value,
-    childBirthdate: childBirthdate.value
+    parentName: formData.value.parentName,
+    email: formData.value.email,
+    childName: formData.value.childName,
+    childBirthdate: formData.value.childBirthdate
   })
 
   // Show success dialog
-  showSuccessDialog.value = true
-  startCountdown()
-}
-
-const startCountdown = () => {
-  countdown.value = 5
-
-  countdownInterval = setInterval(() => {
-    countdown.value--
-
-    if (countdown.value <= 0) {
-      clearInterval(countdownInterval)
-      startShopping()
-    }
-  }, 1000)
+  openSuccessDialog()
+  startCountdown(startShopping)
 }
 
 const closeDialog = () => {
-  showSuccessDialog.value = false
-  clearInterval(countdownInterval)
+  closeSuccessDialog()
 }
 
 const startShopping = () => {
-  clearInterval(countdownInterval)
   router.push('/')
 }
 
@@ -296,14 +279,8 @@ const registerWithFacebook = () => {
 }
 
 const goToLogin = () => {
-  clearInterval(countdownInterval)
   router.push('/auth/login')
 }
-
-// Cleanup on component unmount
-onUnmounted(() => {
-  clearInterval(countdownInterval)
-})
 </script>
 
 <style scoped>

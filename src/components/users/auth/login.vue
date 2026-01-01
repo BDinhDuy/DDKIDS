@@ -30,12 +30,12 @@
               <!-- Form -->
               <v-form ref="formRef" @submit.prevent="handleLogin">
                 <!-- Email Input -->
-                <v-text-field v-model="email" label="Email hoặc Số điện thoại" placeholder="example@email.com"
+                <v-text-field v-model="formData.email" label="Email hoặc Số điện thoại" placeholder="example@email.com"
                   variant="outlined" prepend-inner-icon="mdi-email-outline" color="#ee9d2b" class="mb-4"
                   :rules="emailOrPhoneRules" clearable></v-text-field>
 
                 <!-- Password Input -->
-                <v-text-field v-model="password" label="Mật khẩu" placeholder="•••••••••" variant="outlined"
+                <v-text-field v-model="formData.password" label="Mật khẩu" placeholder="•••••••••" variant="outlined"
                   prepend-inner-icon="mdi-lock-outline" :append-inner-icon="showPassword ? 'mdi-eye-off' : 'mdi-eye'"
                   :type="showPassword ? 'text' : 'password'" color="#ee9d2b" class="mb-2" :rules="passwordRules"
                   @click:append-inner="showPassword = !showPassword"></v-text-field>
@@ -48,7 +48,7 @@
                 <!-- Login Button -->
                 <v-btn type="submit" block size="large" color="#ee9d2b"
                   class="text-none font-weight-bold mb-6 login-btn" elevation="1"
-                  :disabled="!email || !password">
+                  :disabled="!formData.email || !formData.password">
                   Đăng nhập
                 </v-btn>
               </v-form>
@@ -99,17 +99,18 @@
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { useUserStore } from '@/stores/user'
+import { useForm } from '@/composables/useForm'
 import { emailRules, passwordRules } from '@/utils/validation'
 
 const router = useRouter()
 const userStore = useUserStore()
 
-// Form ref
-const formRef = ref(null)
+// Use form composable
+const { formData, formRef, validate } = useForm({
+  email: '',
+  password: ''
+})
 
-// Form data
-const email = ref('')
-const password = ref('')
 const showPassword = ref(false)
 
 // Validation rules
@@ -132,27 +133,26 @@ const emailOrPhoneRules = [
   }
 ]
 
-
 // Methods
 const handleLogin = async () => {
-  if (!email.value || !password.value) {
+  if (!formData.value.email || !formData.value.password) {
     return
   }
   
-  const { valid } = await formRef.value.validate()
-  if (!valid) {
+  const isValid = await validate()
+  if (!isValid) {
     return
   }
   
-  console.log('Login attempt:', email.value, password.value)
+  console.log('Login attempt:', formData.value.email, formData.value.password)
   
   // Simulate login success with mock user data
   // TODO: Replace with actual API call
   const userData = {
     id: 1,
-    name: email.value.split('@')[0] || 'Người dùng',
-    email: email.value,
-    avatar: 'https://ui-avatars.com/api/?name=' + encodeURIComponent(email.value.split('@')[0] || 'User') + '&background=ee9d2b&color=fff',
+    name: formData.value.email.split('@')[0] || 'Người dùng',
+    email: formData.value.email,
+    avatar: 'https://ui-avatars.com/api/?name=' + encodeURIComponent(formData.value.email.split('@')[0] || 'User') + '&background=ee9d2b&color=fff',
     // Mock birthdate - tháng hiện tại để test popup
     birthdate: new Date(2020, new Date().getMonth(), 15).toISOString()
   }

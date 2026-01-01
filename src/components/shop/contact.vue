@@ -169,7 +169,7 @@
                     color="#ee9d2b"
                     size="large"
                     class="submit-btn"
-                    :loading="submitting"
+                    :loading="isSubmitting"
                     :disabled="!formValid"
                   >
                     Gửi tin nhắn
@@ -216,39 +216,32 @@
 
     <!-- Chat Popup -->
     <ChatPopup v-model="showChatPopup" />
-
-    <!-- Success Snackbar -->
-    <v-snackbar
-      v-model="snackbar"
-      :color="snackbarColor"
-      timeout="3000"
-      location="top"
-    >
-      {{ snackbarText }}
-    </v-snackbar>
   </div>
 </template>
 
 <script setup>
-import { ref, reactive } from 'vue'
+import { ref } from 'vue'
+import { useForm } from '@/composables/useForm'
+import { useNotification } from '@/composables/useNotification'
 import ChatPopup from './ChatPopup.vue'
 
 // Images
 const heroImage = 'https://lh3.googleusercontent.com/aida-public/AB6AXuC1TpNdz6EQVG31BDvKsogU9AfhmPXYyxgV7HJ4KmG_8vg93HKBkEUIo7yPbf04l8OfarLq-bvKE2C_n-1Z5OGT2nKDx1zR3TH2TmW0Idylew3ieDXmfWAT1BiunaBDhtpP1cW3fTO3k9MQPrynqqkbQebjl-fqn7reUpYAJIumktUoTvCDCwE_gbuO94bhOUHFecHM2QlT43SicNZjFKQx3pLiJ9LqKTWv-xDjdiidfBKrS76HKFh2lrqvmHTF54NKE7Le5l54ycBN'
 const mapImage = 'https://lh3.googleusercontent.com/aida-public/AB6AXuAyTHiJdvDTr6bwoih2kL_m0MiX96VnrUTcnxWkkTUxv8SJhZ3jt7WSxKYS10RiM92NrCy8lcPiosTLiKrDNbQsb7TOx15veETiCBcJRWmjxdF-YzdYow7cVWwbJP8omazrYCT6Oef1PfGE3UDFixdSkmUxmBCVd94sQUQN-bkV_I9jjx0GG_e0tLKXRlhlMkj3fBXyf0WE_mYX4w_zdMM9dhEBw2BFa7hD8fqfJaDoAzcdnUEqzwby7Emm6qWFD8Ddg5Q9t6BhIng4'
 
-// Form data
-const contactForm = ref(null)
-const formValid = ref(false)
-const submitting = ref(false)
-const showChatPopup = ref(false)
-
-const formData = reactive({
+// Use composables
+const { formData, formRef, isSubmitting, validate, reset } = useForm({
   name: '',
   phone: '',
   email: '',
   message: ''
 })
+
+const { showSuccess, showError } = useNotification()
+
+const contactForm = ref(null)
+const formValid = ref(false)
+const showChatPopup = ref(false)
 
 // Validation rules
 const rules = {
@@ -263,11 +256,6 @@ const rules = {
   }
 }
 
-// Snackbar
-const snackbar = ref(false)
-const snackbarText = ref('')
-const snackbarColor = ref('success')
-
 // Methods
 const handleChatNow = () => {
   showChatPopup.value = true
@@ -279,35 +267,24 @@ const handleViewMap = () => {
 }
 
 const handleSubmit = async () => {
-  if (!formValid.value) return
-
-  submitting.value = true
+  const isValid = await validate()
+  if (!isValid) return
 
   try {
     // Simulate API call
     await new Promise(resolve => setTimeout(resolve, 1500))
     
     // Success
-    showSnackbar('Tin nhắn của bạn đã được gửi thành công!', 'success')
+    showSuccess('Tin nhắn của bạn đã được gửi thành công!')
     
     // Reset form
-    formData.name = ''
-    formData.phone = ''
-    formData.email = ''
-    formData.message = ''
+    reset()
     contactForm.value?.reset()
   } catch (error) {
-    showSnackbar('Có lỗi xảy ra. Vui lòng thử lại!', 'error')
-  } finally {
-    submitting.value = false
+    showError('Có lỗi xảy ra. Vui lòng thử lại!')
   }
 }
 
-const showSnackbar = (text, color = 'success') => {
-  snackbarText.value = text
-  snackbarColor.value = color
-  snackbar.value = true
-}
 </script>
 
 <style scoped>
